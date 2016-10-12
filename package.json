@@ -18,7 +18,9 @@
     "supertest": "^2.0.0",
     "validator": "^6.0.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "codeclimate-test-reporter": "^0.4.0"
+  },
   "license": "Apache-2.0",
   "engines": {
     "node": ">=4.0.0",
