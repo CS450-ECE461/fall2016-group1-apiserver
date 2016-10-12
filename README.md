@@ -4,6 +4,8 @@ In general, you'll need Node.js >v4.0.0 and NPM >v3.0.0.
 
 Linux users: using stock package repos for Node.js and NPM are generally not recommended.
 
+[Node.js Official Installation Instructions](https://nodejs.org/en/download/package-manager/)
+
 ##### Ubuntu/Debian #####
 ```
 sudo apt install git curl build-essential
