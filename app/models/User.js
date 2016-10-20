@@ -15,7 +15,6 @@ var schema = new mongodb.Schema({
         required: true,
         trim: true,
         validate: validator.isAlpha
-
     },
     lastName: {
         type: String,
