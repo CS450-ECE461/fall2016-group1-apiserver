@@ -1,5 +1,5 @@
 services:
-  - mongodb:latest
+  - mongo:latest
   
 cache:
   paths:
