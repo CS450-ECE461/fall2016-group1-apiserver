@@ -1,0 +1,12 @@
+services:
+  - mongodb:latest
+  
+cache:
+  paths:
+  - node_modules/
+
+test/node-latest
+  image: node:latest
+  script:
+    - npm install --dev
+    - node test
