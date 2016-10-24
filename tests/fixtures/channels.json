@@ -1,0 +1,24 @@
+{
+  "channels": [
+    {
+      "members": [
+        "mattneal",
+        "asdobson"
+      ]
+    },
+
+    {
+      "members": [
+        "bdfoster",
+        "asdobson"
+      ]
+    },
+
+    {
+      "members": [
+        "mattneal",
+        "bdfoster"
+      ]
+    }
+  ]
+}
