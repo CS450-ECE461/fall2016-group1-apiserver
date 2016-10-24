@@ -2,7 +2,7 @@ var UserController = require('../../controllers/UserController');
 
 module.exports = {
     '/v1': {
-        'users': {
+        '/users': {
             resource: {
                 controller: 'UserController'
             }
