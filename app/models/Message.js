@@ -5,20 +5,26 @@ var schema = new mongodb.Schema({
     sender: {
         type: String,
         required: true,
-        ref: 'User'
+        ref: 'users'
     },
     receiver: {
         type: String,
         required: true,
-        ref: 'User'
+        ref: 'users'
     },
     content: { 
         type: String, 
         trim: true
         require: true
     },
-    timestamps: { updatedAt: 'expireAt' },
-    seen: { type: Boolean, default: false }
+    seen: { 
+        type: Boolean,
+        required: true
+        default: false 
+    }
+}, {
+    // Adds 'createdAt' and 'updatedAt' fields
+    timestamps: true
 });
 
 module.exports = exports = mongodb.model('messages', schema);
