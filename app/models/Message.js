@@ -12,7 +12,11 @@ var schema = new mongodb.Schema({
         required: true,
         ref: 'User'
     },
-    content: { type: String, trim: true },
+    content: { 
+        type: String, 
+        trim: true
+        require: true
+    },
     timestamps: { updatedAt: 'expireAt' },
     seen: { type: Boolean, default: false }
 });
