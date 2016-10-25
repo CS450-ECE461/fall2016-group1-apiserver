@@ -3,7 +3,7 @@ var blueprint = require('@onehilltech/blueprint');
 module.exports = {
     connections: {
         $default: {
-            connstr: 'mongodb://localhost/' + blueprint.env,
+            connstr: 'mongodb://mongo/' + blueprint.env,
             options: {
                 db: {
                     w: 1,
