@@ -29,4 +29,4 @@ var schema = new mongodb.Schema({
     }
 });
 
-module.exports = exports = mongodb.model ('users', schema);
+module.exports = exports = mongodb.model('users', schema);
