@@ -17,6 +17,11 @@ var schema = new mongodb.Schema({
         trim: true
         require: true
     },
+    expireAt: {
+        type: Date,
+        required: true
+        min: Date.now()
+    },
     seen: { 
         type: Boolean,
         required: true
