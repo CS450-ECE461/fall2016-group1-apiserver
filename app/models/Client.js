@@ -32,6 +32,10 @@ var schema = new mongodb.Schema({
         type: Boolean,
         required: true,
         default: true
+    },
+    meta: {
+        type: mongodb.Schema.Types.Mixed,
+        default: {}
     }
 });
 
