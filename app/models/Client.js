@@ -21,10 +21,15 @@ var schema = new mongodb.Schema({
         unique: true,
         validate: validator.isEmail
     },
-    roles: {
+    scopes: {
         type: [String],
-        required: true,
+        required: false,
         default: []
+    },
+    website: {
+        type: String,
+        required: false,
+        validate: validator.isURL
     },
     redirectURL: {
         type: String,
