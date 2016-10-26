@@ -32,6 +32,10 @@ var schema = new mongodb.Schema({
         index: true,
         required: true,
         ref: 'clients'
+    },
+    meta: {
+        type: mongodb.Schema.Types.Mixed,
+        default: {}
     }
 });
 
