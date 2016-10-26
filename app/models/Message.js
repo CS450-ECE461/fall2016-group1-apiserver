@@ -12,20 +12,20 @@ var schema = new mongodb.Schema({
         required: true,
         ref: 'users'
     },
-    content: { 
-        type: String, 
-        trim: true
+    content: {
+        type: String,
+        trim: true,
         require: true
     },
     expireAt: {
         type: Date,
-        required: true
+        required: true,
         min: Date.now()
     },
-    seen: { 
+    seen: {
         type: Boolean,
-        required: true
-        default: false 
+        required: true,
+        default: false
     }
 }, {
     // Adds 'createdAt' and 'updatedAt' fields
