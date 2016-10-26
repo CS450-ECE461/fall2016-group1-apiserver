@@ -26,6 +26,16 @@ var schema = new mongodb.Schema({
         required: true,
         trim: true,
         validate: validator.isEmail
+    },
+    createdBy: {
+        type: mongodb.Schema.Types.ObjectId,
+        index: true,
+        required: true,
+        ref: 'clients'
+    },
+    meta: {
+        type: mongodb.Schema.Types.Mixed,
+        default: {}
     }
 });
 
