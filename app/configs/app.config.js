@@ -1,3 +1,3 @@
 module.exports = exports = {
-  name : '450-team-1-starter-repo'
+  name : 'fall2016-group1-apiserver'
 };
