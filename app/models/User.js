@@ -30,7 +30,7 @@ var schema = new mongodb.Schema({
     createdBy: {
         type: mongodb.Schema.Types.ObjectId,
         index: true,
-        required: true,
+        required: false,
         ref: 'clients'
     },
     meta: {
