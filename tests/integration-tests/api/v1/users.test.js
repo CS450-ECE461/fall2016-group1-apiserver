@@ -28,7 +28,7 @@ describe('Route: /api/v1/users', function () {
         ], done);
     });
 
-    it('should create a user via POST: /api/v1/users', function(done) {
+    it('should create a user', function(done) {
         request
             .post('/api/v1/users')
             .type('json')
@@ -50,7 +50,29 @@ describe('Route: /api/v1/users', function () {
             });
     });
 
-    it('should get created user via GET: /api/v1/users/:id', function(done) {
+    it('should not re-create the same user', function(done) {
+        request
+            .post('/api/v1/users')
+            .type('json')
+            .set('Accept', 'application/json')
+            .send({
+                "user": user
+            })
+            .expect(400)
+            .end(function(error, response) {
+                if (error) {
+                    return done(error);
+                }
+
+                response.body.name.should.equal('HttpError');
+                response.body.message.should.equal('Failed to create resource');
+                response.body.statusCode.should.equal(400);
+
+                done();
+            });
+    });
+
+    it('should get created user', function(done) {
         request
             .get('/api/v1/users/' + user._id)
             .set('Accept', 'application/json')
@@ -66,7 +88,7 @@ describe('Route: /api/v1/users', function () {
             })
     });
 
-    it('should change \'emailAddress\' field of created user via PUT: /api/v1/users/:id', function(done) {
+    it('should change \'emailAddress\' field of created user', function(done) {
         request
             .put('/api/v1/users/' + user._id)
             .type('json')
