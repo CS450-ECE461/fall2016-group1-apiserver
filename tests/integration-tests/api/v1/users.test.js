@@ -1,4 +1,5 @@
 var async = require('async');
+var assert = require('chai').assert;
 var should = require('chai').should();
 var blueprint = require('@onehilltech/blueprint');
 var appPath = require('../../../fixtures/appPath');
@@ -49,6 +50,7 @@ describe('Route: /api/v1/users', function () {
 
                 var body = response.body;
                 response.status.should.equal(200);
+                assert(response.body.user._id);
                 user = body.user;
                 done();
             });
@@ -85,7 +87,7 @@ describe('Route: /api/v1/users', function () {
                     return done(error);
                 }
 
-                response.body.user.emailAddress.should.equal("fosterbd@iupui.edu")
+                response.body.user.emailAddress.should.equal("fosterbd@iupui.edu");
                 response.body.user.updatedAt.should.not.equal(user.updatedAt);
                 response.body.user.createdAt.should.equal(user.createdAt);
                 user = response.body.user;
