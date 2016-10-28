@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "@onehilltech/blueprint": "^0.48.1",
-    "@onehilltech/blueprint-mongodb": "^0.7.1",
+    "@onehilltech/blueprint-mongodb": "^0.9.1",
+    "bcrypt": "^0.8.7",
     "chai": "^3.5.0",
     "express-handlebars": "^3.0.0",
     "handlebars-helpers": "^0.7.5",
@@ -20,14 +21,16 @@
     "superagent": "^2.3.0",
     "supertest": "^2.0.0",
     "uuid": "^2.0.3",
-    "validator": "^6.0.0"
+    "validator": "^6.0.0",
+    "winston": "latest"
   },
   "devDependencies": {
     "chai": "^3.5.0",
     "codeclimate-test-reporter": "^0.4.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.1.2",
-    "request": "^2.75.0"
+    "request": "^2.75.0",
+    "async": "latest"
   },
   "license": "Apache-2.0",
   "engines": {
