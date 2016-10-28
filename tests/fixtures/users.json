@@ -1,21 +1,21 @@
 {
   "users": [
     {
-      "id": "bdfoster",
+      "handle": "bdfoster",
       "firstName": "Brian",
       "lastName": "Foster",
       "emailAddress": "fosterbd@iupui.edu"
     },
 
     {
-      "id": "asdobson",
+      "handle": "asdobson",
       "firstName": "Angus",
       "lastName": "Dobson",
       "emailAddress": "asdobson@iupui.edu"
     },
 
     {
-      "id": "mattneal",
+      "handle": "mattneal",
       "firstName": "Matt",
       "lastName": "Neal",
       "emailAddress": "mattneal@iupui.edu"
