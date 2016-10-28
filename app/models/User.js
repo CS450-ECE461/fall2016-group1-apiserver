@@ -6,6 +6,7 @@ var uuid = require('uuid');
 
 const SALT_WORK_FACTOR = 10;
 
+//noinspection JSUnresolvedVariable
 var schema = new Schema({
     handle: {
         type: String,
@@ -49,9 +50,11 @@ var schema = new Schema({
     timestamps: true
 });
 
+//noinspection JSUnresolvedFunction
 schema.pre('save', function(next) {
     var user = this;
 
+    //noinspection JSUnresolvedFunction
     if (!user.isModified('password')) {
         return next();
     }
@@ -72,6 +75,7 @@ schema.pre('save', function(next) {
     })
 });
 
+//noinspection JSUnresolvedVariable
 schema.methods.validatePassword = function(candidatePassword, next) {
     bcrypt.compare(candidatePassword, this.password, function(error, isMatch) {
         if (error) {
