@@ -6,19 +6,13 @@ var appPath = require('../../../fixtures/appPath');
 var it = require("mocha").it;
 var before = require("mocha").before;
 var describe = require("mocha").describe;
-var users = require('../../../fixtures/users.json');
+var users = require('../../../fixtures/users');
 
 describe('Route: /api/v1/users', function () {
     var server;
     var request;
 
-    var user = {
-        "handle": "bdfoster",
-        "firstName": "Brian",
-        "lastName": "Foster",
-        "emailAddress": "bdfoster89@gmail.com",
-        "password": "test123"
-    };
+    var user = users[0];
 
     before(function (done) {
         async.waterfall([
@@ -78,7 +72,7 @@ describe('Route: /api/v1/users', function () {
             .type('json')
             .send({
                 "user": {
-                    "emailAddress": "fosterbd@iupui.edu"
+                    "emailAddress": "bdfoster@iupui.edu"
                 }
             })
             .expect(200)
@@ -87,7 +81,7 @@ describe('Route: /api/v1/users', function () {
                     return done(error);
                 }
 
-                response.body.user.emailAddress.should.equal("fosterbd@iupui.edu");
+                response.body.user.emailAddress.should.equal("bdfoster@iupui.edu");
                 response.body.user.updatedAt.should.not.equal(user.updatedAt);
                 response.body.user.createdAt.should.equal(user.createdAt);
                 user = response.body.user;
