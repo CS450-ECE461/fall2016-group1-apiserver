@@ -22,7 +22,8 @@
     "supertest": "^2.0.0",
     "uuid": "^2.0.3",
     "validator": "^6.0.0",
-    "winston": "latest"
+    "winston": "latest",
+    "lodash": "latest"
   },
   "devDependencies": {
     "chai": "^3.5.0",
