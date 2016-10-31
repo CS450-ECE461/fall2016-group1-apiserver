@@ -44,35 +44,38 @@ UserController.prototype.create = function () {
 
 UserController.prototype.get = function() {
     return function __UserController_get(request, response, next) {
-        var id = Mongoose.Types.ObjectId(request.params.id);
+        var criteria = {};
+        try {
+            criteria['_id'] = Mongoose.Types.ObjectId(request.params.id);
 
-        User.findById(id, function (error, result) {
+        } catch (error) {
+            criteria['handle'] = request.params.id;
+        }
+
+        var projection = {
+            "__v": 0,
+            "password": 0
+        };
+
+
+        User.findOne(criteria, projection, function(error, result) {
             if (error) {
                 return next(error);
             }
 
             if (!result) {
-                // Try again, finding by 'handler'
-                User.findOne({ handler: request.params.id }, function(error, result) {
-                    if (error) {
-                        return next(error);
-                    }
-
-                    if (!result) {
-                        error = new Error();
-                        error.status = 404;
-                        return next(error);
-                    }
-
-                    response.format({
-                        default: function() {
-                            response.json(result);
-                        }
-                    });
-
-                    return next();
-                });
+                error = new Error('User not found');
+                error.status = 404;
+                return next(error);
             }
+
+            response.format({
+                default: function() {
+                    response.json(result);
+                }
+            });
+
+            return next();
         });
     }
 };
