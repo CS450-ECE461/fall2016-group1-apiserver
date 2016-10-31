@@ -1,73 +1,9 @@
 var blueprint = require('@onehilltech/blueprint');
 var mongodb = require('@onehilltech/blueprint-mongodb');
-var ResourceController = mongodb.ResourceController;
+var Mongoose = require('mongoose');
 var User = require('../models/User');
 var _ = require('lodash');
 var winston = require('winston');
-
-var NotAcceptableError = function (details) {
-    return {
-        code: 406,
-        message: "Not Acceptable",
-        details: details
-    }
-};
-
-var BadRequestError = function (details, path) {
-    var result = {
-        code: 400,
-        message: "Bad Request",
-        details: details
-    };
-
-    if (path) {
-        result.path = path;
-    }
-
-    return result;
-};
-
-var ServerError = function(details) {
-    var result = {
-        code: 500,
-        message: "Server Error"
-    };
-
-    if (details) {
-        if (blueprint.env !== 'production') {
-            result.details = details;
-        }
-    }
-
-    winston.log('error', details);
-    return result;
-};
-
-var NotFoundError = function(details) {
-    var result = {
-        code: 404,
-        message: "Not Found"
-    };
-
-    if (details) {
-        result.details = details;
-    }
-};
-
-function buildMongooseError(error) {
-    if (error.name === 'MongoError') {
-        if (error.code === 11000 || error.code === 11001) {
-            return BadRequestError("Duplicate key found", error.path);
-        } else {
-            return ServerError(error);
-        }
-    }
-
-    else {
-    //if (error.name === 'ValidationError' || error.name === 'CastError') {
-        return BadRequestError(error.type || error.message, error.path);
-    }
-}
 
 function UserController() {
     blueprint.BaseController.call(this);
@@ -81,13 +17,6 @@ UserController.prototype.__defineGetter__('resourceId', function () {
 
 UserController.prototype.create = function () {
     return function __UserController_create(request, response, next) {
-        winston.log('info', 'Began Creation');
-        //noinspection JSUnresolvedFunction
-        if (!request.accepts('json')) {
-            response.status(406).json(new NotAcceptableError('Must accept JSON response body'));
-            next();
-        }
-
         var doc;
         //noinspection JSCheckFunctionSignatures
         if (request.is('json')) {
@@ -98,50 +27,50 @@ UserController.prototype.create = function () {
         _.defaultsDeep(doc, request.query);
 
         User.create(doc, function (error, result) {
-            winston.log('info', 'Creation attempt');
             if (error) {
-                var errorObject = buildMongooseError(error);
-                response.status(errorObject.code).json({error: errorObject});
-                next();
+                return next(error);
             }
 
-            response.status(200).json(result);
-            next();
+            response.format({
+                default: function() {
+                    response.json(result);
+                }
+            });
+
+            return next();
         });
     }
 };
 
 UserController.prototype.get = function() {
     return function __UserController_get(request, response, next) {
-        //noinspection JSUnresolvedFunction
-        if (!request.accepts('json')) {
-            response.status(406).json({error: new NotAcceptableError('Must accept JSON response body')});
-            next();
-        }
+        var id = Mongoose.Types.ObjectId(request.params.id);
 
-        User.findById(request.params.id, function (error, result) {
+        User.findById(id, function (error, result) {
             if (error) {
-                var errorObject = buildMongooseError(error);
-                response.status(errorObject.code).json({error: errorObject});
-                next();
+                return next(error);
             }
 
             if (!result) {
                 // Try again, finding by 'handler'
                 User.findOne({ handler: request.params.id }, function(error, result) {
                     if (error) {
-                        var errorObject = buildMongooseError(error);
-                        response.status(errorObject.code).json({error: errorObject});
-                        next();
+                        return next(error);
                     }
 
                     if (!result) {
-                        response.status(404).json(new NotFoundError());
-                        next();
+                        error = new Error();
+                        error.status = 404;
+                        return next(error);
                     }
 
-                    response.status(200).json(result);
-                    next();
+                    response.format({
+                        default: function() {
+                            response.json(result);
+                        }
+                    });
+
+                    return next();
                 });
             }
         });
@@ -150,54 +79,56 @@ UserController.prototype.get = function() {
 
 UserController.prototype.getAll = function () {
     return function __UserController_getAll(request, response, next) {
-        //noinspection JSUnresolvedFunction
-        if (!request.accepts('json')) {
-            response.status(406).json(new NotAcceptableError('Must accept JSON response body'));
-        }
-
-        var options = {};
-
-        options.skip = request.params.skip || 0;
-        options.limit = request.params.limit || 20;
 
         if (request.query.limit) {
             if (limit > 100) {
-                response.status(400).json({ error: new BadRequestError('Cannot return more than 100 entries')});
-                next();
+                var error = new Error("'limit' must be less than 100");
+                error.status = 400;
+                return next(error);
             }
         }
 
         User.count({}, function(error, count) {
             if (error) {
-                var errorObject = buildMongooseError(error);
-                response.status(errorObject.code).json({error: errorObject});
-                next();
+                return next(error);
             }
 
-            if (count >= (skip)) {
-                response.status(400).json({error: BadRequestError("'skip' query must be less than " + count)});
-                next();
-            }
+            var conditions = _.omit(request.query, ['skip', 'limit']);
 
-            var filter = request.query.filter;
+            var projection = {
+                '__v': 0,
+                'password': 0
+            };
 
-            User.find(filter, options, function(error, results) {
+            var options = {
+                skip: 0,
+                limit: 20
+            };
+
+            _.defaults(options, _.pick(request.query, ['skip', 'limit']));
+
+            User.find(conditions, projection, options, function(error, results) {
                 if (error) {
-                    var errorObject = buildMongooseError(error);
-                    response.status(errorObject.code).json({error: errorObject});
-                    next();
+                    return next(error);
                 }
 
-                var data = {
+                var result = {
                     count: count,
                     skip: options.skip,
-                    limit: options.limit,
-                    data: results
+                    limit: options.limit
                 };
 
-                data[User.modelName] = results;
-                response.status(200).json(results);
-                next();
+                result[User.modelName] = results;
+
+                response.status(200);
+
+                response.format({
+                    default: function() {
+                        response.json(result);
+                    }
+                });
+
+                return next();
             })
         });
     }
@@ -206,12 +137,6 @@ UserController.prototype.getAll = function () {
 
 UserController.prototype.update = function() {
     return function __UserCollection_update(request, response, next) {
-        //noinspection JSUnresolvedFunction
-        if (!request.accepts('json')) {
-            response.status(406).json(new NotAcceptableError('Must accept JSON response body'));
-            next();
-        }
-
         var doc;
         //noinspection JSCheckFunctionSignatures
         if (request.is('json')) {
@@ -221,29 +146,28 @@ UserController.prototype.update = function() {
         // Merge query string into User data
         _.defaultsDeep(doc, request.query);
 
+        request.params.id = Mongoose.Types.ObjectId(request.params.id);
+
         User.findByIdAndUpdate(request.params.id, { $set: doc }, function (error, result) {
             if (error) {
-                var errorObject = buildMongooseError(error);
-                response.status(errorObject.code).json({error: errorObject});
-                next();
+                return next(error);
             }
 
             if (!result) {
                 // Try again, finding by 'handler'
                 User.findOneAndUpdate({ handle: request.params.id }, { $set: doc }, function(error, result) {
                     if (error) {
-                        var errorObject = buildMongooseError(error);
-                        response.status(errorObject.code).json({error: errorObject});
-                        next();
+                        return next(error);
                     }
 
                     if (!result) {
-                        response.status(404).json(new NotFoundError());
-                        next();
+                        error = new Error();
+                        error.status = 404;
+                        return next(error);
                     }
 
                     response.status(200).json(result);
-                    next();
+                    return next();
                 });
             }
         });
@@ -252,26 +176,18 @@ UserController.prototype.update = function() {
 
 UserController.prototype.delete = function() {
     return function __UserCollection_delete(request, response, next) {
-        //noinspection JSUnresolvedFunction
-        if (!request.accepts('json')) {
-            response.status(406).json({error: new NotAcceptableError('Must accept JSON response body')});
-            next();
-        }
+       var objectID = Mongoose.Types.ObjectId(request.params.id);
 
-        User.findByIdAndRemove(request.params.id, function (error, result) {
+        User.findByIdAndRemove(objectID, function (error, result) {
             if (error) {
-                var errorObject = buildMongooseError(error);
-                response.status(errorObject.code).json({error: errorObject});
-                next();
+                next(error);
             }
 
             if (!result) {
                 // Try again, finding by 'handle'
                 User.findOneAndRemove({ handle: request.params.id }, function(error) {
                     if (error) {
-                        var errorObject = buildMongooseError(error);
-                        response.status(errorObject.code).json({error: errorObject});
-                        next();
+                        next(error);
                     }
 
                     response.status(200).json({});
