@@ -4,9 +4,9 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "test": "env NODE_ENV=test _mocha --recursive tests/**/*",
+    "test": "node ./node_modules/mocha/bin/mocha",
     "start": "node ./app/index.js",
-    "coverage": "env NODE_ENV=test istanbul cover _mocha -- --recursive tests/**/*",
+    "coverage": "istanbul cover _mocha -- --recursive tests/**/*",
     "codeclimate-test-reporter": "codeclimate-test-reporter < ./coverage/lcov.info"
   },
   "dependencies": {
