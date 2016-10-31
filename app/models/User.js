@@ -4,8 +4,6 @@ var validator = require('validator');
 var bcrypt = require('bcrypt-nodejs');
 var uuid = require('uuid');
 
-const SALT_WORK_FACTOR = 10;
-
 //noinspection JSUnresolvedVariable
 var schema = new Schema({
     handle: {
@@ -53,41 +51,33 @@ var schema = new Schema({
     timestamps: true
 });
 
-//noinspection JSUnresolvedFunction
-//schema.pre('save', function(next) {
-//    var user = this;
+schema.pre('save', function(next) {
+    var user = this;
 
-//    //noinspection JSUnresolvedFunction
-//    if (!user.isModified('password')) {
-//        return next();
-//    }
+    //noinspection JSUnresolvedFunction
+    if (!user.isModified('password')) {
+        return next();
+    }
 
-//    bcrypt.genSalt(SALT_WORK_FACTOR, function(error, salt) {
-//        if (error) {
-//            return next(error);
-//        }
+    bcrypt.hash(user.password, null, null, function(error, hash) {
+        if (error) {
+            return next(error);
+        }
 
-//        bcrypt.hash(user.password, salt, function(error, hash) {
-//            if (error) {
-//                return next(error);
-//            }
+        user.password = hash;
+        next();
+    })
+});
 
-//            user.password = hash;
-//            next();
-//        })
-//    })
-//});
+schema.methods.validatePassword = function(candidatePassword, next) {
+    bcrypt.compare(candidatePassword, this.password, function(error, isMatch) {
+        if (error) {
+            return next(error);
+        }
 
-////noinspection JSUnresolvedVariable
-//schema.methods.validatePassword = function(candidatePassword, next) {
-//    bcrypt.compare(candidatePassword, this.password, function(error, isMatch) {
-//        if (error) {
-//            return next(error);
-//        }
-
-//        next(null, isMatch);
-//    })
-//};
+        next(null, isMatch);
+    })
+};
 
 
 
