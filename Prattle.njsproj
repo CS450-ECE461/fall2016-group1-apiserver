@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{74ce07dd-e265-43a4-bff3-8457e2dae7a1}</ProjectGuid>
+    <ProjectHome />
+    <ProjectView>ShowAllFiles</ProjectView>
+    <StartupFile>app\index.js</StartupFile>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <ItemGroup>
+    <Compile Include="app\controllers\LoginController.js" />
+    <Compile Include="app\listeners\app.init\initPassport.js" />
+    <Compile Include="tests\fixtures\appPath.js" />
+    <Compile Include="tests\fixtures\users.js" />
+    <Compile Include="tests\integration-tests\api\v1\users.test.js" />
+    <Content Include=".gitignore" />
+    <Content Include="app\views\login.handlebars" />
+    <Content Include="app\views\user.handlebars" />
+    <Content Include="package.json" />
+    <Content Include="Prattle.njsproj" />
+    <Compile Include="app\index.js" />
+    <Compile Include="app\configs\app.config.js" />
+    <Compile Include="app\configs\mongodb.config.js" />
+    <Compile Include="app\configs\server.config.js" />
+    <Compile Include="app\controllers\UserController.js" />
+    <Compile Include="app\hooks\module.init.js" />
+    <Content Include="app\listeners\.gitkeep" />
+    <Compile Include="app\listeners\hbs.js" />
+    <Compile Include="app\models\Client.js" />
+    <Compile Include="app\models\Message.js" />
+    <Compile Include="app\models\User.js" />
+    <Content Include="app\policies\.gitkeep" />
+    <Content Include="app\resources\.gitkeep" />
+    <Compile Include="app\routers\LoginRouter.js" />
+    <Content Include="app\configs\development\.gitkeep" />
+    <Content Include="app\configs\production\.gitkeep" />
+    <Content Include="app\configs\test\.gitkeep" />
+    <Compile Include="app\routers\api\UserRouter.js" />
+    <Content Include="tests\.gitkeep" />
+    <Content Include="tests\fixtures\channels.json" />
+    <Content Include="tests\integration-tests\.gitkeep" />
+    <Content Include="tests\unit-tests\.gitkeep" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="app" />
+    <Folder Include="app\configs" />
+    <Folder Include="app\configs\development" />
+    <Folder Include="app\configs\production" />
+    <Folder Include="app\configs\test" />
+    <Folder Include="app\controllers" />
+    <Folder Include="app\hooks" />
+    <Folder Include="app\listeners" />
+    <Folder Include="app\listeners\app.init\" />
+    <Folder Include="app\models" />
+    <Folder Include="app\policies" />
+    <Folder Include="app\resources" />
+    <Folder Include="app\routers" />
+    <Folder Include="app\routers\api" />
+    <Folder Include="app\views" />
+    <Folder Include="tests\" />
+    <Folder Include="tests\fixtures\" />
+    <Folder Include="tests\integration-tests\" />
+    <Folder Include="tests\integration-tests\api\" />
+    <Folder Include="tests\integration-tests\api\v1\" />
+    <Folder Include="tests\unit-tests\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <!--Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them.-->
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
+  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:48022/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost:1337</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

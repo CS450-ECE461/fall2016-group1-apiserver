@@ -1,7 +1,7 @@
 var mongodb = require('@onehilltech/blueprint-mongodb');
 var Schema = mongodb.Schema;
 var validator = require('validator');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt-nodejs');
 var uuid = require('uuid');
 
 const SALT_WORK_FACTOR = 10;
@@ -36,6 +36,9 @@ var schema = new Schema({
         trim: true,
         validate: validator.isEmail
     },
+    password: {
+        type: String,
+    },
     createdBy: {
         type: mongodb.Schema.Types.ObjectId,
         index: true,
@@ -51,40 +54,40 @@ var schema = new Schema({
 });
 
 //noinspection JSUnresolvedFunction
-schema.pre('save', function(next) {
-    var user = this;
+//schema.pre('save', function(next) {
+//    var user = this;
 
-    //noinspection JSUnresolvedFunction
-    if (!user.isModified('password')) {
-        return next();
-    }
+//    //noinspection JSUnresolvedFunction
+//    if (!user.isModified('password')) {
+//        return next();
+//    }
 
-    bcrypt.genSalt(SALT_WORK_FACTOR, function(error, salt) {
-        if (error) {
-            return next(error);
-        }
+//    bcrypt.genSalt(SALT_WORK_FACTOR, function(error, salt) {
+//        if (error) {
+//            return next(error);
+//        }
 
-        bcrypt.hash(user.password, salt, function(error, hash) {
-            if (error) {
-                return next(error);
-            }
+//        bcrypt.hash(user.password, salt, function(error, hash) {
+//            if (error) {
+//                return next(error);
+//            }
 
-            user.password = hash;
-            next();
-        })
-    })
-});
+//            user.password = hash;
+//            next();
+//        })
+//    })
+//});
 
-//noinspection JSUnresolvedVariable
-schema.methods.validatePassword = function(candidatePassword, next) {
-    bcrypt.compare(candidatePassword, this.password, function(error, isMatch) {
-        if (error) {
-            return next(error);
-        }
+////noinspection JSUnresolvedVariable
+//schema.methods.validatePassword = function(candidatePassword, next) {
+//    bcrypt.compare(candidatePassword, this.password, function(error, isMatch) {
+//        if (error) {
+//            return next(error);
+//        }
 
-        next(null, isMatch);
-    })
-};
+//        next(null, isMatch);
+//    })
+//};
 
 
 

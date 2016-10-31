@@ -1,0 +1,2 @@
+D:\OneDrive\Documents\Projects\fall2016-group1-apiserver\obj\Debug\Prattle.njsprojResolveAssemblyReference.cache
+D:\OneDrive\Documents\Projects\fall2016-group1-apiserver\bin\Microsoft.NodejsTools.WebRole.dll
