@@ -3,6 +3,7 @@ var mongodb = require('@onehilltech/blueprint-mongodb');
 var ResourceController = mongodb.ResourceController;
 var User = require('../models/User');
 var _ = require('lodash');
+var winston = require('winston');
 
 var NotAcceptableError = function (details) {
     return {
@@ -16,11 +17,10 @@ var BadRequestError = function (details, path) {
     var result = {
         code: 400,
         message: "Bad Request",
-        details: message
+        details: details
     };
 
-
-    if (property) {
+    if (path) {
         result.path = path;
     }
 
@@ -63,7 +63,8 @@ function buildMongooseError(error) {
         }
     }
 
-    if (error.name === 'ValidatorError') {
+    else {
+    //if (error.name === 'ValidationError' || error.name === 'CastError') {
         return BadRequestError(error.type || error.message, error.path);
     }
 }
@@ -80,6 +81,7 @@ UserController.prototype.__defineGetter__('resourceId', function () {
 
 UserController.prototype.create = function () {
     return function __UserController_create(request, response, next) {
+        winston.log('info', 'Began Creation');
         //noinspection JSUnresolvedFunction
         if (!request.accepts('json')) {
             response.status(406).json(new NotAcceptableError('Must accept JSON response body'));
@@ -96,6 +98,7 @@ UserController.prototype.create = function () {
         _.defaultsDeep(doc, request.query);
 
         User.create(doc, function (error, result) {
+            winston.log('info', 'Creation attempt');
             if (error) {
                 var errorObject = buildMongooseError(error);
                 response.status(errorObject.code).json({error: errorObject});
