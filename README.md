@@ -41,5 +41,5 @@ npm install --dev
 
 ### Travis CI ###
 ```
-Travis CI is a test suite that automatically runs on this repository.
+Travis CI is an automatic build suite that runs on this repository.
 ```
