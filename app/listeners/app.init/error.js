@@ -34,6 +34,7 @@ module.exports = function(blueprint) {
                     error.status = 409;
                     error.code = err.code;
                     error.title = "Conflict";
+                    error.message = "Already exists";
                     break;
                 }
 

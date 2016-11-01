@@ -84,9 +84,7 @@ describe('Route: /api/v1/users', function () {
             .put('/api/v1/users/' + user._id)
             .type('json')
             .send({
-                "user": {
-                    "emailAddress": "bdfoster@iupui.edu"
-                }
+                "emailAddress": "bdfoster@iupui.edu"
             })
             .expect(200)
             .end(function(error, response) {
@@ -97,14 +95,14 @@ describe('Route: /api/v1/users', function () {
                 response.body.emailAddress.should.equal("bdfoster@iupui.edu");
                 response.body.updatedAt.should.not.equal(user.updatedAt);
                 response.body.createdAt.should.equal(user.createdAt);
-                user = response.body.user;
+                response.body._id.should.equal(user._id);
                 done();
             })
     });
 
     it('should delete created user via DELETE: /api/v1/users/:id', function(done) {
         request
-            .delete('/api/v1/users/' + user.id)
+            .delete('/api/v1/users/' + user._id)
             .expect(204, done);
     });
 
