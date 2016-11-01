@@ -1,5 +1,5 @@
 var blueprint = require('@onehilltech/blueprint');
-var ResourceController = require('./ResourceController');
+var ResourceController = require('./../../lib/ResourceController');
 var User = require('../models/User');
 
 function UserController () {
