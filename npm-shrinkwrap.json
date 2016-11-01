@@ -1193,9 +1193,9 @@
       "resolved": "https://registry.npmjs.org/levn/-/levn-0.3.0.tgz"
     },
     "lodash": {
-      "version": "4.16.5",
-      "from": "lodash@4.16.5",
-      "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.16.5.tgz"
+      "version": "4.16.6",
+      "from": "lodash@4.16.6",
+      "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.16.6.tgz"
     },
     "lodash._baseassign": {
       "version": "3.2.0",
