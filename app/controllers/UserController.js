@@ -201,4 +201,10 @@ UserController.prototype.delete = function() {
     };
 };
 
+UserController.prototype.showMe = function () {
+    return function (req, res) {
+        res.render('user.handlebars', { user: req.user });
+    }
+};
+
 module.exports = exports = UserController;
