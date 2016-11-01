@@ -1,5 +1,3 @@
-var UserController = require('../../controllers/UserController');
-
 module.exports = {
     '/v1': {
         '/users': {

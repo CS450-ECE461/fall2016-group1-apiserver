@@ -1,7 +1,7 @@
-sudo: false
+sudo: required
+dist: trusty
 language: node_js
 node_js:
-  - '4'
   - '5'
   - '6'
 env:
@@ -14,6 +14,10 @@ addons:
       - g++-4.8
     code_climate:
       repo_token: <>
+services:
+  - mongodb
 after_succes:
   - npm run coverage
   - npm run codeclimate-test-reporter
+notifications:
+  email: false
