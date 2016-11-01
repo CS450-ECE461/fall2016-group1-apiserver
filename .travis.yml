@@ -15,7 +15,9 @@ addons:
     code_climate:
       repo_token: <>
 services:
-  -mongodb
+  - mongodb
 after_succes:
   - npm run coverage
   - npm run codeclimate-test-reporter
+notifications:
+  email: false
