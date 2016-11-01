@@ -8,10 +8,6 @@ module.exports = function(blueprint) {
     express.set('json spaces', 2);
 
     express.use(function __handleError (err, request, response, next) {
-        if (err.status != 404) {
-            winston.log('error', err.stack);
-        }
-
         if (response.headersSent) {
             return next(err);
         }
@@ -51,6 +47,10 @@ module.exports = function(blueprint) {
 
         error.status = error.status || err.status || 500;
         error.code = err.code;
+
+        if (err.status == 500) {
+            winston.log('error', err.stack);
+        }
 
         response.format({
             default: function() {
