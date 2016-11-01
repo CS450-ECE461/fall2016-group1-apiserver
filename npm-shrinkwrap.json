@@ -3,16 +3,9 @@
   "version": "0.0.1",
   "dependencies": {
     "@onehilltech/blueprint": {
-      "version": "0.48.1",
-      "from": "@onehilltech/blueprint@0.48.1",
-      "resolved": "https://registry.npmjs.org/@onehilltech/blueprint/-/blueprint-0.48.1.tgz",
-      "dependencies": {
-        "async": {
-          "version": "1.5.2",
-          "from": "async@>=1.5.2 <2.0.0",
-          "resolved": "https://registry.npmjs.org/async/-/async-1.5.2.tgz"
-        }
-      }
+      "version": "1.1.1",
+      "from": "@onehilltech/blueprint@1.1.1",
+      "resolved": "https://registry.npmjs.org/@onehilltech/blueprint/-/blueprint-1.1.1.tgz"
     },
     "@onehilltech/blueprint-mongodb": {
       "version": "0.9.1",
