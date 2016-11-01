@@ -23,7 +23,9 @@
     "supertest": "^2.0.0",
     "uuid": "^2.0.3",
     "validator": "^6.0.0",
-    "winston": "^2.2.0"
+    "winston": "^2.2.0",
+    "lodash": "^4.16.5",
+    "mongoose": "^4.6.5"
   },
   "devDependencies": {
     "async": "latest",
