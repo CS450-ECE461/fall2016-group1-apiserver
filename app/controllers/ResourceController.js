@@ -1,7 +1,6 @@
 var blueprint = require('@onehilltech/blueprint');
-var mongodb = require('@onehilltech/blueprint-mongodb');
-var Mongoose = require('mongoose');
-var User = require('../models/User');
+var BaseController = blueprint.BaseController;
+var util = require('util');
 var _ = require('lodash');
 var winston = require('winston');
 var async = require('async');
@@ -9,12 +8,18 @@ var async = require('async');
 /**
  * @class ResourceController
  *
- * @param options {Object} Options for the ResourceController, such as 'hooks' and 'model'.
+ * @param options {Object} Options for the ResourceController, such as 'model'.
  * @constructor
  */
 
-function ResourceController(options) {
-    blueprint.BaseController.call(this);
+function ResourceController(opts) {
+    BaseController.call(this);
+
+    if (!opts.model) {
+        throw new Error("'model' property must be defined in 'options' parameter")
+    }
+
+    this.model = opts.model;
 
     this.hooks = {
         /**
@@ -33,7 +38,7 @@ function ResourceController(options) {
          */
         normalize: {
             create: [
-                function (request, response, next) {
+                function __ResourceController_normalize_create (request, response, next) {
                     // Merge query string into Resource document
                     _.defaultsDeep(request.body, request.query);
 
@@ -85,7 +90,7 @@ function ResourceController(options) {
     };
 }
 
-blueprint.controller(ResourceController);
+util.inherits(ResourceController, BaseController);
 
 ResourceController.prototype.__defineGetter__('resourceId', function () {
     return 'id';
@@ -219,7 +224,7 @@ ResourceController.prototype._create = function (request, response, next) {
         }
     }
 
-    User.create(request.body, function (error, result) {
+    this.model.create(request.body, function (error, result) {
         if (error) {
             return next(error);
         }
@@ -254,13 +259,13 @@ ResourceController.prototype._get = function (request, response, next) {
 
 
     var self = this;
-    User.findOne(criteria, projection, function (error, result) {
+    this.model.findOne(criteria, projection, function (error, result) {
         if (error) {
             return next(error);
         }
 
         if (!result) {
-            error = new Error(User.modelName + ' not found');
+            error = new Error(self.model.modelName + ' not found');
             error.status = 404;
             return next(error);
         }
@@ -288,7 +293,7 @@ ResourceController.prototype._getAll = function (request, response, next) {
 
     var self = this;
 
-    User.count({}, function (error, count) {
+    this.model.count({}, function (error, count) {
         if (error) {
             return next(error);
         }
@@ -307,7 +312,7 @@ ResourceController.prototype._getAll = function (request, response, next) {
 
         _.defaultsDeep(options, _.pick(request.query, ['skip', 'limit', 'sort']));
 
-        User.find(conditions, projection, options, function (error, results) {
+        self.model.find(conditions, projection, options, function (error, results) {
             if (error) {
                 return next(error);
             }
@@ -318,7 +323,7 @@ ResourceController.prototype._getAll = function (request, response, next) {
                 limit: options.limit
             };
 
-            result[User.modelName] = results;
+            result[self.model.modelName] = results;
 
             response.status(200);
 
@@ -343,7 +348,7 @@ ResourceController.prototype._update = function (request, response, next) {
         criteria['handle'] = request.params.id;
     }
 
-    User.findOneAndUpdate(criteria, {$set: request.body}, function (error, result) {
+    this.model.findOneAndUpdate(criteria, {$set: request.body}, function (error, result) {
         if (error) {
             return next(error);
         }
@@ -363,7 +368,7 @@ ResourceController.prototype._update = function (request, response, next) {
 ResourceController.prototype._delete = function (request, response, next) {
     var objectID = Mongoose.Types.ObjectId(request.params.id);
 
-    User.findOneAndRemove(objectID, function (error, result) {
+    this.model.findOneAndRemove(objectID, function (error, result) {
         if (error) {
             return next(error);
         }
@@ -375,4 +380,4 @@ ResourceController.prototype._delete = function (request, response, next) {
     });
 };
 
-module.exports = exports = ResourceController;
+module.exports = ResourceController;

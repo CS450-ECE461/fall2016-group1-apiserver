@@ -2,7 +2,7 @@ module.exports = {
     '/v1': {
         '/users': {
             resource: {
-                controller: 'ResourceController'//,
+                controller: 'UserController'//,
                 //deny: ['getAll']
             }
         }
