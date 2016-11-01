@@ -37,3 +37,9 @@ git clone https://gitlab.bdfoster.com/450-team-1/starter-repo.git
 cd starter-repo
 npm install --dev
 ```
+
+
+### Travis CI ###
+```
+Travis CI is an automatic build suite that runs on this repository.
+```
