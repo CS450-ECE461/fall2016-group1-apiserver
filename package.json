@@ -10,7 +10,7 @@
     "codeclimate-test-reporter": "codeclimate-test-reporter < ./coverage/lcov.info"
   },
   "dependencies": {
-    "@onehilltech/blueprint": "^0.48.1",
+    "@onehilltech/blueprint": "^1.1.1",
     "@onehilltech/blueprint-mongodb": "^0.9.1",
     "bcrypt-nodejs": "^0.0.3",
     "chai": "^3.5.0",
@@ -23,7 +23,7 @@
     "supertest": "^2.0.0",
     "uuid": "^2.0.3",
     "validator": "^6.0.0",
-    "winston": "latest"
+    "winston": "^2.2.0"
   },
   "devDependencies": {
     "async": "latest",
