@@ -10,4 +10,4 @@ function UserController () {
 
 blueprint.controller(UserController, ResourceController);
 
-
+module.exports = UserController;
