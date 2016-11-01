@@ -18,9 +18,11 @@ module.exports = function(blueprint) {
 
         var error = {};
 
+        //noinspection FallThroughInSwitchStatementJS
         switch(err.name) {
             case "ValidationError":
-                error.status = 400;
+                error.status = 409;
+                error.title = "Conflict";
                 error.paths = {};
 
                 _.each(err.errors, function(validation) {
@@ -30,6 +32,14 @@ module.exports = function(blueprint) {
                     }
                 });
                 break;
+
+            case "MongoError":
+                if (err.code == (11000 || 11001)) {
+                    error.status = 409;
+                    error.code = err.code;
+                    error.title = "Conflict";
+                    break;
+                }
 
             default:
                 if (err.name) {
@@ -44,7 +54,7 @@ module.exports = function(blueprint) {
 
         response.format({
             default: function() {
-                response.status(error.status).json({error: error});
+                response.status(error.status).json({errors: [error]});
             }
         });
 
