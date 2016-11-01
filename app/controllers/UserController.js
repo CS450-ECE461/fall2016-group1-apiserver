@@ -8,16 +8,15 @@ function UserController() {
         model: User,
         normalize: {
             create: [
-                function __UserController_normalize_create (request, response, next) {
+                function (request, response, next) {
                     // Merge query string into Resource document
                     _.defaultsDeep(request.body, request.query);
-                    console.log('merge');
 
                     next();
                 }
             ],
             any: [
-                function __UserController_normalize_any (request, response, next) {
+                function (request, response, next) {
                     // Override `_id` with `id` if `_id` does not exist
                     if (request.body.id && !request.body._id) {
                         request.body._id = request.body.id;

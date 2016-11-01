@@ -49,7 +49,7 @@ module.exports = function(blueprint) {
         error.status = error.status || err.status || 500;
         error.code = err.code;
 
-        if (err.status == 500) {
+        if (error.status === 500) {
             winston.log('error', err.stack);
         }
 
