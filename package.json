@@ -23,13 +23,10 @@
     "supertest": "^2.0.0",
     "uuid": "^2.0.3",
     "validator": "^6.0.0",
-    "winston": "^2.2.0",
-    "lodash": "^4.16.5",
-    "mongoose": "^4.6.2",
-    "async": "^2.1.2"
-
+    "winston": "^2.2.0"
   },
   "devDependencies": {
+    "async": "latest",
     "chai": "^3.5.0",
     "codeclimate-test-reporter": "^0.4.0",
     "cross-env": "^3.1.3",
