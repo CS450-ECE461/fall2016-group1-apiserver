@@ -40,6 +40,4 @@ npm install --dev
 
 
 ### Travis CI ###
-```
-Travis CI is an automatic build suite that runs on this repository.
-```
+We use Travis CI as our continuous integration service. Travis CI will automatically run Mocha test suites as defined in the ```tests``` directory. After tests have been ran, coverage information is sent to Code Climate and Coveralls for further coverage analysis.
