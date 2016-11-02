@@ -29,9 +29,9 @@ module.exports = exports = {
             immediate: true
         },
 
-        view_engine: '.hbs',
+        view_engine: 'hbs',
         engines: {
-            '.hbs': hbs.engine
+            'hbs': hbs.engine
         }
     }
 };
