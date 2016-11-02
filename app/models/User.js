@@ -1,12 +1,11 @@
 var mongodb = require('@onehilltech/blueprint-mongodb');
 var Schema = mongodb.Schema;
 var validator = require('validator');
-var bcrypt = require('bcrypt-nodejs');
 var uuid = require('uuid');
 
 //noinspection JSUnresolvedVariable
 var schema = new Schema({
-    handle: {
+    username: {
         type: String,
         required: false,
         trim: true,
@@ -53,34 +52,8 @@ var schema = new Schema({
     timestamps: true
 });
 
-schema.pre('save', function(next) {
-    var user = this;
-
-    //noinspection JSUnresolvedFunction
-    if (!user.isModified('password')) {
-        return next();
-    }
-
-    bcrypt.hash(user.password, null, null, function(error, hash) {
-        if (error) {
-            return next(error);
-        }
-
-        user.password = hash;
-        next();
-    })
-});
-
-schema.methods.validatePassword = function(candidatePassword, next) {
-    bcrypt.compare(candidatePassword, this.password, function(error, isMatch) {
-        if (error) {
-            return next(error);
-        }
-
-        next(null, isMatch);
-    })
+schema.methods.verifyPassword = function (password) {
+    return this.password === password;
 };
-
-
 
 module.exports = exports = mongodb.model('users', schema);

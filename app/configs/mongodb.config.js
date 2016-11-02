@@ -3,7 +3,21 @@ var blueprint = require('@onehilltech/blueprint');
 module.exports = {
     connections: {
         $default: {
-            connstr: 'mongodb://localhost/prattle'
+            connstr: 'mongodb://localhost/prattle',
+            options: {
+                db: {
+                    native_parser: true,
+                    read_preference: "primary",
+                    forceServerObjectId: false,
+                    w: 1
+                },
+                server: {
+                    auto_reconnect: true,
+                    keepAlive: 1,
+                    poolSize: 5,
+                    socketOptions: {}
+                }
+            }
             //connstr: 'mongodb://mongo.bdfoster.com/450-team-1',
             //options: {
             //    db: {

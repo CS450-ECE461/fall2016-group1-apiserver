@@ -1,20 +1,47 @@
-module.exports = exports = {
-  protocols : {
-    http : {
-      port: 5000
-    }
-  },
+var blueprint = require('@onehilltech/blueprint');
 
-  middleware : {
-    validator  : { },
-    bodyParser : {
-      urlencoded : { extended: false },
-      json : { }
+var User;
+
+blueprint.messaging.on('app.init', function (app) {
+    User = app.models.User;
+});
+
+module.exports = exports = {
+    protocols : {
+        http : {
+            port: 5000
+        }
     },
 
-    morgan: {
-      format: 'dev',
-      immediate: true
+    middleware : {
+        validator  : { },
+        bodyParser : {
+            urlencoded : { extended: false },
+            json : { }
+        },
+
+        morgan: {
+            format: 'dev',
+            immediate: true
+        },
+
+        passport: {
+            session: {
+                serializer: function (user, done) {
+                    return done (null, user.id);
+                },
+
+                deserializer: function (id, done) {
+                    User.findById (id, done);
+                }
+            }
+        },
+
+        session: {
+            secret: 'ssshhhhh',
+            resave: false,
+            saveUninitialized: true,
+            cookie: { secure: false }  // set to true for https://
+        }
     }
-  }
 };
