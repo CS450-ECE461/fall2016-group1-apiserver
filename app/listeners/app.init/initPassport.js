@@ -19,7 +19,7 @@ module.exports = initPassport;
 
 function initPassport (app) {
   var User = app.models.User;
-  var opts = {session: true};
+  var opts = {session: false};
 
   passport.use (new LocalStrategy (opts, authorize));
 

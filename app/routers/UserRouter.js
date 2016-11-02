@@ -9,7 +9,7 @@ function isLoggedIn (req, res, next) {
 
 module.exports = {
   '/users': {
-    use: isLoggedIn,
+//    use: isLoggedIn,
 
     '/me': {
       get: {action: 'UserController@showMe'}

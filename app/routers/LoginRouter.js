@@ -8,7 +8,10 @@ module.exports = {
 
     // handle the login process
     post: {
-      before: [passport.authenticate ('local', {failureRedirect: '/login'})],
+        before: [passport.authenticate('local', {
+            failureRedirect: '/login',
+            session: false
+        })],
       action: 'LoginController@completeLogin'
     }
   },
