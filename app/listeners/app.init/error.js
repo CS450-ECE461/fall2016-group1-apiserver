@@ -8,19 +8,17 @@ module.exports = function(blueprint) {
     express.set('json spaces', 2);
 
     express.use(function __handleError (err, request, response, next) {
-        if (err.status != 404) {
-            winston.log('error', err.stack);
-        }
-
         if (response.headersSent) {
             return next(err);
         }
 
         var error = {};
 
+        //noinspection FallThroughInSwitchStatementJS
         switch(err.name) {
             case "ValidationError":
-                error.status = 400;
+                error.status = 409;
+                error.title = "Conflict";
                 error.paths = {};
 
                 _.each(err.errors, function(validation) {
@@ -30,6 +28,15 @@ module.exports = function(blueprint) {
                     }
                 });
                 break;
+
+            case "MongoError":
+                if (err.code == (11000 || 11001)) {
+                    error.status = 409;
+                    error.code = err.code;
+                    error.title = "Conflict";
+                    error.message = "Already exists";
+                    break;
+                }
 
             default:
                 if (err.name) {
@@ -42,9 +49,13 @@ module.exports = function(blueprint) {
         error.status = error.status || err.status || 500;
         error.code = err.code;
 
+        if (error.status === 500) {
+            winston.log('error', err.stack);
+        }
+
         response.format({
             default: function() {
-                response.status(error.status).json({error: error});
+                response.status(error.status).json({errors: [error]});
             }
         });
 

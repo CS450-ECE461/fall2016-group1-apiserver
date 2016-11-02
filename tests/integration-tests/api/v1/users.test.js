@@ -33,19 +33,16 @@ describe('Route: /api/v1/users', function () {
             .post('/api/v1/users')
             .type('json')
             .set('Accept', 'application/json')
-            .send({
-                "user": user
-            })
-            .expect(200)
+            .send(user)
+            .expect(201)
             .end(function(error, response) {
                 if (error) {
                     return done(error);
                 }
 
                 var body = response.body;
-                response.status.should.equal(200);
-                assert(response.body.user._id);
-                user = body.user;
+                assert(response.body._id);
+                user = body;
                 done();
             });
     });
@@ -55,18 +52,12 @@ describe('Route: /api/v1/users', function () {
             .post('/api/v1/users')
             .type('json')
             .set('Accept', 'application/json')
-            .send({
-                "user": user
-            })
-            .expect(400)
+            .send(user)
+            .expect(409)
             .end(function(error, response) {
                 if (error) {
                     return done(error);
                 }
-
-                response.body.name.should.equal('HttpError');
-                response.body.message.should.equal('Failed to create resource');
-                response.body.statusCode.should.equal(400);
 
                 done();
             });
@@ -83,7 +74,7 @@ describe('Route: /api/v1/users', function () {
                 }
 
                 //noinspection JSUnresolvedVariable
-                response.body.user.should.deep.equal(user);
+                response.body.should.deep.equal(user);
                 done();
             })
     });
@@ -93,9 +84,7 @@ describe('Route: /api/v1/users', function () {
             .put('/api/v1/users/' + user._id)
             .type('json')
             .send({
-                "user": {
-                    "emailAddress": "bdfoster@iupui.edu"
-                }
+                "emailAddress": "bdfoster@iupui.edu"
             })
             .expect(200)
             .end(function(error, response) {
@@ -103,10 +92,10 @@ describe('Route: /api/v1/users', function () {
                     return done(error);
                 }
 
-                response.body.user.emailAddress.should.equal("bdfoster@iupui.edu");
-                response.body.user.updatedAt.should.not.equal(user.updatedAt);
-                response.body.user.createdAt.should.equal(user.createdAt);
-                user = response.body.user;
+                response.body.emailAddress.should.equal("bdfoster@iupui.edu");
+                response.body.updatedAt.should.not.equal(user.updatedAt);
+                response.body.createdAt.should.equal(user.createdAt);
+                response.body._id.should.equal(user._id);
                 done();
             })
     });
@@ -114,7 +103,7 @@ describe('Route: /api/v1/users', function () {
     it('should delete created user via DELETE: /api/v1/users/:id', function(done) {
         request
             .delete('/api/v1/users/' + user._id)
-            .expect(200, done);
+            .expect(204, done);
     });
 
 

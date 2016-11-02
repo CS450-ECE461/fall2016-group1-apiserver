@@ -27,14 +27,16 @@ var schema = new Schema({
     },
     emailAddress: {
         type: String,
-        unique: true,
-        index: true,
-        required: 'Email Address is already being used by someone else',
+        index: {
+            unique: true
+        },
+        required: true,
         trim: true,
         validate: validator.isEmail
     },
     password: {
         type: String,
+        required: false
     },
     createdBy: {
         type: mongodb.Schema.Types.ObjectId,
