@@ -5,7 +5,7 @@ var uuid = require('uuid');
 
 //noinspection JSUnresolvedVariable
 var schema = new Schema({
-    username: {
+    handle: {
         type: String,
         required: false,
         trim: true,
