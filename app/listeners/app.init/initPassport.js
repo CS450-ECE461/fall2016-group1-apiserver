@@ -18,17 +18,20 @@ var passport      = require ('passport')
 module.exports = initPassport;
 
 function initPassport (app) {
-  var User = app.models.User;
-  var opts = {session: false};
+    var User = app.models.User;
+    var opts = {
+        usernameField: 'handle',
+        session: false
+    };
 
-  passport.use (new LocalStrategy (opts, authorize));
-
-  function authorize (username, password, done) {
-    User.findOne ({ username: username }, function (err, user) {
-      if (err) { return done (err); }
-      if (!user) { return done (null, false); }
-      if (!user.verifyPassword (password)) { return done (null, false); }
-      return done (null, user);
-    });
-  }
+    function authorize(handle, password, done) {
+        User.findOne ({ handle: handle }, function (err, user) {
+            if (err) { return done (err); }
+            if (!user) { return done (null, false); }
+            if (!user.verifyPassword (password)) { return done (null, false); }
+            return done (null, user);
+        });
+    }
+  passport.use(new LocalStrategy(opts, authorize));
+    
 }
