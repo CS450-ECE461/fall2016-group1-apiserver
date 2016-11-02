@@ -25,23 +25,7 @@ module.exports = exports = {
             immediate: true
         },
 
-        passport: {
-            session: {
-                serializer: function (user, done) {
-                    return done (null, user.id);
-                },
+        passport: { }
 
-                deserializer: function (id, done) {
-                    User.findById (id, done);
-                }
-            }
-        },
-
-        session: {
-            secret: 'ssshhhhh',
-            resave: false,
-            saveUninitialized: true,
-            cookie: { secure: false }  // set to true for https://
-        }
     }
 };
