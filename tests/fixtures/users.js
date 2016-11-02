@@ -21,5 +21,13 @@ module.exports = [
         "lastName": "Neal",
         "emailAddress": "mattneal@iupui.edu",
         "password": "test1234"
+    },
+
+    {
+        "handle": "bdfoster89",
+        "firstName": "Brian",
+        "lastName": "Foster",
+        "emailAddress": "bdfoster89@gmail.com",
+        "password": "test1234"
     }
 ];
