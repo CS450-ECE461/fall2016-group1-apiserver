@@ -13,11 +13,6 @@ module.exports = {
                     action: 'UserController@showMe'
                 }
             }
-        },
-        '/auth': {
-            '/jwt': {
-                post: { action: 'LoginController@login' }
-            }
         }
     }
 };

@@ -2,13 +2,13 @@ var blueprint = require('@onehilltech/blueprint')
   , passport  = require('passport')
   ;
 
-function LoginController () {
+function AuthController () {
   blueprint.BaseController.call (this);
 }
 
-blueprint.controller (LoginController);
+blueprint.controller (AuthController);
 
-LoginController.prototype.login = function () {
+AuthController.prototype.login = function () {
     return function (req, res, next) {
         passport.authenticate('local', {
             failureRedirect: '/login',
@@ -21,4 +21,4 @@ LoginController.prototype.login = function () {
   };
 };
 
-module.exports = LoginController;
+module.exports = AuthController;
