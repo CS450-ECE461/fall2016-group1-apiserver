@@ -16,16 +16,9 @@ LoginController.prototype.login = function () {
         }, function(err, user, info) {
             if (err) { return next(err); }
             if (!user) { return res.redirect('/login'); }
-            return res.json({ token: user.createToken() });
+            return res.json({ auth_token: user.createToken() });
         })(req, res, next);
   };
-};
-
-LoginController.prototype.logout = function () {
-  return function (req, res) {
-    req.logout ();
-    res.redirect ('/login');
-  }
 };
 
 module.exports = LoginController;

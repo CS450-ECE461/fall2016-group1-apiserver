@@ -61,4 +61,10 @@ schema.methods.createToken = function () {
     return jwt.encode(this.id, 'mysecret');
 };
 
+schema.methods.toJSON = function () {
+    var obj = this.toObject();
+    delete obj.password;
+    return obj;
+}
+
 module.exports = exports = mongodb.model('users', schema);
