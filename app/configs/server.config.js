@@ -29,7 +29,7 @@ module.exports = exports = {
             immediate: true
         },
 
-        passport: {}
+        passport: {},
 
         view_engine: 'hbs',
         engines: {
