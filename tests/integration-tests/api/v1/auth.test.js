@@ -47,6 +47,38 @@ describe('Auth API v1', function () {
             });
     }
 
+    function getUserFromToken(key, done) {
+        request
+            .post('/api/v1/users/me')
+            .type('json')
+            .set('Accept', 'application/json')
+            .send({ auth_token: tokens[key] } )
+            .expect(200)
+            .end(function (error, response) {
+                if (error) {
+                    return done(error);
+                }
+                assert(response.body.handle == users[key].handle);
+                done();
+            });
+    }
+
+    function getBadToken(key, pass, done) {
+        request
+            .post('/api/v1/auth/jwt')
+            .type('json')
+            .set('Accept', 'application/json')
+            .send({ handle: users[key].handle, password: pass })
+            .expect(401)
+            .end(function (error, response) {
+                if (error) {
+                    return done(error);
+                }
+                assert(response.body.error);
+                done();
+            });
+    }
+
     function deleteUser(key, param, done) {
         request
             .delete('/api/v1/users/' + users[key][param])
@@ -84,12 +116,23 @@ describe('Auth API v1', function () {
         getToken(1, done);
     });
 
+    it('should not get an authentication token with an incorrect password', function (done) {
+        getBadToken(0, "wrongpass", done);
+    });
+
+    it('should get first user data from valid token', function (done) {
+        getUserFromToken(0, done);
+    });
+
+    it('should get second user data from valid token', function (done) {
+        getUserFromToken(1, done);
+    });
 
     it('should delete first created user', function(done) {
-        deleteUser(0, '_id', done);
+        deleteUser(0, 'handle', done);
     });
 
     it('should delete second created user', function (done) {
-        deleteUser(1, '_id', done);
+        deleteUser(1, 'handle', done);
     });
 });

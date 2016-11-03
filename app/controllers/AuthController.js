@@ -11,11 +11,12 @@ blueprint.controller (AuthController);
 AuthController.prototype.login = function () {
     return function (req, res, next) {
         passport.authenticate('local', {
-            failureRedirect: '/login',
             session: false
         }, function(err, user, info) {
             if (err) { return next(err); }
-            if (!user) { return res.redirect('/login'); }
+            if (!user) {
+                return res.status(401).json({ error: 'Authentication Error.' });
+            }
             return res.json({ auth_token: user.createToken() });
         })(req, res, next);
   };

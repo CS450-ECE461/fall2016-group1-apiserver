@@ -44,14 +44,9 @@ function initPassport (app) {
 
     function jwtAuthorize(payload, done) {
         User.findById(payload, function (err, user) {
-            if (err) {
-                return done(err, false);
-            }
-            if (user) {
-                done(null, user);
-            } else {
-                done(null, false);
-            }
+            if (err) { return done(err, false); }
+            if (user) { done(null, user); }
+            else { done(null, false); }
         });
     };
 
