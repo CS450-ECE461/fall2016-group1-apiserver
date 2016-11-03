@@ -2,6 +2,7 @@ var mongodb = require('@onehilltech/blueprint-mongodb');
 var Schema = mongodb.Schema;
 var validator = require('validator');
 var uuid = require('uuid');
+var jwt = require('jwt-simple');
 
 //noinspection JSUnresolvedVariable
 var schema = new Schema({
@@ -54,6 +55,10 @@ var schema = new Schema({
 
 schema.methods.verifyPassword = function (password) {
     return this.password === password;
+};
+
+schema.methods.createToken = function () {
+    return jwt.encode(this.id, 'mysecret');
 };
 
 module.exports = exports = mongodb.model('users', schema);

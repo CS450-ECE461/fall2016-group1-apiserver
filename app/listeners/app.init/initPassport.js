@@ -12,7 +12,8 @@
  */
 
 var passport      = require ('passport')
-  , LocalStrategy = require ('passport-local').Strategy
+  , LocalStrategy = require('passport-local').Strategy
+  , winston       = require('winston')
   ;
 
 module.exports = initPassport;
@@ -27,11 +28,12 @@ function initPassport (app) {
     function authorize(handle, password, done) {
         User.findOne ({ handle: handle }, function (err, user) {
             if (err) { return done (err); }
-            if (!user) { return done (null, false); }
-            if (!user.verifyPassword (password)) { return done (null, false); }
+            if (!user) { return done(null, false); }
+            if (!user.verifyPassword(password)) { return done(null, false); }
+            winston.log('info', user.toObject());
             return done (null, user);
         });
     }
-  passport.use(new LocalStrategy(opts, authorize));
+    passport.use(new LocalStrategy(opts, authorize));
     
 }

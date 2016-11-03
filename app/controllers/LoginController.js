@@ -1,4 +1,5 @@
-var blueprint = require ('@onehilltech/blueprint')
+var blueprint = require('@onehilltech/blueprint')
+  , passport  = require('passport')
   ;
 
 function LoginController () {
@@ -7,9 +8,16 @@ function LoginController () {
 
 blueprint.controller (LoginController);
 
-LoginController.prototype.completeLogin = function () {
-  return function (req, res) {
-    return res.redirect ('/users/me');
+LoginController.prototype.login = function () {
+    return function (req, res, next) {
+        passport.authenticate('local', {
+            failureRedirect: '/login',
+            session: false
+        }, function(err, user, info) {
+            if (err) { return next(err); }
+            if (!user) { return res.redirect('/login'); }
+            return res.json({ token: user.createToken() });
+        })(req, res, next);
   };
 };
 

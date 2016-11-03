@@ -1502,8 +1502,13 @@
     },
     "passport": {
       "version": "0.3.2",
-      "from": "passport@>=0.3.2 <0.4.0",
+      "from": "passport@latest",
       "resolved": "https://registry.npmjs.org/passport/-/passport-0.3.2.tgz"
+    },
+    "passport-local": {
+      "version": "1.0.0",
+      "from": "passport-local@latest",
+      "resolved": "https://registry.npmjs.org/passport-local/-/passport-local-1.0.0.tgz"
     },
     "passport-strategy": {
       "version": "1.0.0",
