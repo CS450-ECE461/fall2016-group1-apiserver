@@ -29,12 +29,12 @@ describe('Auth API v1', function () {
             });
     }
 
-    function getToken(key, done) {
+    function getToken(key, param, done) {
         request
             .post('/api/v1/auth/jwt')
             .type('json')
             .set('Accept', 'application/json')
-            .send( { handle: users[key].handle, password: users[key].password } )
+            .send( { username: users[key][param], password: users[key].password } )
             .expect(200)
             .end(function (error, response) {
                 if (error) {
@@ -68,7 +68,7 @@ describe('Auth API v1', function () {
             .post('/api/v1/auth/jwt')
             .type('json')
             .set('Accept', 'application/json')
-            .send({ handle: users[key].handle, password: pass })
+            .send({ username: users[key].handle, password: pass })
             .expect(401)
             .end(function (error, response) {
                 if (error) {
@@ -108,12 +108,12 @@ describe('Auth API v1', function () {
         createUser(1, done);
     });
 
-    it('should get an authentication token for the first user', function (done) {
-        getToken(0, done);
+    it('should get an authentication token for the first user with handle login', function (done) {
+        getToken(0, 'handle', done);
     });
 
-    it('should get an authentication token for the second user', function (done) {
-        getToken(1, done);
+    it('should get an authentication token for the second user with email login', function (done) {
+        getToken(1, 'emailAddress', done);
     });
 
     it('should not get an authentication token with an incorrect password', function (done) {
