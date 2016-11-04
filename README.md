@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/CS450-ECE461/fall2016-group1-apiserver.svg?branch=master)](https://travis-ci.org/CS450-ECE461/fall2016-group1-apiserver)
+
 ## Development Environment Setup ##
 You need to install git, Node.js, and (if not included with Node.js) NPM.
 In general, you'll need Node.js >v4.0.0 and NPM >v3.0.0.
