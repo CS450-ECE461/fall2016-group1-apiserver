@@ -38,7 +38,7 @@ blueprint.controller(UserController, ResourceController);
 
 UserController.prototype.showMe = function () {
     return function (req, res) {
-        res.render('user.handlebars', { user: req.user });
+        res.json(req.user.toJSON());
     }
 };
 

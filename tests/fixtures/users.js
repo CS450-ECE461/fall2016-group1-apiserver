@@ -29,5 +29,5 @@ module.exports = [
         "lastName": "Foster",
         "emailAddress": "bdfoster89@gmail.com",
         "password": "test1234"
-    }
+    },
 ];
