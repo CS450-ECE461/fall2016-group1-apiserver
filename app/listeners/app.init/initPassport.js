@@ -19,8 +19,8 @@ function initPassport (app) {
         secretOrKey: 'mysecret'
     };
 
-    function localAuthorize(handle, password, done) {
-        var criteria = { $or: [{ handle: handle }, { emailAddress: handle }] };
+    function localAuthorize(username, password, done) {
+        var criteria = { $or: [{ handle: username }, { emailAddress: username }] };
         User.findOne( criteria, function (err, user) {
             if (err) { return done(err); }
             if (!user) { return done(null, false); }
