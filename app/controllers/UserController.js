@@ -38,6 +38,7 @@ blueprint.controller(UserController, ResourceController);
 
 UserController.prototype.showMe = function () {
     return function (req, res) {
+        if (!req.user) { return res.status(401).json({ error: 'Invalid Token.' }); }
         res.json(req.user.toJSON());
     }
 };
