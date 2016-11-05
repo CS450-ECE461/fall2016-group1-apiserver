@@ -20,7 +20,7 @@ Key | Type | Description
 ```
 POST /api/v1/users/me
 
-Accept: applcation/json
+Accept: application/json
 Cache-Control: no-cache
 Content-Type: application/json
 
