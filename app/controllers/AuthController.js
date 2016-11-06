@@ -1,6 +1,6 @@
-var blueprint = require('@onehilltech/blueprint')
-  , passport  = require('passport')
-  ;
+var blueprint = require('@onehilltech/blueprint');
+var passport  = require('passport');
+var errors = require('../../lib/errors');
 
 function AuthController () {
   blueprint.BaseController.call (this);
@@ -12,7 +12,7 @@ AuthController.prototype.login = function () {
     return function (req, res, next) {
         passport.authenticate('local', {
             session: false
-        }, function(err, user, info) {
+        }, function(err, user) {
             if (err) { return next(err); }
             if (!user) {
                 return next(new errors.AuthenticationError());

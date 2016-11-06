@@ -74,7 +74,7 @@ describe('Auth API v1', function () {
                 if (error) {
                     return done(error);
                 }
-                assert(response.body.error);
+                assert(response.body.errors[0].name == "AuthenticationError");
                 done();
             });
     }
