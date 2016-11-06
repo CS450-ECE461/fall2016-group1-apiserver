@@ -17,7 +17,7 @@ AuthController.prototype.login = function () {
             if (!user) {
                 return next(new errors.AuthenticationError());
             }
-            return res.json({ auth_token: user.createToken() });
+            return res.json({ jwt: user.createToken() });
         })(req, res, next);
   };
 };
