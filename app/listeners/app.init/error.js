@@ -1,9 +1,9 @@
 // Error handling via Express
 var _ = require('lodash');
 var winston = require('winston');
-var errors = require('../../../lib/errors');
 
 function handleError(error, request, response, next) {
+    //noinspection JSUnresolvedVariable
     if (response.headersSent) {
         return next(err);
     }
