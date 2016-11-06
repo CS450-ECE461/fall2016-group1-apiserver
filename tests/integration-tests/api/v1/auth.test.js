@@ -69,7 +69,7 @@ describe('Auth API v1', function () {
             .type('json')
             .set('Accept', 'application/json')
             .send({ username: users[key].handle, password: pass })
-            .expect(401)
+            .expect(422)
             .end(function (error, response) {
                 if (error) {
                     return done(error);

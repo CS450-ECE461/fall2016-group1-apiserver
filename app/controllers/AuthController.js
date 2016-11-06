@@ -15,7 +15,7 @@ AuthController.prototype.login = function () {
         }, function(err, user, info) {
             if (err) { return next(err); }
             if (!user) {
-                return res.status(401).json({ error: 'Authentication Error.' });
+                return res.status(422).json({ error: 'Authentication Error.' });
             }
             return res.json({ auth_token: user.createToken() });
         })(req, res, next);
