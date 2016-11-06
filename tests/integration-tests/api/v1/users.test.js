@@ -99,6 +99,7 @@ describe('Users API v1', function () {
                     return done(error);
                 }
 
+                assert(response.body.errors.length == 1);
                 assert(response.body.errors[0].status == 409);
                 assert(response.body.errors[0].message == "Already exists");
 
@@ -149,6 +150,7 @@ describe('Users API v1', function () {
                     return done(error);
                 }
 
+                assert(response.body.errors.length == 1);
                 assert(response.body.errors[0].path == 'emailAddress');
                 done();
             });
@@ -173,6 +175,15 @@ describe('Users API v1', function () {
     it('should not be able to GET deleted user by `_id`', function(done) {
         request
             .get('/api/v1/users/' + users[0]._id)
-            .expect(404, done);
+            .expect(404)
+            .end(function(error, response) {
+                if (error) {
+                    return done(error);
+                }
+
+                assert(response.body.errors.length == 1);
+                assert(response.body.errors[0].name = "NotFoundError");
+                done();
+            });
     });
 });
