@@ -11,17 +11,16 @@ function handleError(error, request, response, next) {
     var errors = [];
     if (error instanceof Array) {
         errors = error;
-
-        winston.log('error', error)
     } else {
         errors.push(error);
     }
 
     _.each(errors, function(error) {
-        winston.log('error', error.stack);
+        if (!error.status || error.status === (500)) {
+            winston.log('error', error.stack);
+        }
     });
 
-    console.log({errors: errors});
 
     response.format({
         json: function() {
