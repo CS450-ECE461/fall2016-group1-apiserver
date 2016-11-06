@@ -8,16 +8,27 @@ function handleError(error, request, response, next) {
         return next(err);
     }
 
-    if (!error instanceof errors.RequestError) {
-        error = errors.normalizeError(error);
+    var errors = [];
+    if (error instanceof Array) {
+        errors = error;
+
+        winston.log('error', error)
+    } else {
+        errors.push(error);
     }
+
+    _.each(errors, function(error) {
+        winston.log('error', error.stack);
+    });
+
+    console.log({errors: errors});
 
     response.format({
         json: function() {
-            response.status(error.status).json({errors: [error.errors]});
+            response.status(errors[0].status || 500).json({errors: errors});
         },
         default: function() {
-            response.status(error.status).send();
+            response.status(errors[0].status || 500).send();
         }
     });
 }

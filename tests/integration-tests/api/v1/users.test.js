@@ -100,7 +100,6 @@ describe('Users API v1', function () {
                 }
 
                 assert(response.body.errors[0].status == 409);
-                assert(response.body.errors[0].title == "Conflict");
                 assert(response.body.errors[0].message == "Already exists");
 
                 done();
@@ -144,16 +143,13 @@ describe('Users API v1', function () {
             .send({
                 "emailAddress": "test1234example.org"
             })
-            .expect(409)
+            .expect(422)
             .end(function(error, response) {
                 if (error) {
                     return done(error);
                 }
 
-                assert(response.body.errors[0].status == 409);
-                assert(response.body.errors[0].title == "Conflict");
-                assert(response.body.errors[0].paths.emailAddress.message);
-
+                assert(response.body.errors[0].path == 'emailAddress');
                 done();
             });
     });
