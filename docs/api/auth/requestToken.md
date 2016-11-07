@@ -38,7 +38,7 @@ Content-Type: application/json
 ##### ```200 OK```
 ```
 {
-  "auth_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzY290Y2guaW8iLCJleHAiOjEzMDA4MTkzODAsIm5hbWUiOiJDaHJpcyBTZXZpbGxlamEiLCJhZG1pbiI6dHJ1ZX0.03f329983b86f7d9a9f5fef85305880101d5e302afafa20154d094b229f75"
+  "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzY290Y2guaW8iLCJleHAiOjEzMDA4MTkzODAsIm5hbWUiOiJDaHJpcyBTZXZpbGxlamEiLCJhZG1pbiI6dHJ1ZX0.03f329983b86f7d9a9f5fef85305880101d5e302afafa20154d094b229f75"
 }
 ```
 This token can be included in future requests to authorize the request in the context of the authorized user.
@@ -50,6 +50,11 @@ This token can be included in future requests to authorize the request in the co
 The user must exist in the database and password must match.
 ```
 {
-    error: 'Authentication Error.' 
+  "errors": [
+      {
+          "name": "AuthenticationError"
+          //...
+      }
+  ]
 }
 ```
