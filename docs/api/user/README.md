@@ -1,5 +1,5 @@
 # User API
 
-[Create a user](create.md)
+[Create a User](create.md)
 
 [Get Information on Authenticated User](get-authenicated.md)
