@@ -1,7 +1,7 @@
 {
   "name": "fall2015-group1-apiserver",
   "description": "",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "test": "cross-env NODE_ENV=test mocha --recursive tests/**/*.test.js",
