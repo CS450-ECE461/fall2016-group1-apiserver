@@ -1,1 +1,3 @@
-[Creating Users](create.md)
+# User API
+
+[Create a user](create.md)
