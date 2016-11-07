@@ -1,5 +1,5 @@
 # API Documentation
 
-[Users API](users/README.md)
+[User API](user/README.md)
 
 [Auth API](auth/README.md)
