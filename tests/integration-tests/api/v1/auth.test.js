@@ -41,8 +41,8 @@ describe('Auth API v1', function () {
                     return done(error);
                 }
 
-                assert(response.body.auth_token);
-                tokens.push(response.body.auth_token);
+                assert(response.body.jwt);
+                tokens.push(response.body.jwt);
                 done();
             });
     }
