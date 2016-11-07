@@ -26,10 +26,10 @@ describe('Users API v1', function () {
                 }
 
                 var body = response.body;
-                assert(response.body._id);
-                assert(!response.body.password);
-                assert(!response.body.__v);
-                users[key] = body;
+                assert(response.body.user._id);
+                assert(!response.body.user.password);
+                assert(!response.body.user.__v);
+                users[key] = body.user;
                 done();
             });
     }
@@ -45,7 +45,7 @@ describe('Users API v1', function () {
                 }
 
                 //noinspection JSUnresolvedVariable
-                response.body.should.deep.equal(users[key]);
+                response.body.user.should.deep.equal(users[key]);
                 done();
             })
     }
@@ -99,8 +99,8 @@ describe('Users API v1', function () {
                     return done(error);
                 }
 
+                assert(response.body.errors.length == 1);
                 assert(response.body.errors[0].status == 409);
-                assert(response.body.errors[0].title == "Conflict");
                 assert(response.body.errors[0].message == "Already exists");
 
                 done();
@@ -119,20 +119,20 @@ describe('Users API v1', function () {
         request
             .put('/api/v1/users/' + users[0]._id)
             .type('json')
-            .send({
+            .send({ "user": {
                 "emailAddress": "bdfoster@iupui.edu"
-            })
+            }})
             .expect(200)
             .end(function(error, response) {
                 if (error) {
                     return done(error);
                 }
 
-                assert(response.body.emailAddress == "bdfoster@iupui.edu");
-                assert(response.body.updatedAt != users[0].updatedAt);
-                assert(response.body.createdAt == users[0].createdAt);
-                response.body._id.should.equal(users[0]._id);
-                users[0] = response.body;
+                assert(response.body.user.emailAddress == "bdfoster@iupui.edu");
+                assert(response.body.user.updatedAt != users[0].updatedAt);
+                assert(response.body.user.createdAt == users[0].createdAt);
+                response.body.user._id.should.equal(users[0]._id);
+                users[0] = response.body.user;
                 done();
             })
     });
@@ -141,24 +141,22 @@ describe('Users API v1', function () {
         request
             .put('/api/v1/users/' + users[0]._id)
             .type('json')
-            .send({
+            .send({ "user" : {
                 "emailAddress": "test1234example.org"
-            })
-            .expect(409)
+            }})
+            .expect(422)
             .end(function(error, response) {
                 if (error) {
                     return done(error);
                 }
 
-                assert(response.body.errors[0].status == 409);
-                assert(response.body.errors[0].title == "Conflict");
-                assert(response.body.errors[0].paths.emailAddress.message);
-
+                assert(response.body.errors.length == 1);
+                assert(response.body.errors[0].path == 'emailAddress');
                 done();
             });
     });
 
-    it('should delete first created user by `_id', function(done) {
+    it('should delete first created user by `_id`', function(done) {
         deleteUser(0, '_id', done);
     });
 
@@ -177,6 +175,15 @@ describe('Users API v1', function () {
     it('should not be able to GET deleted user by `_id`', function(done) {
         request
             .get('/api/v1/users/' + users[0]._id)
-            .expect(404, done);
+            .expect(404)
+            .end(function(error, response) {
+                if (error) {
+                    return done(error);
+                }
+
+                assert(response.body.errors.length == 1);
+                assert(response.body.errors[0].name = "NotFoundError");
+                done();
+            });
     });
 });

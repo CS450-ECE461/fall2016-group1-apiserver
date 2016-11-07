@@ -28,13 +28,14 @@ POST /api/v1/users
 Accept: application/json
 Cache-Control: no-cache
 Content-Type: application/json
-
 {
-  "firstName": "John",
-  "lastName": "Doe",
-  "emailAddress": "jdoe@example.org",
-  "password": "totally!insecure@123",
-  "handle": "jdoe123"
+  user: {
+    "firstName": "John",
+    "lastName": "Doe",
+    "emailAddress": "jdoe@example.org",
+    "password": "totally!insecure@123",
+    "handle": "jdoe123"
+  }
 }
 ```
 
@@ -45,29 +46,31 @@ Content-Type: application/json
 ##### ```201 Created```
 ```
 {
-  "_id": "5818e5010ef048201c6adee4",
-  "updatedAt": "2016-11-02T16:29:48.588Z",
-  "createdAt": "2016-11-02T16:29:48.588Z",
-  "firstName": "John",
-  "lastName": "Doe",
-  "emailAddress": "jdoe@example.org",
-  "handle": "jdoe123"
+  user: {
+    "_id": "5818e5010ef048201c6adee4",
+    "updatedAt": "2016-11-02T16:29:48.588Z",
+    "createdAt": "2016-11-02T16:29:48.588Z",
+    "firstName": "John",
+    "lastName": "Doe",
+    "emailAddress": "jdoe@example.org",
+    "handle": "jdoe123"
+  }
 }
 ```
 Sensitive fields like ```password``` are never returned.
 
 #### Errors
 
-##### ```409 Conflict```
+##### ```422 Conflict```
 
 The fields ```emailAddress``` and  ```handle``` must be unique.
 ```
 {
   "errors": [
     {
-      "status": 409,
+      "status": 422,
       "code": 11000,
-      "title": "Conflict",
+      "name": "DuplicateError",
       "message": "Already exists"
     }
   ]
@@ -80,12 +83,10 @@ if you pass ```emailAddress``` as ```test1234example.com```:
 {
   "errors": [
     {
-      "status": 409,
-      "title": "Conflict",
-      "paths": {
-        "emailAddress": {
-          "message": "Validator failed for path `emailAddress` with value `test1234example.com`"
-        }
+      "status": 422,
+      "path": "emailAddress",
+      "name": "ValidatorError",
+      "message": "Validator failed for path `emailAddress` with value `test1234example.com`"
       }
     }
   ]
