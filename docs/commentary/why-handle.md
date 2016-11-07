@@ -1,4 +1,4 @@
-# Why ```'handle'```?
+# Why 'handle'?
 
 In the context of [Citizens Band radio (CB) service](https://www.fcc.gov/general/citizens-band-cb-service), 
 the word "handle" is a reference to a person's on-the-air pseudonym. Back when
