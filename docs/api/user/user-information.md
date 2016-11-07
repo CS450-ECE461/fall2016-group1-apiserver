@@ -13,7 +13,7 @@ Get information for authenticated user.
 
 Key | Type | Description
 --- | ---- | ----------- 
-```auth_token``` | string | **Required.** The user's JWT token. Aquired from successful authentication.
+```jwt``` | string | **Required.** The user's JWT token. Aquired from successful authentication.
 
 
 #### Example
@@ -25,7 +25,7 @@ Cache-Control: no-cache
 Content-Type: application/json
 
 {
-  "auth_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzY290Y2guaW8iLCJleHAiOjEzMDA4MTkzODAsIm5hbWUiOiJDaHJpcyBTZXZpbGxlamEiLCJhZG1pbiI6dHJ1ZX0.03f329983b86f7d9a9f5fef85305880101d5e302afafa20154d094b229f75"
+  "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzY290Y2guaW8iLCJleHAiOjEzMDA4MTkzODAsIm5hbWUiOiJDaHJpcyBTZXZpbGxlamEiLCJhZG1pbiI6dHJ1ZX0.03f329983b86f7d9a9f5fef85305880101d5e302afafa20154d094b229f75"
 }
 ```
 
