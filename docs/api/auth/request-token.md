@@ -45,7 +45,7 @@ This token can be included in future requests to authorize the request in the co
 
 #### Errors
 
-##### ```422 Unauthorized```
+##### ```422 Unprocessable Entity```
 
 The user must exist in the database and password must match.
 ```
