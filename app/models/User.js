@@ -9,6 +9,7 @@ var schema = new Schema({
     handle: {
         type: String,
         required: false,
+        unique: true,
         trim: true,
         validate: [
             validator.isAlphanumeric,

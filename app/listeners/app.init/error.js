@@ -5,7 +5,7 @@ var winston = require('winston');
 function handleError(error, request, response, next) {
     //noinspection JSUnresolvedVariable
     if (response.headersSent) {
-        return next(err);
+        return next(error);
     }
 
     var errors = [];
@@ -15,9 +15,17 @@ function handleError(error, request, response, next) {
         errors.push(error);
     }
 
-    _.each(errors, function(error) {
-        if (!error.status || error.status === (500)) {
-            winston.log('error', error.stack);
+    _.each(errors, function(err) {
+        if (!err.status || err.status === (500)) {
+            winston.log('error', err.stack);
+        }
+
+        if (err.statusCode && !(err.status)) {
+            err.status = err.statusCode;
+        }
+
+        if (err.statusCode) {
+            delete err.statusCode;
         }
     });
 
