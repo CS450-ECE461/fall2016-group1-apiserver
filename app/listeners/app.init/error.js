@@ -15,7 +15,7 @@ function handleError(error, request, response, next) {
         errors.push(error);
     }
 
-    _.each(errors, function(err) {
+    _.each(errors, function (err) {
         if (!err.status || err.status === (500)) {
             winston.log('error', err.stack);
         }
@@ -31,16 +31,16 @@ function handleError(error, request, response, next) {
 
 
     response.format({
-        json: function() {
+        json: function () {
             response.status(errors[0].status || 500).json({errors: errors});
         },
-        default: function() {
+        default: function () {
             response.status(errors[0].status || 500).send();
         }
     });
 }
 
-module.exports = function(blueprint) {
+module.exports = function (blueprint) {
     var express = blueprint.server.app;
     express.set('json spaces', 2);
     express.use(handleError);

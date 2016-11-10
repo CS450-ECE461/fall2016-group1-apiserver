@@ -19,7 +19,7 @@ describe('Auth API v1 - JWT', function () {
         userClient
             .create(users[index])
             .expect(201)
-            .end(function(error, response) {
+            .end(function (error, response) {
                 if (error) {
                     return done(error);
                 }
@@ -36,7 +36,7 @@ describe('Auth API v1 - JWT', function () {
         userClient
             .get(users[index][field])
             .expect(200)
-            .end(function(error, response) {
+            .end(function (error, response) {
                 if (error) {
                     return done(error);
                 }
@@ -54,7 +54,7 @@ describe('Auth API v1 - JWT', function () {
         userClient
             .update(users[index]._id, doc)
             .expect(200)
-            .end(function(error, response) {
+            .end(function (error, response) {
                 if (error) {
                     return done(error);
                 }
@@ -72,7 +72,7 @@ describe('Auth API v1 - JWT', function () {
         userClient
             .delete(users[index][field])
             .expect(204)
-            .end(function(error) {
+            .end(function (error) {
                 if (error) {
                     return done(error);
                 }
@@ -86,7 +86,7 @@ describe('Auth API v1 - JWT', function () {
             .post('/api/v1/auth/jwt')
             .type('json')
             .set('Accept', 'application/json')
-            .send( { username: users[key][param], password: users[key].password } )
+            .send({username: users[key][param], password: users[key].password})
             .expect(200)
             .end(function (error, response) {
                 console.log(response.body);
@@ -105,7 +105,7 @@ describe('Auth API v1 - JWT', function () {
             .post('/api/v1/users/me')
             .type('json')
             .set('Accept', 'application/json')
-            .send({ jwt: tokens[key] } )
+            .send({jwt: tokens[key]})
             .expect(200)
             .end(function (error, response) {
                 if (error) {
@@ -121,7 +121,7 @@ describe('Auth API v1 - JWT', function () {
             .post('/api/v1/auth/jwt')
             .type('json')
             .set('Accept', 'application/json')
-            .send({ username: users[key].handle, password: pass })
+            .send({username: users[key].handle, password: pass})
             .expect(422)
             .end(function (error, response) {
                 if (error) {
@@ -134,11 +134,11 @@ describe('Auth API v1 - JWT', function () {
 
     before(function (done) {
         async.waterfall([
-            function(callback) {
+            function (callback) {
                 blueprint.testing.createApplicationAndStart(appPath, callback)
             },
 
-            function(app, callback) {
+            function (app, callback) {
                 server = app.server;
                 request = require('supertest')(server.app);
                 userClient = new ResourceClient(request, "users", 1);
@@ -148,11 +148,11 @@ describe('Auth API v1 - JWT', function () {
         ], done);
     });
 
-    it('should create a single user', function(done) {
+    it('should create a single user', function (done) {
         createUser(0, done);
     });
 
-    it('should create a second user', function(done) {
+    it('should create a second user', function (done) {
         createUser(1, done);
     });
 
@@ -176,7 +176,7 @@ describe('Auth API v1 - JWT', function () {
         getUserFromToken(1, done);
     });
 
-    it('should delete first created user', function(done) {
+    it('should delete first created user', function (done) {
         deleteUser(0, 'handle', done);
     });
 

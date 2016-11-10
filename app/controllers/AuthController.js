@@ -1,25 +1,27 @@
 var blueprint = require('@onehilltech/blueprint');
-var passport  = require('passport');
+var passport = require('passport');
 var errors = require('../../lib/errors');
 
-function AuthController () {
-  blueprint.BaseController.call (this);
+function AuthController() {
+    blueprint.BaseController.call(this);
 }
 
-blueprint.controller (AuthController);
+blueprint.controller(AuthController);
 
 AuthController.prototype.login = function () {
     return function (req, res, next) {
         passport.authenticate('local', {
             session: false
-        }, function(err, user) {
-            if (err) { return next(err); }
+        }, function (err, user) {
+            if (err) {
+                return next(err);
+            }
             if (!user) {
                 return next(new errors.AuthenticationError());
             }
-            return res.json({ jwt: user.createToken() });
+            return res.json({jwt: user.createToken()});
         })(req, res, next);
-  };
+    };
 };
 
 module.exports = AuthController;

@@ -18,7 +18,7 @@ describe('Users API v1', function () {
         client
             .create(users[index])
             .expect(201)
-            .end(function(error, response) {
+            .end(function (error, response) {
                 if (error) {
                     return done(error);
                 }
@@ -36,7 +36,7 @@ describe('Users API v1', function () {
         client
             .get(users[index][field])
             .expect(200)
-            .end(function(error, response) {
+            .end(function (error, response) {
                 if (error) {
                     return done(error);
                 }
@@ -54,7 +54,7 @@ describe('Users API v1', function () {
         client
             .update(users[index]._id, doc)
             .expect(200)
-            .end(function(error, response) {
+            .end(function (error, response) {
                 if (error) {
                     return done(error);
                 }
@@ -73,7 +73,7 @@ describe('Users API v1', function () {
         client
             .delete(users[index][field])
             .expect(204)
-            .end(function(error) {
+            .end(function (error) {
                 if (error) {
                     return done(error);
                 }
@@ -84,11 +84,11 @@ describe('Users API v1', function () {
 
     before(function (done) {
         async.waterfall([
-            function(callback) {
+            function (callback) {
                 blueprint.testing.createApplicationAndStart(appPath, callback)
             },
 
-            function(app, callback) {
+            function (app, callback) {
                 server = app.server;
                 agent = require('supertest')(server.app);
                 client = new ResourceClient(agent, "users", 1);
@@ -98,27 +98,27 @@ describe('Users API v1', function () {
         ], done);
     });
 
-    it('should create a single user', function(done) {
+    it('should create a single user', function (done) {
         createOne(0, done);
     });
 
-    it('should create a second user', function(done) {
+    it('should create a second user', function (done) {
         createOne(1, done);
     });
 
-    it('should create a third user', function(done) {
+    it('should create a third user', function (done) {
         createOne(2, done);
     });
 
-    it('should create a forth user', function(done) {
+    it('should create a forth user', function (done) {
         createOne(3, done);
     });
 
-    it('should not re-create the same user', function(done) {
+    it('should not re-create the same user', function (done) {
         client
             .create(users[0])
             .expect(409)
-            .end(function(error, response) {
+            .end(function (error, response) {
                 if (error) {
                     return done(error);
                 }
@@ -132,26 +132,26 @@ describe('Users API v1', function () {
 
     });
 
-    it('should get created user by `_id`', function(done) {
+    it('should get created user by `_id`', function (done) {
         getOne(0, '_id', done);
     });
 
-    it('should get created user by `handle`', function(done) {
+    it('should get created user by `handle`', function (done) {
         getOne(0, 'handle', done);
     });
 
-    it('should change `emailAddress` of created user', function(done) {
+    it('should change `emailAddress` of created user', function (done) {
         updateOne(0, 'emailAddress', 'bdfoster@iupui.edu', done);
     });
 
-    it('should not accept invalid \'emailAddress\' on updating user', function(done) {
+    it('should not accept invalid \'emailAddress\' on updating user', function (done) {
         var doc = {};
         doc['emailAddress'] = 'test1234example.org';
 
         client
             .update(users[0]._id, doc)
             .expect(422)
-            .end(function(error, response) {
+            .end(function (error, response) {
                 if (error) {
                     return done(error);
                 }
@@ -162,27 +162,27 @@ describe('Users API v1', function () {
             });
     });
 
-    it('should delete first created user by `_id`', function(done) {
+    it('should delete first created user by `_id`', function (done) {
         deleteOne(0, '_id', done);
     });
 
-    it('should delete second created user by `handle`', function(done) {
+    it('should delete second created user by `handle`', function (done) {
         deleteOne(1, 'handle', done);
     });
 
-    it('should delete third created user', function(done) {
+    it('should delete third created user', function (done) {
         deleteOne(2, '_id', done);
     });
 
-    it('should delete forth created user', function(done) {
+    it('should delete forth created user', function (done) {
         deleteOne(3, '_id', done);
     });
 
-    it('should not be able to get a deleted user', function(done) {
+    it('should not be able to get a deleted user', function (done) {
         client
             .get(users[0]._id)
             .expect(404)
-            .end(function(error) {
+            .end(function (error) {
                 if (error) {
                     return done(error);
                 }
