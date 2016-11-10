@@ -59,5 +59,8 @@ var schema = new Schema({
         ]
     },
     location: locationSchema
-
+}, {
+    timestamps: true
 });
+
+module.exports = exports = mongodb.model('orgs', schema);
