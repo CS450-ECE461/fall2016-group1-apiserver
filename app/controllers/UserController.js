@@ -1,7 +1,6 @@
 var blueprint = require('@onehilltech/blueprint');
 var ResourceController = require('./../../lib/ResourceController');
 var User = require('../models/User');
-var _ = require('lodash');
 
 function UserController() {
     ResourceController.call(this, {
