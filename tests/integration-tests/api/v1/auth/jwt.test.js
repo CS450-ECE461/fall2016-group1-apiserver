@@ -2,29 +2,81 @@ var async = require('async');
 var assert = require('chai').assert;
 var should = require('chai').should();
 var blueprint = require('@onehilltech/blueprint');
-var appPath = require('../../../fixtures/appPath');
+var appPath = require('../../../../fixtures/appPath');
 var it = require("mocha").it;
 var before = require("mocha").before;
 var describe = require("mocha").describe;
-var users = require('../../../fixtures/users');
-var after = require("mocha").after;
+var users = require('../../../../fixtures/users');
+var ResourceClient = require('../../../../../lib/ResourceClient');
 var tokens = [];
 
-describe('Auth API v1', function () {
+describe('Auth API v1 - JWT', function () {
     var server;
     var request;
+    var userClient;
 
-    function createUser(key, done) {
-        request
-            .post('/api/v1/users')
-            .type('json')
-            .set('Accept', 'application/json')
-            .send(users[key])
+    function createUser(index, done) {
+        userClient
+            .create(users[index])
             .expect(201)
-            .end(function(error, response) {
+            .end(function (error, response) {
                 if (error) {
                     return done(error);
                 }
+
+                var body = response.body;
+                assert(response.body.user._id);
+                assert(!response.body.user.password);
+                assert(!response.body.user.__v);
+                done();
+            });
+    }
+
+    function getUser(index, field, done) {
+        userClient
+            .get(users[index][field])
+            .expect(200)
+            .end(function (error, response) {
+                if (error) {
+                    return done(error);
+                }
+
+                //noinspection JSUnresolvedVariable
+                response.body.user.should.deep.equal(users[index]);
+                done();
+            })
+    }
+
+    function updateUser(index, key, value, done) {
+        var doc = {};
+        doc[key] = value;
+
+        userClient
+            .update(users[index]._id, doc)
+            .expect(200)
+            .end(function (error, response) {
+                if (error) {
+                    return done(error);
+                }
+
+                //noinspection JSUnresolvedVariable
+                response.body.user._id.should.deep.equal(users[index]._id);
+                response.body.user[key].should.equal(value);
+                response.body.user.updatedAt.should.not.equal(users[index].updatedAt);
+                response.body.user.createdAt.should.equal(users[index].createdAt);
+                done();
+            })
+    }
+
+    function deleteUser(index, field, done) {
+        userClient
+            .delete(users[index][field])
+            .expect(204)
+            .end(function (error) {
+                if (error) {
+                    return done(error);
+                }
+
                 done();
             });
     }
@@ -34,9 +86,10 @@ describe('Auth API v1', function () {
             .post('/api/v1/auth/jwt')
             .type('json')
             .set('Accept', 'application/json')
-            .send( { username: users[key][param], password: users[key].password } )
+            .send({username: users[key][param], password: users[key].password})
             .expect(200)
             .end(function (error, response) {
+                console.log(response.body);
                 if (error) {
                     return done(error);
                 }
@@ -52,7 +105,7 @@ describe('Auth API v1', function () {
             .post('/api/v1/users/me')
             .type('json')
             .set('Accept', 'application/json')
-            .send({ auth_token: tokens[key] } )
+            .send({jwt: tokens[key]})
             .expect(200)
             .end(function (error, response) {
                 if (error) {
@@ -68,7 +121,7 @@ describe('Auth API v1', function () {
             .post('/api/v1/auth/jwt')
             .type('json')
             .set('Accept', 'application/json')
-            .send({ username: users[key].handle, password: pass })
+            .send({username: users[key].handle, password: pass})
             .expect(422)
             .end(function (error, response) {
                 if (error) {
@@ -79,32 +132,27 @@ describe('Auth API v1', function () {
             });
     }
 
-    function deleteUser(key, param, done) {
-        request
-            .delete('/api/v1/users/' + users[key][param])
-            .expect(204, done);
-    }
-
     before(function (done) {
         async.waterfall([
-            function(callback) {
+            function (callback) {
                 blueprint.testing.createApplicationAndStart(appPath, callback)
             },
 
-            function(app, callback) {
+            function (app, callback) {
                 server = app.server;
                 request = require('supertest')(server.app);
+                userClient = new ResourceClient(request, "users", 1);
 
                 return callback(null);
             }
         ], done);
     });
 
-    it('should create a single user', function(done) {
+    it('should create a single user', function (done) {
         createUser(0, done);
     });
 
-    it('should create a second user', function(done) {
+    it('should create a second user', function (done) {
         createUser(1, done);
     });
 
@@ -128,7 +176,7 @@ describe('Auth API v1', function () {
         getUserFromToken(1, done);
     });
 
-    it('should delete first created user', function(done) {
+    it('should delete first created user', function (done) {
         deleteUser(0, 'handle', done);
     });
 

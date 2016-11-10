@@ -7,7 +7,7 @@ var hbs = handlebars.create({
     defaultLayout: 'default',
     layoutsDir: 'app/views/layouts',
     partialsDir: 'app/views/partials',
-    helpers : [helpers, layouts]
+    helpers: [helpers, layouts]
 });
 
 module.exports = exports = {
