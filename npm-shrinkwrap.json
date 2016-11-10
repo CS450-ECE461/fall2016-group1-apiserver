@@ -1,6 +1,6 @@
 {
   "name": "fall2015-group1-apiserver",
-  "version": "0.1.1",
+  "version": "0.1.0",
   "dependencies": {
     "@onehilltech/blueprint": {
       "version": "1.2.0",
@@ -8,16 +8,9 @@
       "resolved": "https://registry.npmjs.org/@onehilltech/blueprint/-/blueprint-1.2.0.tgz"
     },
     "@onehilltech/blueprint-mongodb": {
-      "version": "0.9.1",
-      "from": "@onehilltech/blueprint-mongodb@>=0.9.1 <0.10.0",
-      "resolved": "https://registry.npmjs.org/@onehilltech/blueprint-mongodb/-/blueprint-mongodb-0.9.1.tgz",
-      "dependencies": {
-        "@onehilltech/blueprint": {
-          "version": "1.1.1",
-          "from": "@onehilltech/blueprint@>=1.1.1 <2.0.0",
-          "resolved": "https://registry.npmjs.org/@onehilltech/blueprint/-/blueprint-1.1.1.tgz"
-        }
-      }
+      "version": "0.11.0",
+      "from": "@onehilltech/blueprint-mongodb@0.11.0",
+      "resolved": "https://registry.npmjs.org/@onehilltech/blueprint-mongodb/-/blueprint-mongodb-0.11.0.tgz"
     },
     "accepts": {
       "version": "1.3.3",
