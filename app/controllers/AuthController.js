@@ -8,6 +8,7 @@ function AuthController() {
 
 blueprint.controller(AuthController);
 
+//noinspection JSUnusedGlobalSymbols
 AuthController.prototype.login = function () {
     return function (req, res, next) {
         passport.authenticate('local', {
