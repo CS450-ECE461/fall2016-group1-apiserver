@@ -4,8 +4,7 @@ module.exports = {
     '/v1': {
         '/users': {
             resource: {
-                controller: 'UserController'//,
-                //deny: ['getAll']
+                controller: 'UserController'
             },
             '/me': {
                 post: {

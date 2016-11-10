@@ -5,7 +5,6 @@ var passport      = require('passport')
   , JwtStrategy   = require('passport-jwt').Strategy
   , ExtractJwt    = require('passport-jwt').ExtractJwt
   , winston       = require('winston')
-  , mongoose      = require('mongoose')
   ;
 
 module.exports = initPassport;
@@ -15,7 +14,7 @@ function initPassport (app) {
     var localOptions = { session: false };
 
     var jwtOptions = {
-        jwtFromRequest: ExtractJwt.fromBodyField('auth_token'),
+        jwtFromRequest: ExtractJwt.fromBodyField('jwt'),
         secretOrKey: 'mysecret'
     };
 
@@ -27,7 +26,7 @@ function initPassport (app) {
             if (!user.verifyPassword(password)) { return done(null, false); }
             return done(null, user);
         });
-    };
+    }
 
     function jwtAuthorize(payload, done) {
         User.findById(payload, function (err, user) {
@@ -35,7 +34,7 @@ function initPassport (app) {
             if (user) { done(null, user); }
             else { done(null, false); }
         });
-    };
+    }
 
     passport.use(new LocalStrategy(localOptions, localAuthorize));
     passport.use(new JwtStrategy(jwtOptions, jwtAuthorize));
