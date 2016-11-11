@@ -45,7 +45,7 @@ describe('Org API v1', function () {
                     if (error) {
                         return callback(error);
                     }
-                    console.log(response.body);
+
                     admin['_id'] = response.body.user._id;
                     return callback(null);
                 })
@@ -122,7 +122,7 @@ describe('Org API v1', function () {
                     if (error) {
                         return callback(error);
                     }
-                    console.log(response.body);
+
                     response.status.should.equal(204);
                     return callback(null);
                 })
