@@ -9,7 +9,7 @@ var describe = require("mocha").describe;
 var users = require('../../../fixtures/users');
 var ResourceClient = require('../../../../lib/ResourceClient');
 
-describe('Users API v1', function () {
+describe('User API v1', function () {
     var server;
     var agent;
     var client;
@@ -85,7 +85,7 @@ describe('Users API v1', function () {
     before(function (done) {
         async.waterfall([
             function (callback) {
-                blueprint.testing.createApplicationAndStart(appPath, callback)
+                return blueprint.testing.createApplicationAndStart(appPath, callback)
             },
 
             function (app, callback) {
