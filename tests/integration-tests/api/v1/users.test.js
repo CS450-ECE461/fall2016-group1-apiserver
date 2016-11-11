@@ -191,7 +191,7 @@ describe('User API v1', function () {
                 var numFound = 0;
                 for (var i = 0; i < response.body.users.length; i++) {
                     for (var j = 0; j < users.length; j++) {
-                        if (users[j]._id == response.body.users[i]._id) {
+                        if (users[j]._id === response.body.users[i]._id) {
                             numFound++;
                         }
                     }
@@ -218,8 +218,8 @@ describe('User API v1', function () {
                     return done(error);
                 }
 
-                assert(response.body.errors.length == 1);
-                assert(response.body.errors[0].path == 'emailAddress');
+                assert(response.body.errors.length === 1);
+                assert(response.body.errors[0].path === 'emailAddress');
                 done();
             });
     });
