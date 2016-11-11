@@ -140,6 +140,68 @@ describe('User API v1', function () {
         getOne(0, 'handle', done);
     });
 
+    it('should be able to search all users for one with a particular handle', function(done) {
+        agent
+            .get('/api/v1/users')
+            .type('json')
+            .query({ handle: users[0].handle })
+            .expect(200)
+            .end(function(error, response) {
+                if (error) {
+                    return done(error);
+                }
+
+                response.body.users.length.should.equal(1);
+                response.body.users[0].handle.should.equal(users[0].handle);
+                response.body.users[0]._id.should.equal(users[0]._id);
+                done();
+            })
+    });
+
+    it('should be able to search all users for one with a particular email address', function(done) {
+        agent
+            .get('/api/v1/users')
+            .type('json')
+            .query({ emailAddress: users[0].emailAddress })
+            .expect(200)
+            .end(function(error, response) {
+                if (error) {
+                    return done(error);
+                }
+
+                response.body.users.length.should.equal(1);
+                response.body.users[0].emailAddress.should.equal(users[0].emailAddress);
+                response.body.users[0]._id.should.equal(users[0]._id);
+                done();
+            })
+    });
+
+    it('should be able to find all users', function(done) {
+        agent
+            .get('/api/v1/users')
+            .type('json')
+            .expect(200)
+            .end(function(error, response) {
+                if (error) {
+                    return done(error);
+                }
+
+                assert(response.body.users.length >= 4);
+
+                var numFound = 0;
+                for (var i = 0; i < response.body.users.length; i++) {
+                    for (var j = 0; j < users.length; j++) {
+                        if (users[j]._id == response.body.users[i]._id) {
+                            numFound++;
+                        }
+                    }
+                }
+
+                assert(numFound === users.length);
+                done();
+            })
+    });
+
     it('should change `emailAddress` of created user', function (done) {
         updateOne(0, 'emailAddress', 'bdfoster@iupui.edu', done);
     });
