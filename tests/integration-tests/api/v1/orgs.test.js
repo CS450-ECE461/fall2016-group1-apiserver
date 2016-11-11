@@ -17,9 +17,9 @@ describe('Org API v1', function () {
     var userClient;
     var admin = require('../../../fixtures/users')[0];
     var user = require('../../../fixtures/users')[1];
-    var jwt;
 
     before(function (done) {
+        // Start server and create clients for User and Org
         async.waterfall([
             function (callback) {
                 // `app` is returned with callback
@@ -36,7 +36,9 @@ describe('Org API v1', function () {
         ], done);
     });
 
+
     before(function(done) {
+        // Create an Admin user and a regular User via API
         async.waterfall([
             function(callback) {
                 userClient.create(admin).end(function(error, response) {
@@ -59,6 +61,42 @@ describe('Org API v1', function () {
                 })
             }
         ], done);
+    });
+
+    before(function(done) {
+        // Get JWT for admin user
+        agent
+            .post('/api/v1/auth/jwt')
+            .type('json')
+            .send({ username: admin.handle, password: admin.password })
+            .end(function(error, response) {
+                if (error) {
+                    return done(error);
+                }
+
+                response.status.should.equal(200);
+                assert(response.body.jwt);
+                admin['jwt'] = response.body.jwt;
+                done();
+            });
+    });
+
+    before(function(done) {
+        // Get JWT for regular user
+        agent
+            .post('/api/v1/auth/jwt')
+            .type('json')
+            .send({ username: user.handle, password: user.password })
+            .end(function(error, response) {
+                if (error) {
+                    return done(error);
+                }
+
+                response.status.should.equal(200);
+                assert(response.body.jwt);
+                user['jwt'] = response.body.jwt;
+                done();
+            });
     });
 
     it('should not allow creating a org without an authenticated user', function(done) {
@@ -100,6 +138,4 @@ describe('Org API v1', function () {
             }
         ], done);
     })
-
-
 });
