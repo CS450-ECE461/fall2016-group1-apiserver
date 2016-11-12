@@ -38,7 +38,8 @@ var schema = new Schema({
     },
     password: {
         type: String,
-        required: false
+        required: false,
+        sensitive: true
     },
     createdBy: {
         type: mongodb.Schema.Types.ObjectId,

@@ -8,8 +8,9 @@ var before = require("mocha").before;
 var describe = require("mocha").describe;
 var users = require('../../../fixtures/users');
 var ResourceClient = require('../../../../lib/ResourceClient');
+var _ = require('lodash');
 
-describe('Users API v1', function () {
+describe('User API v1', function () {
     var server;
     var agent;
     var client;
@@ -27,7 +28,9 @@ describe('Users API v1', function () {
                 assert(response.body.user._id);
                 assert(!response.body.user.password);
                 assert(!response.body.user.__v);
+                var passwd = users[index].password;
                 users[index] = body.user;
+                users[index].password = passwd;
                 done();
             });
     }
@@ -42,7 +45,7 @@ describe('Users API v1', function () {
                 }
 
                 //noinspection JSUnresolvedVariable
-                response.body.user.should.deep.equal(users[index]);
+                response.body.user.should.deep.equal(_.omit(users[index], ['password']));
                 done();
             })
     }
@@ -60,11 +63,13 @@ describe('Users API v1', function () {
                 }
 
                 //noinspection JSUnresolvedVariable
-                response.body.user._id.should.deep.equal(users[index]._id);
+                response.body.user._id.should.equal(users[index]._id);
                 response.body.user[key].should.equal(value);
                 response.body.user.updatedAt.should.not.equal(users[index].updatedAt);
                 response.body.user.createdAt.should.equal(users[index].createdAt);
+                var passwd = users[index].password;
                 users[index] = response.body.user;
+                users[index].password = passwd;
                 done();
             })
     }
@@ -85,7 +90,7 @@ describe('Users API v1', function () {
     before(function (done) {
         async.waterfall([
             function (callback) {
-                blueprint.testing.createApplicationAndStart(appPath, callback)
+                return blueprint.testing.createApplicationAndStart(appPath, callback)
             },
 
             function (app, callback) {
@@ -140,26 +145,86 @@ describe('Users API v1', function () {
         getOne(0, 'handle', done);
     });
 
-    it('should change `emailAddress` of created user', function (done) {
-        updateOne(0, 'emailAddress', 'bdfoster@iupui.edu', done);
-    });
-
-    it('should not accept invalid \'emailAddress\' on updating user', function (done) {
-        var doc = {};
-        doc['emailAddress'] = 'test1234example.org';
-
-        client
-            .update(users[0]._id, doc)
-            .expect(422)
-            .end(function (error, response) {
+    it('should be able to search all users for one with a particular handle', function(done) {
+        agent
+            .get('/api/v1/users')
+            .type('json')
+            .query({ handle: users[0].handle })
+            .expect(200)
+            .end(function(error, response) {
                 if (error) {
                     return done(error);
                 }
 
-                assert(response.body.errors.length == 1);
-                assert(response.body.errors[0].path == 'emailAddress');
+                response.body.users.length.should.equal(1);
+                response.body.users[0].handle.should.equal(users[0].handle);
+                response.body.users[0]._id.should.equal(users[0]._id);
                 done();
-            });
+            })
+    });
+
+    it('should be able to search all users for one with a particular email address', function(done) {
+        agent
+            .get('/api/v1/users')
+            .type('json')
+            .query({ emailAddress: users[0].emailAddress })
+            .expect(200)
+            .end(function(error, response) {
+                if (error) {
+                    return done(error);
+                }
+
+                response.body.users.length.should.equal(1);
+                response.body.users[0].emailAddress.should.equal(users[0].emailAddress);
+                response.body.users[0]._id.should.equal(users[0]._id);
+                done();
+            })
+    });
+
+    it('should not be able to search all users for one with a particular password', function(done) {
+        agent
+            .get('/api/v1/users')
+            .type('json')
+            .query({ password:  users[0].password })
+            .expect(200)
+            .end(function(error, response) {
+                if (error) {
+                    return done(error);
+                }
+
+                assert(response.body.users.length === 0);
+                done();
+            })
+    });
+
+    it('should be able to find all users', function(done) {
+        agent
+            .get('/api/v1/users')
+            .type('json')
+            .expect(200)
+            .end(function(error, response) {
+                if (error) {
+                    return done(error);
+                }
+
+                assert(response.body.users.length >= 4);
+
+                var numFound = 0;
+                for (var i = 0; i < response.body.users.length; i++) {
+                    for (var j = 0; j < users.length; j++) {
+                        if (users[j]._id === response.body.users[i]._id) {
+                            numFound++;
+                        }
+                    }
+                }
+
+                assert(numFound === users.length);
+                done();
+            })
+    });
+
+    it('should change `emailAddress` of created user', function (done) {
+        updateOne(0, 'emailAddress', 'bdfoster@iupui.edu', done);
     });
 
     it('should delete first created user by `_id`', function (done) {
