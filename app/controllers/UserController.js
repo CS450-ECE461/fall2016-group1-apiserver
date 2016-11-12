@@ -4,7 +4,8 @@ var User = require('../models/User');
 
 function UserController() {
     ResourceController.call(this, {
-        model: User
+        model: User,
+        uniques: ['_id', 'handle', 'emailAddress']
     });
 }
 
