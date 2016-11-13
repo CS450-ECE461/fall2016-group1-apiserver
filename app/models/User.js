@@ -39,7 +39,8 @@ var schema = new Schema({
     },
     password: {
         type: String,
-        required: false
+        required: false,
+        sensitive: true
     },
     passwordHash: {
         type: String,

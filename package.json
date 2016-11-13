@@ -1,12 +1,12 @@
 {
   "name": "fall2015-group1-apiserver",
   "description": "",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "scripts": {
     "test": "cross-env NODE_ENV=test mocha --recursive tests/**/*.test.js",
     "start": "node ./app/index.js",
-    "coverage": "cross-env NODE_ENV=test istanbul cover _mocha -- --recursive tests/**/*",
+    "coverage": "cross-env NODE_ENV=test istanbul cover _mocha -- --recursive tests/**/*.test.js",
     "codeclimate-test-reporter": "codeclimate-test-reporter < ./coverage/lcov.info"
   },
   "dependencies": {
