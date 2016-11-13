@@ -42,10 +42,6 @@ var schema = new Schema({
         required: false,
         sensitive: true
     },
-    passwordHash: {
-        type: String,
-        required: false
-    },
     createdBy: {
         type: mongodb.Schema.Types.ObjectId,
         index: true,
@@ -61,18 +57,16 @@ var schema = new Schema({
 });
 
 schema.pre('save', function(next) {
-    // If there is a password then the user has been created or
-    // their password has been updated so we need to hash it
-    if (this.password !== null) {
-        this.passwordHash = bcrypt.hashSync(this.password);
-        this.password = null;
+    // If the password has been updated then it needs to be hashed
+    if (this.isModified('password')) {
+        this.password = bcrypt.hashSync(this.password);
     }
     
-    next();
+    return next();
 });
 
 schema.methods.verifyPassword = function (password) {
-    return bcrypt.compareSync(password, this.passwordHash);
+    return bcrypt.compareSync(password, this.password);
 };
 
 schema.methods.createToken = function () {
@@ -82,7 +76,6 @@ schema.methods.createToken = function () {
 schema.methods.toJSON = function () {
     var obj = this.toObject();
     delete obj.password;
-    delete obj.passwordHash;
     return obj;
 };
 
