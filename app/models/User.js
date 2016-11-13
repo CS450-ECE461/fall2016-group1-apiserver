@@ -3,6 +3,7 @@ var Schema = mongodb.Schema;
 var validator = require('validator');
 var uuid = require('uuid');
 var jwt = require('jwt-simple');
+var bcrypt = require('bcrypt-nodejs');
 
 //noinspection JSUnresolvedVariable
 var schema = new Schema({
@@ -55,8 +56,17 @@ var schema = new Schema({
     timestamps: true
 });
 
+schema.pre('save', function(next) {
+    // If the password has been updated then it needs to be hashed
+    if (this.isModified('password')) {
+        this.password = bcrypt.hashSync(this.password);
+    }
+    
+    return next();
+});
+
 schema.methods.verifyPassword = function (password) {
-    return this.password === password;
+    return bcrypt.compareSync(password, this.password);
 };
 
 schema.methods.createToken = function () {

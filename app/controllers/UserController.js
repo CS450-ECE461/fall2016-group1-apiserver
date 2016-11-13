@@ -18,7 +18,7 @@ UserController.prototype.showMe = function () {
             return res.status(401).json({error: 'Invalid Token.'});
         }
         res.json(req.user.toJSON());
-    }
+    };
 };
 
 module.exports = UserController;
