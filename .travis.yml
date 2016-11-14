@@ -20,3 +20,6 @@ after_success:
   - npm run coverage
 notifications:
   email: false
+  slack:
+    rooms:
+      - csci-450-odd:bRieDpCz5eHZvruypGO182AX#build-travisci
