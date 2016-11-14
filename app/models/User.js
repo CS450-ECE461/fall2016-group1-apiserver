@@ -1,14 +1,16 @@
 var mongodb = require('@onehilltech/blueprint-mongodb');
 var Schema = mongodb.Schema;
 var validator = require('validator');
-var bcrypt = require('bcrypt-nodejs');
 var uuid = require('uuid');
+var jwt = require('jwt-simple');
+var bcrypt = require('bcrypt-nodejs');
 
 //noinspection JSUnresolvedVariable
 var schema = new Schema({
     handle: {
         type: String,
         required: false,
+        unique: true,
         trim: true,
         validate: [
             validator.isAlphanumeric,
@@ -28,14 +30,17 @@ var schema = new Schema({
     },
     emailAddress: {
         type: String,
-        unique: true,
-        index: true,
-        required: 'Email Address is already being used by someone else',
+        index: {
+            unique: true
+        },
+        required: true,
         trim: true,
         validate: validator.isEmail
     },
     password: {
         type: String,
+        required: false,
+        sensitive: true
     },
     createdBy: {
         type: mongodb.Schema.Types.ObjectId,
@@ -52,33 +57,26 @@ var schema = new Schema({
 });
 
 schema.pre('save', function(next) {
-    var user = this;
-
-    //noinspection JSUnresolvedFunction
-    if (!user.isModified('password')) {
-        return next();
+    // If the password has been updated then it needs to be hashed
+    if (this.isModified('password')) {
+        this.password = bcrypt.hashSync(this.password);
     }
-
-    bcrypt.hash(user.password, null, null, function(error, hash) {
-        if (error) {
-            return next(error);
-        }
-
-        user.password = hash;
-        next();
-    })
+    
+    return next();
 });
 
-schema.methods.validatePassword = function(candidatePassword, next) {
-    bcrypt.compare(candidatePassword, this.password, function(error, isMatch) {
-        if (error) {
-            return next(error);
-        }
-
-        next(null, isMatch);
-    })
+schema.methods.verifyPassword = function (password) {
+    return bcrypt.compareSync(password, this.password);
 };
 
+schema.methods.createToken = function () {
+    return jwt.encode(this.id, 'mysecret');
+};
 
+schema.methods.toJSON = function () {
+    var obj = this.toObject();
+    delete obj.password;
+    return obj;
+};
 
 module.exports = exports = mongodb.model('users', schema);

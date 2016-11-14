@@ -1,15 +1,24 @@
 var blueprint = require('@onehilltech/blueprint');
-var mongodb = require('@onehilltech/blueprint-mongodb');
-var ResourceController = mongodb.ResourceController;
+var ResourceController = require('./../../lib/ResourceController');
 var User = require('../models/User');
 
 function UserController() {
     ResourceController.call(this, {
-        name: "user",
-        model: User
+        model: User,
+        uniques: ['_id', 'handle', 'emailAddress']
     });
 }
 
 blueprint.controller(UserController, ResourceController);
 
-module.exports = exports = UserController;
+//noinspection JSUnusedGlobalSymbols
+UserController.prototype.showMe = function () {
+    return function (req, res) {
+        if (!req.user) {
+            return res.status(401).json({error: 'Invalid Token.'});
+        }
+        res.json(req.user.toJSON());
+    };
+};
+
+module.exports = UserController;
