@@ -1,5 +1,6 @@
 var async = require("async");
 var assert = require("chai").assert;
+var should = require("chai").should();
 var blueprint = require("@onehilltech/blueprint");
 var appPath = require("../../../fixtures/appPath");
 var it = require("mocha").it;
