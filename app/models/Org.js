@@ -1,6 +1,6 @@
-var mongodb = require('@onehilltech/blueprint-mongodb');
+var mongodb = require("@onehilltech/blueprint-mongodb");
 var Schema = mongodb.Schema;
-var validator = require('validator');
+var validator = require("validator");
 
 var locationSchema = new Schema({
     // City, town, etc.
@@ -63,4 +63,4 @@ var schema = new Schema({
     timestamps: true
 });
 
-module.exports = exports = mongodb.model('orgs', schema);
+module.exports = exports = mongodb.model("orgs", schema);

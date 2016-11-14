@@ -1,6 +1,6 @@
-var blueprint = require('@onehilltech/blueprint');
-var ResourceController = require('./../../lib/ResourceController');
-var Org = require('../models/Org');
+var blueprint = require("@onehilltech/blueprint");
+var ResourceController = require("./../../lib/ResourceController");
+var Org = require("../models/Org");
 
 function OrgController() {
     ResourceController.call(this, {
