@@ -1,8 +1,8 @@
 module.exports = {
-    '/v1': {
-        '/orgs': {
+    "/v1": {
+        "/orgs": {
             resource: {
-                controller: 'OrgController'
+                controller: "OrgController"
             }
         }
     }

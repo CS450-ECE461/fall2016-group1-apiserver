@@ -1,22 +1,20 @@
-var async = require('async');
-var assert = require('chai').assert;
-var should = require('chai').should();
-var blueprint = require('@onehilltech/blueprint');
-var appPath = require('../../../fixtures/appPath');
+var async = require("async");
+var assert = require("chai").assert;
+var blueprint = require("@onehilltech/blueprint");
+var appPath = require("../../../fixtures/appPath");
+var after = require("mocha").after;
 var it = require("mocha").it;
 var before = require("mocha").before;
 var describe = require("mocha").describe;
-var users = require('../../../fixtures/users');
-var ResourceClient = require('../../../../lib/ResourceClient');
+var ResourceClient = require("../../../../lib/ResourceClient");
 
 
-describe('Org API v1', function () {
+describe("Org API v1", function () {
     var server;
     var agent;
-    var orgClient;
     var userClient;
-    var admin = require('../../../fixtures/users')[0];
-    var user = require('../../../fixtures/users')[1];
+    var admin = require("../../../fixtures/users")[0];
+    var user = require("../../../fixtures/users")[1];
 
     before(function (done) {
         // Start server and create clients for User and Org
@@ -28,8 +26,7 @@ describe('Org API v1', function () {
 
             function (app, callback) {
                 server = app.server;
-                agent = require('supertest')(server.app);
-                orgClient = new ResourceClient(agent, "orgs", 1);
+                agent = require("supertest")(server.app);
                 userClient = new ResourceClient(agent, "users", 1);
                 return callback(null);
             }
@@ -46,9 +43,9 @@ describe('Org API v1', function () {
                         return callback(error);
                     }
 
-                    admin['_id'] = response.body.user._id;
+                    admin["_id"] = response.body.user._id;
                     return callback(null);
-                })
+                });
             },
             function(callback) {
                 userClient.create(user).end(function(error, response) {
@@ -56,9 +53,9 @@ describe('Org API v1', function () {
                         return callback(error);
                     }
 
-                    user['_id'] = response.body.user._id;
+                    user["_id"] = response.body.user._id;
                     return callback(null);
-                })
+                });
             }
         ], done);
     });
@@ -66,8 +63,8 @@ describe('Org API v1', function () {
     before(function(done) {
         // Get JWT for admin user
         agent
-            .post('/api/v1/auth/jwt')
-            .type('json')
+            .post("/api/v1/auth/jwt")
+            .type("json")
             .send({ username: admin.handle, password: admin.password })
             .end(function(error, response) {
                 if (error) {
@@ -76,7 +73,7 @@ describe('Org API v1', function () {
 
                 response.status.should.equal(200);
                 assert(response.body.jwt);
-                admin['jwt'] = response.body.jwt;
+                admin["jwt"] = response.body.jwt;
                 done();
             });
     });
@@ -84,8 +81,8 @@ describe('Org API v1', function () {
     before(function(done) {
         // Get JWT for regular user
         agent
-            .post('/api/v1/auth/jwt')
-            .type('json')
+            .post("/api/v1/auth/jwt")
+            .type("json")
             .send({ username: user.handle, password: user.password })
             .end(function(error, response) {
                 if (error) {
@@ -94,24 +91,24 @@ describe('Org API v1', function () {
 
                 response.status.should.equal(200);
                 assert(response.body.jwt);
-                user['jwt'] = response.body.jwt;
+                user["jwt"] = response.body.jwt;
                 done();
             });
     });
 
-    it('should not allow creating a org without an authenticated user', function(done) {
+    it("should not allow creating a org without an authenticated user", function(done) {
         done();
     });
 
-    it('should allow creating an org with an authenticated user', function(done) {
+    it("should allow creating an org with an authenticated user", function(done) {
         done();
     });
 
-    it('should allow updating a created org by an org admin', function(done) {
+    it("should allow updating a created org by an org admin", function(done) {
         done();
     });
 
-    it('should allow adding users to an org by an org admin', function(done) {
+    it("should allow adding users to an org by an org admin", function(done) {
         done();
     });
 
@@ -125,7 +122,7 @@ describe('Org API v1', function () {
 
                     response.status.should.equal(204);
                     return callback(null);
-                })
+                });
             },
             function(callback) {
                 userClient.delete(user).end(function(error, response) {
@@ -134,8 +131,8 @@ describe('Org API v1', function () {
                     }
                     response.status.should.equal(204);
                     return callback(null);
-                })
+                });
             }
         ], done);
-    })
+    });
 });

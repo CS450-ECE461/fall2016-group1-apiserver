@@ -1,16 +1,16 @@
-var passport = require('passport');
+var passport = require("passport");
 
 //noinspection JSUnresolvedFunction
 module.exports = {
-    '/v1': {
-        '/users': {
+    "/v1": {
+        "/users": {
             resource: {
-                controller: 'UserController'
+                controller: "UserController"
             },
-            '/me': {
+            "/me": {
                 post: {
-                    before: [passport.authenticate('jwt', {session: false})],
-                    action: 'UserController@showMe'
+                    before: [passport.authenticate("jwt", {session: false})],
+                    action: "UserController@showMe"
                 }
             }
         }

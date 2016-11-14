@@ -1,10 +1,7 @@
-'use strict';
-
-var passport = require('passport')
-    , LocalStrategy = require('passport-local').Strategy
-    , JwtStrategy = require('passport-jwt').Strategy
-    , ExtractJwt = require('passport-jwt').ExtractJwt
-    , winston = require('winston')
+var passport = require("passport")
+    , LocalStrategy = require("passport-local").Strategy
+    , JwtStrategy = require("passport-jwt").Strategy
+    , ExtractJwt = require("passport-jwt").ExtractJwt
     ;
 
 module.exports = initPassport;
@@ -14,8 +11,8 @@ function initPassport(app) {
     var localOptions = {session: false};
 
     var jwtOptions = {
-        jwtFromRequest: ExtractJwt.fromBodyField('jwt'),
-        secretOrKey: 'mysecret'
+        jwtFromRequest: ExtractJwt.fromBodyField("jwt"),
+        secretOrKey: "mysecret"
     };
 
     function localAuthorize(username, password, done) {

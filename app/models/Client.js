@@ -1,6 +1,6 @@
-var mongodb = require('@onehilltech/blueprint-mongodb');
-var validator = require('validator');
-var uuid = require('uuid');
+var mongodb = require("@onehilltech/blueprint-mongodb");
+var validator = require("validator");
+var uuid = require("uuid");
 
 var schema = new mongodb.Schema({
     name: {
@@ -48,4 +48,4 @@ var schema = new mongodb.Schema({
     }
 });
 
-module.exports = mongodb.model('clients', schema);
+module.exports = mongodb.model("clients", schema);

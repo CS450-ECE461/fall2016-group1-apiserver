@@ -1,16 +1,15 @@
-var mongodb = require('@onehilltech/blueprint-mongodb');
-var validator = require('validator');
+var mongodb = require("@onehilltech/blueprint-mongodb");
 
 var schema = new mongodb.Schema({
     sender: {
         type: String,
         required: true,
-        ref: 'users'
+        ref: "users"
     },
     receiver: {
         type: String,
         required: true,
-        ref: 'users'
+        ref: "users"
     },
     content: {
         type: String,
@@ -32,4 +31,4 @@ var schema = new mongodb.Schema({
     timestamps: true
 });
 
-module.exports = exports = mongodb.model('messages', schema);
+module.exports = exports = mongodb.model("messages", schema);

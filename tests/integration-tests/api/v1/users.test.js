@@ -1,16 +1,15 @@
-var async = require('async');
-var assert = require('chai').assert;
-var should = require('chai').should();
-var blueprint = require('@onehilltech/blueprint');
-var appPath = require('../../../fixtures/appPath');
+var async = require("async");
+var assert = require("chai").assert;
+var blueprint = require("@onehilltech/blueprint");
+var appPath = require("../../../fixtures/appPath");
 var it = require("mocha").it;
 var before = require("mocha").before;
 var describe = require("mocha").describe;
-var users = require('../../../fixtures/users');
-var ResourceClient = require('../../../../lib/ResourceClient');
-var _ = require('lodash');
+var users = require("../../../fixtures/users");
+var ResourceClient = require("../../../../lib/ResourceClient");
+var _ = require("lodash");
 
-describe('User API v1', function () {
+describe("User API v1", function () {
     var server;
     var agent;
     var client;
@@ -45,9 +44,9 @@ describe('User API v1', function () {
                 }
 
                 //noinspection JSUnresolvedVariable
-                response.body.user.should.deep.equal(_.omit(users[index], ['password']));
+                response.body.user.should.deep.equal(_.omit(users[index], ["password"]));
                 done();
-            })
+            });
     }
 
     function updateOne(index, key, value, done) {
@@ -71,7 +70,7 @@ describe('User API v1', function () {
                 users[index] = response.body.user;
                 users[index].password = passwd;
                 done();
-            })
+            });
     }
 
     function deleteOne(index, field, done) {
@@ -90,12 +89,12 @@ describe('User API v1', function () {
     before(function (done) {
         async.waterfall([
             function (callback) {
-                return blueprint.testing.createApplicationAndStart(appPath, callback)
+                return blueprint.testing.createApplicationAndStart(appPath, callback);
             },
 
             function (app, callback) {
                 server = app.server;
-                agent = require('supertest')(server.app);
+                agent = require("supertest")(server.app);
                 client = new ResourceClient(agent, "users", 1);
 
                 return callback(null);
@@ -103,23 +102,23 @@ describe('User API v1', function () {
         ], done);
     });
 
-    it('should create a single user', function (done) {
+    it("should create a single user", function (done) {
         createOne(0, done);
     });
 
-    it('should create a second user', function (done) {
+    it("should create a second user", function (done) {
         createOne(1, done);
     });
 
-    it('should create a third user', function (done) {
+    it("should create a third user", function (done) {
         createOne(2, done);
     });
 
-    it('should create a forth user', function (done) {
+    it("should create a forth user", function (done) {
         createOne(3, done);
     });
 
-    it('should not re-create the same user', function (done) {
+    it("should not re-create the same user", function (done) {
         client
             .create(users[0])
             .expect(409)
@@ -128,27 +127,27 @@ describe('User API v1', function () {
                     return done(error);
                 }
 
-                assert(response.body.errors.length == 1);
-                assert(response.body.errors[0].status == 409);
-                assert(response.body.errors[0].message == "Already exists");
+                assert(response.body.errors.length === 1);
+                assert(response.body.errors[0].status === 409);
+                assert(response.body.errors[0].message === "Already exists");
 
                 done();
-            })
+            });
 
     });
 
-    it('should get created user by `_id`', function (done) {
-        getOne(0, '_id', done);
+    it("should get created user by `_id`", function (done) {
+        getOne(0, "_id", done);
     });
 
-    it('should get created user by `handle`', function (done) {
-        getOne(0, 'handle', done);
+    it("should get created user by `handle`", function (done) {
+        getOne(0, "handle", done);
     });
 
-    it('should be able to search all users for one with a particular handle', function(done) {
+    it("should be able to search all users for one with a particular handle", function(done) {
         agent
-            .get('/api/v1/users')
-            .type('json')
+            .get("/api/v1/users")
+            .type("json")
             .query({ handle: users[0].handle })
             .expect(200)
             .end(function(error, response) {
@@ -160,13 +159,13 @@ describe('User API v1', function () {
                 response.body.users[0].handle.should.equal(users[0].handle);
                 response.body.users[0]._id.should.equal(users[0]._id);
                 done();
-            })
+            });
     });
 
-    it('should be able to search all users for one with a particular email address', function(done) {
+    it("should be able to search all users for one with a particular email address", function(done) {
         agent
-            .get('/api/v1/users')
-            .type('json')
+            .get("/api/v1/users")
+            .type("json")
             .query({ emailAddress: users[0].emailAddress })
             .expect(200)
             .end(function(error, response) {
@@ -178,13 +177,13 @@ describe('User API v1', function () {
                 response.body.users[0].emailAddress.should.equal(users[0].emailAddress);
                 response.body.users[0]._id.should.equal(users[0]._id);
                 done();
-            })
+            });
     });
 
-    it('should not be able to search all users for one with a particular password', function(done) {
+    it("should not be able to search all users for one with a particular password", function(done) {
         agent
-            .get('/api/v1/users')
-            .type('json')
+            .get("/api/v1/users")
+            .type("json")
             .query({ password:  users[0].password })
             .expect(200)
             .end(function(error, response) {
@@ -194,13 +193,13 @@ describe('User API v1', function () {
 
                 assert(response.body.users.length === 0);
                 done();
-            })
+            });
     });
 
-    it('should be able to find all users', function(done) {
+    it("should be able to find all users", function(done) {
         agent
-            .get('/api/v1/users')
-            .type('json')
+            .get("/api/v1/users")
+            .type("json")
             .expect(200)
             .end(function(error, response) {
                 if (error) {
@@ -220,30 +219,30 @@ describe('User API v1', function () {
 
                 assert(numFound === users.length);
                 done();
-            })
+            });
     });
 
-    it('should change `emailAddress` of created user', function (done) {
-        updateOne(0, 'emailAddress', 'bdfoster@iupui.edu', done);
+    it("should change `emailAddress` of created user", function (done) {
+        updateOne(0, "emailAddress", "bdfoster@iupui.edu", done);
     });
 
-    it('should delete first created user by `_id`', function (done) {
-        deleteOne(0, '_id', done);
+    it("should delete first created user by `_id`", function (done) {
+        deleteOne(0, "_id", done);
     });
 
-    it('should delete second created user by `handle`', function (done) {
-        deleteOne(1, 'handle', done);
+    it("should delete second created user by `handle`", function (done) {
+        deleteOne(1, "handle", done);
     });
 
-    it('should delete third created user', function (done) {
-        deleteOne(2, '_id', done);
+    it("should delete third created user", function (done) {
+        deleteOne(2, "_id", done);
     });
 
-    it('should delete forth created user', function (done) {
-        deleteOne(3, '_id', done);
+    it("should delete forth created user", function (done) {
+        deleteOne(3, "_id", done);
     });
 
-    it('should not be able to get a deleted user', function (done) {
+    it("should not be able to get a deleted user", function (done) {
         client
             .get(users[0]._id)
             .expect(404)
@@ -253,6 +252,6 @@ describe('User API v1', function () {
                 }
 
                 return done();
-            })
+            });
     });
 });
