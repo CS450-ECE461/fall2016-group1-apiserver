@@ -18,6 +18,7 @@ services:
   - mongodb
 after_success:
   - npm run coverage
+  - coveralls
 notifications:
   email: false
   slack:
