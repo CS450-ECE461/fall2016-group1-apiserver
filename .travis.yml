@@ -16,7 +16,7 @@ addons:
       repo_token: <>
 services:
   - mongodb
-after_success:
+script:
   - npm run coverage
 notifications:
   email: false
