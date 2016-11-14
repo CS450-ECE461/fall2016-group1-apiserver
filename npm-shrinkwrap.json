@@ -1567,6 +1567,12 @@
         }
       }
     },
+    "mocha-lcov-reporter": {
+      "version": "1.2.0",
+      "from": "mocha-lcov-reporter@latest",
+      "resolved": "https://registry.npmjs.org/mocha-lcov-reporter/-/mocha-lcov-reporter-1.2.0.tgz",
+      "dev": true
+    },
     "moment": {
       "version": "2.15.1",
       "from": "moment@>=2.10.3 <3.0.0",
