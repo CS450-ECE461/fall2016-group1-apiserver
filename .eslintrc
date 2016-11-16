@@ -16,8 +16,7 @@
       2,
       "always"
     ],
-    "eqeqeq": 1,
-    "strict": 1
+    "eqeqeq": 2
   },
   "env": {
     "es6": true,
@@ -26,7 +25,8 @@
   },
   "plugins": [
     "json",
-    "markdown"
+    "markdown",
+    "promise"
   ],
   "extends": "eslint:recommended"
 }
