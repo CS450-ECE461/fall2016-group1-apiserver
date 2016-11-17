@@ -5,11 +5,16 @@ var schema = new mongodb.Schema({
         type: [{ type: mongodb.Schema.Types.ObjectId, ref: "users" }],
         index: true
     },
-    messages: [{ type: mongodb.Schema.Types.ObjectId, ref: "messages" }],
     meta: {
         type: mongodb.Schema.Types.Mixed,
         default: {}
     }
+}, { toJSON: { virtuals: true } });
+
+schema.virtual("messages", {
+    ref: "messages",
+    localField: "_id",
+    foreignField: "channel"
 });
 
 module.exports = mongodb.model("channels", schema);
