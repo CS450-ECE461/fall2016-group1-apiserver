@@ -8,7 +8,7 @@ var schema = new mongodb.Schema({
     },
     channel: {
         type: mongodb.Schema.Types.ObjectId,
-        required: true,
+        index: true,
         ref: "channels"
     },
     content: {
