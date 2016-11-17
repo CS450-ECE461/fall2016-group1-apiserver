@@ -16,8 +16,8 @@ addons:
       repo_token: 5630876f46c9ea33079e0569ac74e4cb1a05703d0ac36614f7edb14561f36df2
 services:
   - mongodb
-script: make test-coveralls
 after_success:
+  - npm run cover
   - npm run coverage
 notifications:
   email: false
