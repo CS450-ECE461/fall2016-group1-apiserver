@@ -2,7 +2,7 @@
 
 [![GitHub release](https://img.shields.io/github/release/CS450-ECE461/fall2016-group1-apiserver.svg)](https://github.com/CS450-ECE461/fall2016-group1-apiserver/releases)
 [![Build Status](https://img.shields.io/travis/CS450-ECE461/fall2016-group1-apiserver/master.svg)](https://travis-ci.org/CS450-ECE461/fall2016-group1-apiserver)
-[![Coverage Status](https://img.shields.io/coveralls/CS450-ECE461/fall2016-group1-apiserver/master.svg)](https://coveralls.io/github/CS450-ECE461/fall2016-group1-apiserver?branch=master)
+[![Coverage Status](https://img.shields.io/codeclimate/coverage/github/CS450-ECE461/fall2016-group1-apiserver.svg)](https://codeclimate.com/github/CS450-ECE461/fall2016-group1-apiserver/coverage)
 [![Code Climate](https://img.shields.io/codeclimate/github/CS450-ECE461/fall2016-group1-apiserver/badges/gpa.svg)](https://codeclimate.com/github/CS450-ECE461/fall2016-group1-apiserver) 
 [![David dependencies](https://img.shields.io/david/CS450-ECE461/fall2016-group1-apiserver.svg)](https://github.com/CS450-ECE461/fall2016-group1-apiserver)
 [![David devDependencies](https://img.shields.io/david/dev/CS450-ECE461/fall2016-group1-apiserver.svg)](https://github.com/CS450-ECE461/fall2016-group1-apiserver)
