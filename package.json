@@ -52,5 +52,23 @@
   "engines": {
     "node": ">=4.0.0",
     "npm": ">=3.0.0"
-  }
+  },
+  "contributors": [
+    {
+      "name": "Brian D. Foster",
+      "email": "bdfoster89@gmail.com"
+    },
+    {
+      "name": "Angus Dobson",
+      "email": "asdobson@iupui.edu"
+    },
+    {
+      "name": "Matthew A. Neal",
+      "email": "maneal0515@gmail.com"
+    },
+    {
+      "name": "Josh Raker",
+      "email": "joshraker@gmail.com"
+    }
+  ]
 }
