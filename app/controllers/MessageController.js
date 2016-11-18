@@ -1,4 +1,5 @@
-﻿"use strict";
+"use strict";
+var blueprint = require("@onehilltech/blueprint");
 
 function MessageController() {
   blueprint.BaseController.call(this);
