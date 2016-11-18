@@ -20,10 +20,10 @@ describe("Org API v1", function () {
 
   before(function (done) {
     this.timeout(5000);
-        // Start server and create clients for User and Org
+    // Start server and create clients for User and Org
     async.waterfall([
       function (callback) {
-                // `app` is returned with callback
+        // `app` is returned with callback
         blueprint.testing.createApplicationAndStart(appPath, callback);
       },
 
@@ -39,7 +39,7 @@ describe("Org API v1", function () {
 
   before(function (done) {
     this.timeout(5000);
-        // Create an Admin user and a regular User via API
+    // Create an Admin user and a regular User via API
     async.waterfall([
       function (callback) {
         userClient.create(admin).end(function (error, response) {
@@ -66,44 +66,44 @@ describe("Org API v1", function () {
 
   before(function (done) {
     this.timeout(5000);
-        // Get JWT for admin user
+    // Get JWT for admin user
     agent
-            .post("/api/v1/auth/jwt")
-            .type("json")
-            .send({ username: admin.handle, password: admin.password })
-            .end(function (error, response) {
-              if (error) {
-                return done(error);
-              }
+      .post("/api/v1/auth/jwt")
+      .type("json")
+      .send({username: admin.handle, password: admin.password})
+      .end(function (error, response) {
+        if (error) {
+          return done(error);
+        }
 
-              response.status.should.equal(200);
-              assert(response.body.jwt);
-              admin["jwt"] = response.body.jwt;
-              done();
-            });
+        response.status.should.equal(200);
+        assert(response.body.jwt);
+        admin["jwt"] = response.body.jwt;
+        done();
+      });
   });
 
   before(function (done) {
     this.timeout(5000);
-        // Get JWT for regular user
+    // Get JWT for regular user
     agent
-            .post("/api/v1/auth/jwt")
-            .type("json")
-            .send({ username: user.handle, password: user.password })
-            .end(function (error, response) {
-              if (error) {
-                return done(error);
-              }
+      .post("/api/v1/auth/jwt")
+      .type("json")
+      .send({username: user.handle, password: user.password})
+      .end(function (error, response) {
+        if (error) {
+          return done(error);
+        }
 
-              response.status.should.equal(200);
-              assert(response.body.jwt);
-              user["jwt"] = response.body.jwt;
-              done();
-            });
+        response.status.should.equal(200);
+        assert(response.body.jwt);
+        user["jwt"] = response.body.jwt;
+        done();
+      });
   });
 
   it("should not allow creating a org without an authenticated user", function (done) {
-    orgClient.create({ org: orgs[0] }).expect(401).end(function (error, response) {
+    orgClient.create({org: orgs[0]}).expect(401).end(function (error, response) {
       if (error) {
         return done(error);
       }
