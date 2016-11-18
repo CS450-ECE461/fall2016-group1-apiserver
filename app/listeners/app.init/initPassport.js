@@ -17,6 +17,7 @@ function initPassport (app) {
   function localAuthorize (username, password, done) {
     var criteria = {$or: [{handle: username}, {emailAddress: username}]};
     User.findOne(criteria, function (err, user) {
+      /* istanbul ignore if  */
       if (err) {
         return done(err);
       }
@@ -32,6 +33,7 @@ function initPassport (app) {
 
   function jwtAuthorize (payload, done) {
     User.findById(payload, function (err, user) {
+      /* istanbul ignore if  */
       if (err) {
         return done(err, false);
       }
