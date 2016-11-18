@@ -10,19 +10,19 @@ blueprint.controller(AuthController);
 
 // noinspection JSUnusedGlobalSymbols
 AuthController.prototype.login = function () {
-    return function (req, res, next) {
-        passport.authenticate("local", {
-            session: false
-        }, function (err, user) {
-            if (err) {
-                return next(err);
-            }
-            if (!user) {
-                return next(new errors.InvalidCredentialsError());
-            }
-            return res.json({jwt: user.createToken()});
-        })(req, res, next);
-    };
+  return function (req, res, next) {
+    passport.authenticate("local", {
+      session: false
+    }, function (err, user) {
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+        return next(new errors.InvalidCredentialsError());
+      }
+      return res.json({jwt: user.createToken()});
+    })(req, res, next);
+  };
 };
 
 module.exports = AuthController;
