@@ -16,84 +16,85 @@ describe("Auth API v1 - JWT", function () {
 
   function createUser (index, done) {
     userClient
-            .create(users[index])
-            .expect(201)
-            .end(function (error, response) {
-              if (error) {
-                return done(error);
-              }
+      .create(users[index])
+      .expect(201)
+      .end(function (error, response) {
+        if (error) {
+          return done(error);
+        }
 
-              assert(response.body.user._id);
-              assert(!response.body.user.password);
-              assert(!response.body.user.__v);
-              done();
-            });
+        assert(response.body.user._id);
+        assert(!response.body.user.password);
+        assert(!response.body.user.__v);
+        done();
+      });
   }
 
   function deleteUser (index, field, done) {
     userClient
-            .delete(users[index][field])
-            .expect(204)
-            .end(function (error) {
-              if (error) {
-                return done(error);
-              }
+      .delete(users[index][field])
+      .expect(204)
+      .end(function (error) {
+        if (error) {
+          return done(error);
+        }
 
-              done();
-            });
+        done();
+      });
   }
 
   function getToken (key, param, done) {
     request
-            .post("/api/v1/auth/jwt")
-            .type("json")
-            .set("Accept", "application/json")
-            .send({username: users[key][param], password: users[key].password})
-            .expect(200)
-            .end(function (error, response) {
-              if (error) {
-                return done(error);
-              }
+      .post("/api/v1/auth/jwt")
+      .type("json")
+      .set("Accept", "application/json")
+      .send({username: users[key][param], password: users[key].password})
+      .expect(200)
+      .end(function (error, response) {
+        if (error) {
+          return done(error);
+        }
 
-              assert(response.body.jwt);
-              tokens.push(response.body.jwt);
-              done();
-            });
+        assert(response.body.jwt);
+        tokens.push(response.body.jwt);
+        done();
+      });
   }
 
   function getUserFromToken (key, done) {
     request
-            .post("/api/v1/users/me")
-            .type("json")
-            .set("Accept", "application/json")
-            .send({jwt: tokens[key]})
-            .expect(200)
-            .end(function (error, response) {
-              if (error) {
-                return done(error);
-              }
-              assert(response.body.handle === users[key].handle);
-              done();
-            });
+      .post("/api/v1/users/me")
+      .type("json")
+      .set("Accept", "application/json")
+      .send({jwt: tokens[key]})
+      .expect(200)
+      .end(function (error, response) {
+        if (error) {
+          return done(error);
+        }
+        assert(response.body.handle === users[key].handle);
+        done();
+      });
   }
 
   function getBadToken (key, pass, done) {
     request
-            .post("/api/v1/auth/jwt")
-            .type("json")
-            .set("Accept", "application/json")
-            .send({username: users[key].handle, password: pass})
-            .expect(422)
-            .end(function (error, response) {
-              if (error) {
-                return done(error);
-              }
-              assert(response.body.errors[0].name === "AuthenticationError");
-              done();
-            });
+      .post("/api/v1/auth/jwt")
+      .type("json")
+      .set("Accept", "application/json")
+      .send({username: users[key].handle, password: pass})
+      .expect(422)
+      .end(function (error, response) {
+        if (error) {
+          return done(error);
+        }
+        assert(response.body.errors[0].name === "InvalidCredentialsError");
+        done();
+      });
   }
 
   before(function (done) {
+    this.timeout(5000);
     async.waterfall([
       function (callback) {
         blueprint.testing.createApplicationAndStart(appPath, callback);
