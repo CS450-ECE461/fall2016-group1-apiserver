@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 function MessageController() {
   blueprint.BaseController.call(this);
