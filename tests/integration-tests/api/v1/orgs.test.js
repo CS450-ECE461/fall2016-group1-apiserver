@@ -8,6 +8,7 @@ var it = require("mocha").it;
 var before = require("mocha").before;
 var describe = require("mocha").describe;
 var ResourceClient = require("../../../../lib/ResourceClient");
+var _ = require("lodash");
 
 describe("Org API v1", function () {
   var server;
@@ -117,7 +118,9 @@ describe("Org API v1", function () {
         return done(error);
       }
 
-      assert(response.body.org._id);
+      _.each(orgs[0], function (prop) {
+        assert(orgs[0][prop] === response.body.org[prop]);
+      });
       orgs[0]._id = response.body.org._id;
       done();
     });
