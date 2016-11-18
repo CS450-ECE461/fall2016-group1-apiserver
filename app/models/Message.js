@@ -2,14 +2,14 @@ var mongodb = require("@onehilltech/blueprint-mongodb");
 
 var schema = new mongodb.Schema({
     sender: {
-        type: String,
+        type: mongodb.Schema.Types.ObjectId,
         required: true,
         ref: "users"
     },
-    receiver: {
-        type: String,
-        required: true,
-        ref: "users"
+    channel: {
+        type: mongodb.Schema.Types.ObjectId,
+        index: true,
+        ref: "channels"
     },
     content: {
         type: String,
