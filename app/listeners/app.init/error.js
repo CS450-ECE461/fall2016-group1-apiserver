@@ -3,7 +3,8 @@ var _ = require("lodash");
 var winston = require("winston");
 
 function handleError (error, request, response, next) {
-    // noinspection JSUnresolvedVariable
+  // noinspection JSUnresolvedVariable
+  /* istanbul ignore if  */
   if (response.headersSent) {
     return next(error);
   }
@@ -16,14 +17,17 @@ function handleError (error, request, response, next) {
   }
 
   _.each(errors, function (err) {
+    /* istanbul ignore if  */
     if (!err.status || err.status === (500)) {
       winston.log("error", err.stack);
     }
 
+    /* istanbul ignore if  */
     if (err.statusCode && !(err.status)) {
       err.status = err.statusCode;
     }
 
+    /* istanbul ignore if  */
     if (err.statusCode) {
       delete err.statusCode;
     }
@@ -34,6 +38,7 @@ function handleError (error, request, response, next) {
       response.status(errors[0].status || 500).json({errors: errors});
     },
     default: function () {
+      /* istanbul ignore next  */
       response.status(errors[0].status || 500).send();
     }
   });

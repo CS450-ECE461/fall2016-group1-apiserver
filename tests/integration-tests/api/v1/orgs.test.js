@@ -104,12 +104,7 @@ describe("Org API v1", function () {
   });
 
   it("should not create an org without an authenticated user", function (done) {
-    orgClient.create({org: orgs[0]}).expect(401).end(function (error, response) {
-      if (error) {
-        return done(error);
-      }
-      done();
-    });
+    orgClient.create({org: orgs[0]}).expect(401, done);
   });
 
   it("should create an org with an authenticated user", function (done) {
@@ -133,7 +128,7 @@ describe("Org API v1", function () {
         "emailAddress": emailAddress
       },
       jwt: admin.jwt
-    }).expect(200).end(function (error, response) {
+    }, function (error, response) {
       if (error) {
         return done(error);
       }
