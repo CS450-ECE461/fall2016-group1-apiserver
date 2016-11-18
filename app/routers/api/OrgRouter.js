@@ -1,9 +1,9 @@
 module.exports = {
-    "/v1": {
-        "/orgs": {
-            resource: {
-                controller: "OrgController"
-            }
-        }
+  "/v1": {
+    "/orgs": {
+      resource: {
+        controller: "OrgController"
+      }
     }
+  }
 };

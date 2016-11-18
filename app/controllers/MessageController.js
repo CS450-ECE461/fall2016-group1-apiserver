@@ -1,7 +1,7 @@
 "use strict";
 var blueprint = require("@onehilltech/blueprint");
 
-function MessageController() {
+function MessageController () {
   blueprint.BaseController.call(this);
 }
 
@@ -14,7 +14,7 @@ MessageController.prototype.getMessages = function () {
     }
     // Get messages and return
   };
-}
+};
 
 MessageController.prototype.sendMessage = function () {
   return function (req, res) {
@@ -23,7 +23,7 @@ MessageController.prototype.sendMessage = function () {
     }
     // Send a message
   };
-}
+};
 
 module.exports = MessageController;
 
