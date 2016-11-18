@@ -17,6 +17,7 @@ describe("Org API v1", function () {
     var user = require("../../../fixtures/users")[1];
 
     before(function (done) {
+        this.timeout(5000);
         // Start server and create clients for User and Org
         async.waterfall([
             function (callback) {
@@ -35,6 +36,7 @@ describe("Org API v1", function () {
 
 
     before(function(done) {
+        this.timeout(5000);
         // Create an Admin user and a regular User via API
         async.waterfall([
             function(callback) {
@@ -61,6 +63,7 @@ describe("Org API v1", function () {
     });
 
     before(function(done) {
+        this.timeout(5000);
         // Get JWT for admin user
         agent
             .post("/api/v1/auth/jwt")
@@ -79,6 +82,7 @@ describe("Org API v1", function () {
     });
 
     before(function(done) {
+        this.timeout(5000);
         // Get JWT for regular user
         agent
             .post("/api/v1/auth/jwt")

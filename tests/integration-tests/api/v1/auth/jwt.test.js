@@ -94,6 +94,7 @@ describe("Auth API v1 - JWT", function () {
     }
 
     before(function (done) {
+        this.timeout(5000);
         async.waterfall([
             function (callback) {
                 blueprint.testing.createApplicationAndStart(appPath, callback);
