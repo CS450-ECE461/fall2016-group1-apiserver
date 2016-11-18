@@ -1,4 +1,5 @@
 {
+  "extends": "standard",
   "parserOptions": {
     "ecmaVersion": 6,
     "sourceType": "module"
@@ -26,6 +27,5 @@
   "plugins": [
     "json",
     "markdown"
-  ],
-  "extends": "eslint:recommended"
+  ]
 }

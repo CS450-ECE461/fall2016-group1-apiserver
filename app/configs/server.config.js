@@ -3,37 +3,37 @@ var helpers = require("handlebars-helpers");
 var layouts = require("handlebars-layouts");
 
 var hbs = handlebars.create({
-    extname: ".hbs",
-    defaultLayout: "default",
-    layoutsDir: "app/views/layouts",
-    partialsDir: "app/views/partials",
-    helpers: [helpers, layouts]
+  extname: ".hbs",
+  defaultLayout: "default",
+  layoutsDir: "app/views/layouts",
+  partialsDir: "app/views/partials",
+  helpers: [helpers, layouts]
 });
 
 module.exports = exports = {
-    protocols: {
-        http: {
-            port: 5000
-        }
+  protocols: {
+    http: {
+      port: 5000
+    }
+  },
+
+  middleware: {
+    validator: {},
+    bodyParser: {
+      urlencoded: {extended: false},
+      json: {}
     },
 
-    middleware: {
-        validator: {},
-        bodyParser: {
-            urlencoded: {extended: false},
-            json: {}
-        },
+    morgan: {
+      format: "dev",
+      immediate: true
+    },
 
-        morgan: {
-            format: "dev",
-            immediate: true
-        },
+    passport: {},
 
-        passport: {},
-
-        view_engine: "hbs",
-        engines: {
-            "hbs": hbs.engine
-        }
+    view_engine: "hbs",
+    engines: {
+      "hbs": hbs.engine
     }
+  }
 };
