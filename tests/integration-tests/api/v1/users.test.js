@@ -88,6 +88,7 @@ describe("User API v1", function () {
   }
 
   before(function (done) {
+    this.timeout(5000);
     async.waterfall([
       function (callback) {
         return blueprint.testing.createApplicationAndStart(appPath, callback);
@@ -130,7 +131,7 @@ describe("User API v1", function () {
 
               assert(response.body.errors.length === 1);
               assert(response.body.errors[0].status === 409);
-              assert(response.body.errors[0].message === "Already exists");
+              assert(response.body.errors[0].name === "DuplicateError");
 
               done();
             });
