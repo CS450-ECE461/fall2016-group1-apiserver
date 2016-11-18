@@ -6,7 +6,6 @@
   "scripts": {
     "test": "cross-env NODE_ENV=test mocha --recursive tests/**/*.test.js",
     "start": "node ./app/index.js",
-    "coverage": "cross-env NODE_ENV=test istanbul cover _mocha -- --recursive tests/**/*.test.js",
     "coveralls": "cross-env NODE_ENV=test istanbul cover _mocha --report lcovonly -- --recursive tests/**/*.test.js && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js ",
     "codeclimate-test-reporter": "codeclimate-test-reporter < ./coverage/lcov.info"
   },
