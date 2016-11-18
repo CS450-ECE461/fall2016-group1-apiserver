@@ -131,7 +131,7 @@ describe("User API v1", function () {
 
                 assert(response.body.errors.length === 1);
                 assert(response.body.errors[0].status === 409);
-                assert(response.body.errors[0].message === "Already exists");
+                assert(response.body.errors[0].name === "DuplicateError");
 
                 done();
             });

@@ -1,6 +1,7 @@
 var async = require("async");
 var assert = require("chai").assert;
 var blueprint = require("@onehilltech/blueprint");
+var should = require("chai").should();
 var appPath = require("../../../fixtures/appPath");
 var after = require("mocha").after;
 var it = require("mocha").it;
@@ -13,8 +14,10 @@ describe("Org API v1", function () {
     var server;
     var agent;
     var userClient;
+    var orgClient;
     var admin = require("../../../fixtures/users")[0];
     var user = require("../../../fixtures/users")[1];
+    var orgs = require("../../../fixtures/orgs");
 
     before(function (done) {
         this.timeout(5000);
@@ -29,6 +32,7 @@ describe("Org API v1", function () {
                 server = app.server;
                 agent = require("supertest")(server.app);
                 userClient = new ResourceClient(agent, "users", 1);
+                orgClient = new ResourceClient(agent, "orgs", 1);
                 return callback(null);
             }
         ], done);
@@ -50,11 +54,11 @@ describe("Org API v1", function () {
                 });
             },
             function(callback) {
-                userClient.create(user).end(function(error, response) {
+                userClient.create(user).expect(201).end(function(error, response) {
                     if (error) {
                         return callback(error);
                     }
-
+                    assert(response.status === 201);
                     user["_id"] = response.body.user._id;
                     return callback(null);
                 });
@@ -101,7 +105,15 @@ describe("Org API v1", function () {
     });
 
     it("should not allow creating a org without an authenticated user", function(done) {
-        done();
+        orgClient.create({ org: orgs[0] }).expect(401).end(function(error, response) {
+            if (error) {
+                return done(error);
+            }
+
+            assert(response.body.errors.length === 1);
+            assert(response.statusCode === 401);
+            done();
+        });
     });
 
     it("should allow creating an org with an authenticated user", function(done) {
