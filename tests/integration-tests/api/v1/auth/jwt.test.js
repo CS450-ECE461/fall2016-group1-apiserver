@@ -88,12 +88,13 @@ describe("Auth API v1 - JWT", function () {
               if (error) {
                 return done(error);
               }
-              assert(response.body.errors[0].name === "AuthenticationError");
+              assert(response.body.errors[0].name === "InvalidCredentialsError");
               done();
             });
   }
 
   before(function (done) {
+    this.timeout(5000);
     async.waterfall([
       function (callback) {
         blueprint.testing.createApplicationAndStart(appPath, callback);

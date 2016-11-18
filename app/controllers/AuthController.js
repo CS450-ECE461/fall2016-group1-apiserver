@@ -18,7 +18,7 @@ AuthController.prototype.login = function () {
         return next(err);
       }
       if (!user) {
-        return next(new errors.AuthenticationError());
+        return next(new errors.InvalidCredentialsError());
       }
       return res.json({jwt: user.createToken()});
     })(req, res, next);
