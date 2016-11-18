@@ -102,28 +102,51 @@ describe("Org API v1", function () {
       });
   });
 
-  it("should not allow creating a org without an authenticated user", function (done) {
+  it("should not create an org without an authenticated user", function (done) {
     orgClient.create({org: orgs[0]}).expect(401).end(function (error, response) {
       if (error) {
         return done(error);
       }
-
-      assert(response.body.errors.length === 1);
-      assert(response.statusCode === 401);
       done();
     });
   });
 
-  it("should allow creating an org with an authenticated user", function (done) {
-    done();
+  it("should create an org with an authenticated user", function (done) {
+    orgClient.create({jwt: admin.jwt, org: orgs[0]}).expect(201).end(function (error, response) {
+      if (error) {
+        return done(error);
+      }
+
+      assert(response.body.org._id);
+      orgs[0]._id = response.body.org._id;
+      done();
+    });
   });
 
-  it("should allow updating a created org by an org admin", function (done) {
-    done();
+  it("should update a created org by an org admin", function (done) {
+    var emailAddress = "admin@test1.org";
+    orgClient.update(orgs[0]._id, {
+      org: {
+        "emailAddress": emailAddress
+      },
+      jwt: admin.jwt
+    }).expect(200).end(function (error, response) {
+      if (error) {
+        return done(error);
+      }
+      assert(response.body.org.emailAddress === emailAddress);
+      orgs[0].emailAddress = emailAddress;
+      done();
+    });
   });
 
-  it("should allow adding users to an org by an org admin", function (done) {
-    done();
+  it("should not update a created org without an authenticated user", function (done) {
+    var emailAddress = "admin2@test1.org";
+    orgClient.update(orgs[0]._id, {
+      org: {
+        "emailAddress": emailAddress
+      }
+    }).expect(401, done);
   });
 
   after(function (done) {

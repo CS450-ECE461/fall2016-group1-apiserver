@@ -45,10 +45,7 @@ var schema = new Schema({
   name: {
     type: String,
     required: true,
-    trim: true,
-    validate: [
-      validator.isAlphanumeric
-    ]
+    trim: true
   },
   emailAddress: {
     type: String,
