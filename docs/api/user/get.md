@@ -5,7 +5,7 @@ Gets a particular user based on a unique value.
 The key ```id``` can be a value from ```_id```, ```handle```, or
 ```emailAddress```. If you are aiming for consistency, you should
 be using ```_id``` here, as it will never change for any particular
-user. It's also faster.
+user. It's also faster, as it's always the first field to be matched.
 
 ### Request
 
