@@ -6,4 +6,6 @@
 
 [Get a User from a JWT](get-authenticated.md)
 
+[Search for users](get-all.md)
+
 [Delete a Particular User](delete.md)

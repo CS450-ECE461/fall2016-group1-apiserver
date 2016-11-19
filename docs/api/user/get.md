@@ -26,7 +26,7 @@ No request body is accepted.
 
 ##### By ```_id```
 ```
-POST /api/v1/users/5818e5010ef048201c6adee4
+GET /api/v1/users/5818e5010ef048201c6adee4
 
 Accept: application/json
 Cache-Control: no-cache
@@ -34,7 +34,7 @@ Cache-Control: no-cache
 
 ##### By ```handle```
 ```
-POST /api/v1/users/jdoe123
+GET /api/v1/users/jdoe123
 
 Accept: application/json
 Cache-Control: no-cache
@@ -42,7 +42,7 @@ Cache-Control: no-cache
 
 ##### By ```emailAddress```
 ```
-POST /api/v1/users/jdoe%40example.org
+GET /api/v1/users/jdoe%40example.org
 
 Accept: application/json
 Cache-Control: no-cache
