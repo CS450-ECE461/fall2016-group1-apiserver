@@ -2,4 +2,6 @@
 
 [Create a User](create.md)
 
-[Get Information on Authenticated User](get-authenicated.md)
+[Get a Particular User](get.md)
+
+[Get a User from a JWT](get-authenicated.md)
