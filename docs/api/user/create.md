@@ -77,8 +77,9 @@ The fields ```emailAddress``` and  ```handle``` must be unique.
 }
 ```
 
-If a field isn't validated, then it will also return ```409 Conflict```. For example,
-if you pass ```emailAddress``` as ```test1234example.com```:
+##### ```422 Unprocessable Entity```
+One or more fields in your request did not pass validation checks.
+For example, if you pass ```emailAddress``` as ```test1234example.com```:
 ```
 {
   "errors": [
