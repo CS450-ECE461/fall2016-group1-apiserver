@@ -1,7 +1,12 @@
 module.exports = [
   {
-    "handle": "testorg1",
-    "name": "Test Organization 1",
-    "emailAddress": "info@test1.org"
+    "handle": "testorg0",
+    "name": "Test Organization 0",
+    "emailAddress": "info@test0.org",
+    "location": {
+      "country": "USA",
+      "region": "Indiana",
+      "locality": "Indianapolis"
+    }
   }
 ];

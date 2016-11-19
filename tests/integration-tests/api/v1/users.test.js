@@ -17,37 +17,37 @@ describe("User API v1", function () {
 
   function createOne (index, done) {
     client
-            .create(users[index])
-            .expect(201)
-            .end(function (error, response) {
-              if (error) {
-                return done(error);
-              }
+      .create(users[index])
+      .expect(201)
+      .end(function (error, response) {
+        if (error) {
+          return done(error);
+        }
 
-              var body = response.body;
-              assert(response.body.user._id);
-              assert(!response.body.user.password);
-              assert(!response.body.user.__v);
-              var passwd = users[index].password;
-              users[index] = body.user;
-              users[index].password = passwd;
-              done();
-            });
+        var body = response.body;
+        assert(response.body.user._id);
+        assert(!response.body.user.password);
+        assert(!response.body.user.__v);
+        var passwd = users[index].password;
+        users[index] = body.user;
+        users[index].password = passwd;
+        done();
+      });
   }
 
   function getOne (index, field, done) {
     client
-            .get(users[index][field])
-            .expect(200)
-            .end(function (error, response) {
-              if (error) {
-                return done(error);
-              }
+      .get(users[index][field])
+      .expect(200)
+      .end(function (error, response) {
+        if (error) {
+          return done(error);
+        }
 
-                // noinspection JSUnresolvedVariable
-              response.body.user.should.deep.equal(_.omit(users[index], ["password"]));
-              done();
-            });
+        // noinspection JSUnresolvedVariable
+        response.body.user.should.deep.equal(_.omit(users[index], ["password"]));
+        done();
+      });
   }
 
   function updateOne (index, key, value, done) {
@@ -55,36 +55,36 @@ describe("User API v1", function () {
     doc[key] = value;
 
     client
-            .update(users[index]._id, doc)
-            .expect(200)
-            .end(function (error, response) {
-              if (error) {
-                return done(error);
-              }
+      .update(users[index]._id, doc)
+      .expect(200)
+      .end(function (error, response) {
+        if (error) {
+          return done(error);
+        }
 
-                // noinspection JSUnresolvedVariable
-              response.body.user._id.should.equal(users[index]._id);
-              response.body.user[key].should.equal(value);
-              response.body.user.updatedAt.should.not.equal(users[index].updatedAt);
-              response.body.user.createdAt.should.equal(users[index].createdAt);
-              var passwd = users[index].password;
-              users[index] = response.body.user;
-              users[index].password = passwd;
-              done();
-            });
+        // noinspection JSUnresolvedVariable
+        response.body.user._id.should.equal(users[index]._id);
+        response.body.user[key].should.equal(value);
+        response.body.user.updatedAt.should.not.equal(users[index].updatedAt);
+        response.body.user.createdAt.should.equal(users[index].createdAt);
+        var passwd = users[index].password;
+        users[index] = response.body.user;
+        users[index].password = passwd;
+        done();
+      });
   }
 
   function deleteOne (index, field, done) {
     client
-            .delete(users[index][field])
-            .expect(204)
-            .end(function (error) {
-              if (error) {
-                return done(error);
-              }
+      .delete(users[index][field])
+      .expect(204)
+      .end(function (error) {
+        if (error) {
+          return done(error);
+        }
 
-              done();
-            });
+        done();
+      });
   }
 
   before(function (done) {
@@ -122,19 +122,19 @@ describe("User API v1", function () {
 
   it("should not re-create the same user", function (done) {
     client
-            .create(users[0])
-            .expect(409)
-            .end(function (error, response) {
-              if (error) {
-                return done(error);
-              }
+      .create(users[0])
+      .expect(409)
+      .end(function (error, response) {
+        if (error) {
+          return done(error);
+        }
 
-              assert(response.body.errors.length === 1);
-              assert(response.body.errors[0].status === 409);
-              assert(response.body.errors[0].name === "DuplicateError");
+        assert(response.body.errors.length === 1);
+        assert(response.body.errors[0].status === 409);
+        assert(response.body.errors[0].name === "DuplicateError");
 
-              done();
-            });
+        done();
+      });
   });
 
   it("should get created user by `_id`", function (done) {
@@ -147,80 +147,80 @@ describe("User API v1", function () {
 
   it("should be able to search all users for one with a particular handle", function (done) {
     agent
-            .get("/api/v1/users")
-            .type("json")
-            .query({ handle: users[0].handle })
-            .expect(200)
-            .end(function (error, response) {
-              if (error) {
-                return done(error);
-              }
+      .get("/api/v1/users")
+      .type("json")
+      .query({handle: users[0].handle})
+      .expect(200)
+      .end(function (error, response) {
+        if (error) {
+          return done(error);
+        }
 
-              response.body.users.length.should.equal(1);
-              response.body.users[0].handle.should.equal(users[0].handle);
-              response.body.users[0]._id.should.equal(users[0]._id);
-              done();
-            });
+        response.body.users.length.should.equal(1);
+        response.body.users[0].handle.should.equal(users[0].handle);
+        response.body.users[0]._id.should.equal(users[0]._id);
+        done();
+      });
   });
 
   it("should be able to search all users for one with a particular email address", function (done) {
     agent
-            .get("/api/v1/users")
-            .type("json")
-            .query({ emailAddress: users[0].emailAddress })
-            .expect(200)
-            .end(function (error, response) {
-              if (error) {
-                return done(error);
-              }
+      .get("/api/v1/users")
+      .type("json")
+      .query({emailAddress: users[0].emailAddress})
+      .expect(200)
+      .end(function (error, response) {
+        if (error) {
+          return done(error);
+        }
 
-              response.body.users.length.should.equal(1);
-              response.body.users[0].emailAddress.should.equal(users[0].emailAddress);
-              response.body.users[0]._id.should.equal(users[0]._id);
-              done();
-            });
+        response.body.users.length.should.equal(1);
+        response.body.users[0].emailAddress.should.equal(users[0].emailAddress);
+        response.body.users[0]._id.should.equal(users[0]._id);
+        done();
+      });
   });
 
   it("should not be able to search all users for one with a particular password", function (done) {
     agent
-            .get("/api/v1/users")
-            .type("json")
-            .query({ password: users[0].password })
-            .expect(200)
-            .end(function (error, response) {
-              if (error) {
-                return done(error);
-              }
+      .get("/api/v1/users")
+      .type("json")
+      .query({password: users[0].password})
+      .expect(200)
+      .end(function (error, response) {
+        if (error) {
+          return done(error);
+        }
 
-              assert(response.body.users.length === 0);
-              done();
-            });
+        assert(response.body.users.length === 0);
+        done();
+      });
   });
 
   it("should be able to find all users", function (done) {
     agent
-            .get("/api/v1/users")
-            .type("json")
-            .expect(200)
-            .end(function (error, response) {
-              if (error) {
-                return done(error);
-              }
+      .get("/api/v1/users")
+      .type("json")
+      .expect(200)
+      .end(function (error, response) {
+        if (error) {
+          return done(error);
+        }
 
-              assert(response.body.users.length >= 4);
+        assert(response.body.users.length >= 4);
 
-              var numFound = 0;
-              for (var i = 0; i < response.body.users.length; i++) {
-                for (var j = 0; j < users.length; j++) {
-                  if (users[j]._id === response.body.users[i]._id) {
-                    numFound++;
-                  }
-                }
-              }
+        var numFound = 0;
+        for (var i = 0; i < response.body.users.length; i++) {
+          for (var j = 0; j < users.length; j++) {
+            if (users[j]._id === response.body.users[i]._id) {
+              numFound++;
+            }
+          }
+        }
 
-              assert(numFound === users.length);
-              done();
-            });
+        assert(numFound === users.length);
+        done();
+      });
   });
 
   it("should change `emailAddress` of created user", function (done) {
@@ -245,14 +245,14 @@ describe("User API v1", function () {
 
   it("should not be able to get a deleted user", function (done) {
     client
-            .get(users[0]._id)
-            .expect(404)
-            .end(function (error) {
-              if (error) {
-                return done(error);
-              }
+      .get(users[0]._id)
+      .expect(404)
+      .end(function (error) {
+        if (error) {
+          return done(error);
+        }
 
-              return done();
-            });
+        return done();
+      });
   });
 });
