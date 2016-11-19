@@ -13,7 +13,7 @@ Get information for authenticated user.
 
 Key | Type | Description
 --- | ---- | ----------- 
-```jwt``` | string | **Required.** The user's JWT token. Aquired from successful authentication.
+```jwt``` | string | **Required.** The user's JWT token. Acquired from successful authentication.
 
 
 #### Example
