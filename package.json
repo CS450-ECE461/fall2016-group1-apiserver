@@ -26,6 +26,7 @@
     "passport-jwt": "^2.2.0",
     "passport-local": "^1.0.0",
     "pluralize": "^3.0.0",
+    "querystringify": "0.0.4",
     "superagent": "^2.3.0",
     "supertest": "^2.0.0",
     "uuid": "^2.0.3",
