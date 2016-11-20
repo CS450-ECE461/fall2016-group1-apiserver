@@ -10,7 +10,8 @@ function initPassport (app) {
   var localOptions = {session: false};
 
   var jwtOptions = {
-    jwtFromRequest: ExtractJwt.fromBodyField("jwt"),
+    //jwtFromRequest: ExtractJwt.fromBodyField("jwt"),
+    jwtFromRequest: ExtractJwt.fromAuthHeader(),
     secretOrKey: "mysecret"
   };
 
