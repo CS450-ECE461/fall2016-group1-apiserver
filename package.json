@@ -27,9 +27,8 @@
     "passport-local": "^1.0.0",
     "pluralize": "^3.0.0",
     "querystringify": "0.0.4",
-    "superagent": "^2.3.0",
-    "supertest": "^2.0.0",
-    "uuid": "^2.0.3",
+    "superagent": "^3.0.0",
+    "uuid": "^3.0.0",
     "validator": "^6.0.0",
     "winston": "^2.2.0"
   },
@@ -48,7 +47,8 @@
     "mocha": "^3.1.2",
     "mocha-eslint": "^3.0.1",
     "mocha-lcov-reporter": "^1.2.0",
-    "request": "^2.75.0"
+    "request": "^2.75.0",
+    "superagent": "^2.0.1"
   },
   "license": "Apache-2.0",
   "engines": {
