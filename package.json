@@ -48,7 +48,7 @@
     "mocha-eslint": "^3.0.1",
     "mocha-lcov-reporter": "^1.2.0",
     "request": "^2.75.0",
-    "superagent": "^2.0.1"
+    "supertest": "^2.0.1"
   },
   "license": "Apache-2.0",
   "engines": {
