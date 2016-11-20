@@ -14,7 +14,6 @@ blueprint.controller(UserController, ResourceController);
 // noinspection JSUnusedGlobalSymbols
 UserController.prototype.showMe = function () {
   return function (req, res) {
-
     res.json(req.user.toJSON());
   };
 };

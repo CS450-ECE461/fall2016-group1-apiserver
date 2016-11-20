@@ -24,7 +24,7 @@ schema.statics.getChannelsByUser = function (user, next) {
     .exec(function (err, channels) {
       if (err) { return next(err); }
       next(channels);
-  });
+    });
 };
 
 module.exports = mongodb.model("channels", schema);

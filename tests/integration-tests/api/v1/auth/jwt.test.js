@@ -61,7 +61,7 @@ describe("Auth API v1 - JWT", function () {
       });
   }
 
-  function getUserFromToken(key, done) {
+  function getUserFromToken (key, done) {
     request
       .post("/api/v1/users/me")
       .type("json")
