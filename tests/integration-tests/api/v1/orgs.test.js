@@ -92,16 +92,11 @@ describe("Org API v1", function () {
 
   it("should update a created org by an org admin", function (done) {
     var emailAddress = "admin@test1.org";
-    orgClient.update(orgs[0]._id, {
-      org: {
-        "emailAddress": emailAddress
-      },
-      jwt: admin.jwt
-    }, function (error, response) {
+    orgClient.update(orgs[0], { "emailAddress": emailAddress }, function (error, response) {
       if (error) {
         return done(error);
       }
-      assert(response.body.org.emailAddress === emailAddress);
+      response.body.org.emailAddress.should.equal(emailAddress);
       orgs[0].emailAddress = emailAddress;
       done();
     });
@@ -120,7 +115,7 @@ describe("Org API v1", function () {
   after(function (done) {
     async.waterfall([
       function (callback) {
-        userClient.delete(admin._id).expect(204).end(function (error, response) {
+        userClient.delete(admin._id).expect(204).end(function (error) {
           if (error) {
             return callback(error);
           }
@@ -128,7 +123,7 @@ describe("Org API v1", function () {
         });
       },
       function (callback) {
-        userClient.delete(user._id).expect(204).end(function (error, response) {
+        userClient.delete(user._id).expect(204).end(function (error) {
           if (error) {
             return callback(error);
           }
