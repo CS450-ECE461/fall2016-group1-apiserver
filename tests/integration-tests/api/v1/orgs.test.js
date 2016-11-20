@@ -65,74 +65,38 @@ describe("Org API v1", function () {
     ], done);
   });
 
-  before(function (done) {
-    this.timeout(5000);
-    // Get JWT for admin user
-    agent
-      .post("/api/v1/auth/jwt")
-      .type("json")
-      .send({username: admin.handle, password: admin.password})
-      .end(function (error, response) {
-        if (error) {
-          return done(error);
-        }
-
-        response.status.should.equal(200);
-        assert(response.body.jwt);
-        admin["jwt"] = response.body.jwt;
-        done();
-      });
-  });
-
-  before(function (done) {
-    this.timeout(5000);
-    // Get JWT for regular user
-    agent
-      .post("/api/v1/auth/jwt")
-      .type("json")
-      .send({username: user.handle, password: user.password})
-      .end(function (error, response) {
-        if (error) {
-          return done(error);
-        }
-
-        response.status.should.equal(200);
-        assert(response.body.jwt);
-        user["jwt"] = response.body.jwt;
-        done();
-      });
-  });
-
   it("should not create an org without an authenticated user", function (done) {
     orgClient.create({org: orgs[0]}).expect(401, done);
   });
 
   it("should create an org with an authenticated user", function (done) {
-    orgClient.create({jwt: admin.jwt, org: orgs[0]}).expect(201).end(function (error, response) {
+    orgClient.auth(admin.emailAddress, admin.password, function (error, jwt) {
       if (error) {
         return done(error);
       }
+      assert(jwt === orgClient.jwt);
 
-      _.each(orgs[0], function (prop) {
-        assert(orgs[0][prop] === response.body.org[prop]);
+      orgClient.create(orgs[0]).expect(201).end(function (error, response) {
+        if (error) {
+          return done(error);
+        }
+
+        _.each(orgs[0], function (prop) {
+          assert(orgs[0][prop] === response.body.org[prop]);
+        });
+        orgs[0]._id = response.body.org._id;
+        done();
       });
-      orgs[0]._id = response.body.org._id;
-      done();
     });
   });
 
   it("should update a created org by an org admin", function (done) {
     var emailAddress = "admin@test1.org";
-    orgClient.update(orgs[0]._id, {
-      org: {
-        "emailAddress": emailAddress
-      },
-      jwt: admin.jwt
-    }, function (error, response) {
+    orgClient.update(orgs[0], { "emailAddress": emailAddress }, function (error, response) {
       if (error) {
         return done(error);
       }
-      assert(response.body.org.emailAddress === emailAddress);
+      response.body.org.emailAddress.should.equal(emailAddress);
       orgs[0].emailAddress = emailAddress;
       done();
     });
@@ -140,6 +104,7 @@ describe("Org API v1", function () {
 
   it("should not update a created org without an authenticated user", function (done) {
     var emailAddress = "admin2@test1.org";
+    orgClient.deauth();
     orgClient.update(orgs[0]._id, {
       org: {
         "emailAddress": emailAddress
@@ -150,21 +115,18 @@ describe("Org API v1", function () {
   after(function (done) {
     async.waterfall([
       function (callback) {
-        userClient.delete(admin).end(function (error, response) {
+        userClient.delete(admin._id).expect(204).end(function (error) {
           if (error) {
             return callback(error);
           }
-
-          response.status.should.equal(204);
           return callback(null);
         });
       },
       function (callback) {
-        userClient.delete(user).end(function (error, response) {
+        userClient.delete(user._id).expect(204).end(function (error) {
           if (error) {
             return callback(error);
           }
-          response.status.should.equal(204);
           return callback(null);
         });
       }

@@ -66,7 +66,8 @@ describe("Auth API v1 - JWT", function () {
       .post("/api/v1/users/me")
       .type("json")
       .set("Accept", "application/json")
-      .send({jwt: tokens[key]})
+      .set("Authorization", "JWT " + tokens[key])
+      .send()
       .expect(200)
       .end(function (error, response) {
         if (error) {

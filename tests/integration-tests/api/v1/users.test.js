@@ -182,9 +182,8 @@ describe("User API v1", function () {
   });
 
   it("should not be able to search all users for one with a particular password", function (done) {
-    agent
-      .get("/api/v1/users")
-      .type("json")
+    client
+      .get()
       .query({password: users[0].password})
       .expect(200)
       .end(function (error, response) {
@@ -245,7 +244,7 @@ describe("User API v1", function () {
 
   it("should not be able to get a deleted user", function (done) {
     client
-      .get(users[0]._id)
+      .get(users[0])
       .expect(404)
       .end(function (error) {
         if (error) {
