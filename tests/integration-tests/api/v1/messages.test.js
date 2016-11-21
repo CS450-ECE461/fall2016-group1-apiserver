@@ -101,6 +101,27 @@ describe("Message API v1", function () {
           assert(messages[1][prop] === response.body.message[prop]);
         });
         messages[1]._id = response.body.message._id;
+        messageClient.deauth();
+        done();
+      });
+    });
+  });
+
+  it("should create another message using receiver", function (done) {
+    messageClient.auth(users[0].emailAddress, users[0].password, function (error, jwt) {
+      if (error) { return done(error); }
+
+      assert(jwt === messageClient.jwt);
+      messages[2].receiver = users[1]._id;
+      messages[2].sender = users[0]._id;
+
+      messageClient.create(messages[2]).expect(201).end(function (error, response) {
+        if (error) { return done(error); }
+
+        _.each(messages[2], function (prop) {
+          assert(messages[2][prop] === response.body.message[prop]);
+        });
+        messages[2]._id = response.body.message._id;
         done();
       });
     });

@@ -17,5 +17,15 @@ module.exports = [
   {
     "content": "this is the fourth test message",
     "expireAt": (Date.now() + 600000)
+  },
+
+  {
+    "content": "this is the fifth test message",
+    "expireAt": (Date.now() + 600000)
+  },
+
+  {
+    "content": "this is the sixth test message",
+    "expireAt": (Date.now() + 600000)
   }
 ];
