@@ -1,4 +1,4 @@
-## GET: ```/api/v1/users/me```
+## POST: ```/api/v1/users/me```
 
 Get information for authenticated user.
 
@@ -14,7 +14,7 @@ Get information for authenticated user.
 
 #### Example
 ```
-GET /api/v1/users/me
+POST /api/v1/users/me
 
 Accept: application/json
 Cache-Control: no-cache

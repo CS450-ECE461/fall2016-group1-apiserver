@@ -8,7 +8,7 @@ module.exports = {
         controller: "UserController"
       },
       "/me": {
-        get: {
+        post: {
           before: [passport.authenticate("jwt", {session: false})],
           action: "UserController@showMe"
         }
