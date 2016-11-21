@@ -1,29 +1,23 @@
-"use strict";
 var blueprint = require("@onehilltech/blueprint");
+var ResourceController = require("./../../lib/ResourceController");
+var Message = require("../models/Message");
+var passport = require("passport");
 
 function MessageController () {
-  blueprint.BaseController.call(this);
+  // noinspection JSUnresolvedFunction
+  ResourceController.call(this, {
+    model: Message,
+    authorize: {
+      create: [
+        passport.authenticate("jwt", { session: false })
+      ],
+      update: [
+        passport.authenticate("jwt", { session: false })
+      ]
+    }
+  });
 }
 
-blueprint.controller(MessageController);
-
-MessageController.prototype.getMessages = function () {
-  return function (req, res) {
-    if (!req.user) {
-      return res.status(401).json({ error: "Invalid Token." });
-    }
-    // Get messages and return
-  };
-};
-
-MessageController.prototype.sendMessage = function () {
-  return function (req, res) {
-    if (!req.user) {
-      return res.status(401).json({ error: "Invalid Token." });
-    }
-    // Send a message
-  };
-};
+blueprint.controller(MessageController, ResourceController);
 
 module.exports = MessageController;
-
