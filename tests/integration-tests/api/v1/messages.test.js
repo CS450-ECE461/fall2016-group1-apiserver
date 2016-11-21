@@ -15,7 +15,7 @@ describe("Message API v1", function () {
   var agent;
   var userClient;
   var messageClient;
-  var user = require("../../../fixtures/users")[1];
+  var users = require("../../../fixtures/users");
   var messages = require("../../../fixtures/messages");
 
   before(function (done) {
@@ -42,38 +42,46 @@ describe("Message API v1", function () {
     // Create a User via API
     async.waterfall([
       function (callback) {
-        userClient.create(user).expect(201).end(function (error, response) {
-          if (error) {
-            return callback(error);
-          }
-          assert(response.status === 201);
-          user["_id"] = response.body.user._id;
-          return callback(null);
-        });
+        var count = 0;
+        for (let user of users) {
+          userClient.create(user).expect(201).end(function (error, response) {
+            if (error) { return callback(error); }
+            assert(response.status === 201);
+            user["_id"] = response.body.user._id;
+            if (++count >= users.length) { return callback(null); }
+          });
+        }
       }
     ], done);
   });
 
-  // it("should not create an org without an authenticated user", function (done) {
-  //  messageClient.create( {org: orgs[0]} ).expect(401, done);
-  // });
+  it("should not send a message without authentication", function (done) {
+    messageClient.create(messages[0])
+      .end(function (error, response) {
+        if (error) {
+          return done(error);
+        };
+        assert(response.status === 401);
+        done();
+      });
+  });
 
   // it("should create an org with an authenticated user", function (done) {
-  //  orgClient.auth(admin.emailAddress, admin.password, function (error, jwt) {
+  //  messageClient.auth(users[0].emailAddress, user[1].password, function (error, jwt) {
   //    if (error) {
   //      return done(error);
   //    }
-  //    assert(jwt === orgClient.jwt);
+  //    assert(jwt === messageClient.jwt);
 
-  //    orgClient.create(orgs[0]).expect(201).end(function (error, response) {
+  //    messageClient.create(messages[0]).expect(201).end(function (error, response) {
   //      if (error) {
   //        return done(error);
   //      }
 
-  //      _.each(orgs[0], function (prop) {
-  //        assert(orgs[0][prop] === response.body.org[prop]);
+  //      _.each(messages[0], function (prop) {
+  //        assert(messages[0][prop] === response.body.messages[prop]);
   //      });
-  //      orgs[0]._id = response.body.org._id;
+  //      messages[0]._id = response.body.messages._id;
   //      done();
   //    });
   //  });
@@ -104,12 +112,15 @@ describe("Message API v1", function () {
   after(function (done) {
     async.waterfall([
       function (callback) {
-        userClient.delete(user._id).expect(204).end(function (error) {
-          if (error) {
-            return callback(error);
-          }
-          return callback(null);
-        });
+        var count = 0;
+        for (let user of users) {
+          userClient.delete(user._id).expect(204).end(function (error) {
+            if (error) {
+              return callback(error);
+            }
+            if (++count >= users.length) { return callback(null); }
+          });
+        }
       }
     ], done);
   });
