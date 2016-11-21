@@ -9,11 +9,7 @@ Get information for authenticated user.
 
 ```Content-Type: application/json```
 
-#### Body
-
-Key | Type | Description
---- | ---- | ----------- 
-```jwt``` | string | **Required.** The user's JWT token. Acquired from successful authentication.
+```Authorization: "JWT JWT_TOKEN_STRING"```
 
 
 #### Example
@@ -23,10 +19,8 @@ POST /api/v1/users/me
 Accept: application/json
 Cache-Control: no-cache
 Content-Type: application/json
+Authorization: "JWT b9h347685934b.f37498gf3847.njf786394fgb32748y"
 
-{
-  "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzY290Y2guaW8iLCJleHAiOjEzMDA4MTkzODAsIm5hbWUiOiJDaHJpcyBTZXZpbGxlamEiLCJhZG1pbiI6dHJ1ZX0.03f329983b86f7d9a9f5fef85305880101d5e302afafa20154d094b229f75"
-}
 ```
 
 ### Responses
