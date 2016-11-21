@@ -1,4 +1,5 @@
 var mongodb = require("@onehilltech/blueprint-mongodb");
+// var Channel = require("../models/Channel");
 
 var schema = new mongodb.Schema({
   sender: {
@@ -29,6 +30,14 @@ var schema = new mongodb.Schema({
 }, {
     // Adds 'createdAt' and 'updatedAt' fields
   timestamps: true
+});
+
+schema.pre("save", function (next) {
+  if (!this.channel) {
+
+  }
+
+  return next();
 });
 
 module.exports = exports = mongodb.model("messages", schema);
