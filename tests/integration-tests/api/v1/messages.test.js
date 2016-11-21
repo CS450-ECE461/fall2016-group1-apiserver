@@ -64,26 +64,26 @@ describe("Message API v1", function () {
       });
   });
 
-   it("should create a message from an authenticated user to another user", function (done) {
-    messageClient.auth(users[0].emailAddress, user[0].password, function (error, jwt) {
-      if (error) {
-        return done(error);
-      }
-      assert(jwt === messageClient.jwt);
+   // it("should create a message from an authenticated user to another user", function (done) {
+   // messageClient.auth(users[0].emailAddress, user[0].password, function (error, jwt) {
+   //   if (error) {
+   //     return done(error);
+   //   }
+   //   assert(jwt === messageClient.jwt);
 
-      messageClient.create(messages[0]).expect(201).end(function (error, response) {
-        if (error) {
-          return done(error);
-        }
+   //   messageClient.create(messages[0]).expect(201).end(function (error, response) {
+   //     if (error) {
+   //       return done(error);
+   //     }
 
-        _.each(messages[0], function (prop) {
-          assert(messages[0][prop] === response.body.messages[prop]);
-        });
-        messages[0]._id = response.body.messages._id;
-        done();
-      });
-    });
-   });
+   //     _.each(messages[0], function (prop) {
+   //       assert(messages[0][prop] === response.body.messages[prop]);
+   //     });
+   //     messages[0]._id = response.body.messages._id;
+   //     done();
+   //   });
+   // });
+   // });
 
   // it("should update a created org by an org admin", function (done) {
   //  var emailAddress = "admin@test1.org";
