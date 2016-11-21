@@ -8,11 +8,15 @@ function MessageController () {
   ResourceController.call(this, {
     model: Message,
     authorize: {
-      create: [
+      any: [
         passport.authenticate("jwt", { session: false })
       ],
-      update: [
-        passport.authenticate("jwt", { session: false })
+      create: [
+        function (req, res, next) {
+          console.log(req.user._id);
+          req.body.message.sender = req.user._id;
+          next();
+        }
       ]
     }
   });
