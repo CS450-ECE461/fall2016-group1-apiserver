@@ -55,6 +55,12 @@ var schema = new Schema({
   timestamps: true
 });
 
+schema.virtual("channels", {
+  ref: "channels",
+  localField: "_id",
+  foreignField: "members"
+});
+
 schema.pre("save", function (next) {
     // If the password has been updated then it needs to be hashed
   if (this.isModified("password")) {
