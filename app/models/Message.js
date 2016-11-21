@@ -33,20 +33,25 @@ var schema = new mongodb.Schema({
   timestamps: true
 });
 
+schema.virtual("receiver").set(function (receiver) {
+  this.receivers = receiver;
+});
+
 schema.virtual("receivers").set(function (array) {
   var receivers = [];
   var invalid = false;
 
-  if (!(array.size > 0)) { return; }
+  if (!(array.length > 0)) { return; }
   if (!(array instanceof Array)) {
     array = [array];
   }
 
   // Check each receiver, exit if any are not found
   var count = 0;
+  var self = this;
   for (let id of array) {
     if (invalid) { return; }
-    User.findByID(id, function (error, result) {
+    User.findById(id, function (error, result) {
       if (error) { throw error; }
       if (!result) {
         invalid = true;
@@ -57,7 +62,7 @@ schema.virtual("receivers").set(function (array) {
         receivers.push(result._id);
       }
       if ((count === array.length) && !invalid) {
-        this.setChannel(receivers);
+        self.setChannel(receivers);
       }
     });
   };
