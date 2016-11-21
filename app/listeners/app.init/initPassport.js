@@ -35,6 +35,7 @@ function initPassport (app) {
         }
         
         return done(null, user);
+      });
     });
   }
 
