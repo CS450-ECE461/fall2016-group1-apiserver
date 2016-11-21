@@ -1,33 +1,19 @@
 module.exports = [
   {
-    "handle": "bdfoster",
-    "firstName": "Brian",
-    "lastName": "Foster",
-    "emailAddress": "fosterbd@iupui.edu",
-    "password": "test1234"
+    "content": "this is the first test message",
+    "receivers": ["Receiver1", "Receiver2"],
+    "expireAt": (Date.now() + 600000)
   },
 
   {
-    "handle": "asdobson",
-    "firstName": "Angus",
-    "lastName": "Dobson",
-    "emailAddress": "asdobson@iupui.edu",
-    "password": "test1234"
+    "content": "this is the second test message"
   },
 
   {
-    "handle": "mattneal",
-    "firstName": "Matt",
-    "lastName": "Neal",
-    "emailAddress": "mattneal@iupui.edu",
-    "password": "test1234"
+    "content": "this is the third test message"
   },
 
   {
-    "handle": "bdfoster89",
-    "firstName": "Brian",
-    "lastName": "Foster",
-    "emailAddress": "bdfoster89@gmail.com",
-    "password": "test1234"
+    "content": "this is the fourth test message"
   }
 ];
