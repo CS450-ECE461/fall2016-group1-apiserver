@@ -25,10 +25,16 @@ function initPassport (app) {
       if (!user) {
         return done(null, false);
       }
-      if (!user.verifyPassword(password)) {
-        return done(null, false);
-      }
-      return done(null, user);
+      user.verifyPassword(password, function(error, isMatch) {
+        if (error) {
+          return done(error);
+        }
+        
+        if (isMatch) {
+          return done(null, false);
+        }
+        
+        return done(null, user);
     });
   }
 
