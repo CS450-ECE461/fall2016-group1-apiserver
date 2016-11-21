@@ -30,7 +30,7 @@ function initPassport (app) {
           return done(error);
         }
         
-        if (isMatch) {
+        if (!isMatch) {
           return done(null, false);
         }
         
