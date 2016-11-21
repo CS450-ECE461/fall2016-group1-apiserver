@@ -19,21 +19,11 @@ function initPassport (app) {
     var criteria = {$or: [{handle: username}, {emailAddress: username}]};
     User.findOne(criteria, function (err, user) {
       /* istanbul ignore if  */
-      if (err) {
-        return done(err);
-      }
-      if (!user) {
-        return done(null, false);
-      }
-      user.verifyPassword(password, function(error, isMatch) {
-        if (error) {
-          return done(error);
-        }
-        
-        if (!isMatch) {
-          return done(null, false);
-        }
-        
+      if (err) { return done(err); }
+      if (!user) { return done(null, false); }
+      user.verifyPassword(password, function (error, isMatch) {
+        if (error) { return done(error); }
+        if (!isMatch) { return done(null, false); }
         return done(null, user);
       });
     });
@@ -42,14 +32,9 @@ function initPassport (app) {
   function jwtAuthorize (payload, done) {
     User.findById(payload, function (err, user) {
       /* istanbul ignore if  */
-      if (err) {
-        return done(err, false);
-      }
-      if (user) {
-        done(null, user);
-      } else {
-        done(null, false);
-      }
+      if (err) { return done(err, false); }
+      if (!user) { return done(null, false); }
+      done(null, user);
     });
   }
 

@@ -3,7 +3,6 @@ var Schema = mongodb.Schema;
 var validator = require("validator");
 var jwt = require("jwt-simple");
 var bcrypt = require("bcrypt-nodejs");
-var SALT_WORK_FACTOR = 10;
 
 // noinspection JSUnresolvedVariable
 var schema = new Schema({
@@ -62,31 +61,31 @@ schema.virtual("channels", {
   foreignField: "members"
 });
 
-UserSchema.pre("save", function(next) {
-  var user = this;
-
+schema.pre("save", function (next) {
   // only hash the password if it has been modified (or is new)
-  if (!user.isModified("password")) return next();
-
-  // generate a salt
-  bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-    if (err) return next(err);
-
-    // hash the password along with our new salt
-    bcrypt.hash(user.password, salt, function(err, hash) {
-      if (err) return next(err);
-
-      // override the cleartext password with the hashed one
-      user.password = hash;
-      return next();
-    });
-  });
+  if (!this.isModified("password")) return next();
+  this.hashPassword(next);
 });
 
-schema.methods.verifyPassword = function(candidatePassword, next) {
-  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-    if (err) return next(err);
-    return next(null, isMatch);
+schema.pre("update", function (next) {
+  // only hash the password if it has been modified (or is new)
+  if (!this.isModified("password")) return next();
+  this.hashPassword(next);
+});
+
+schema.methods.hashPassword = function (next) {
+  var self = this;
+  bcrypt.hash(self.password, null, null, function (err, hash) {
+    if (err) { return next(err); }
+    self.password = hash;
+    next();
+  });
+};
+
+schema.methods.verifyPassword = function (candidatePassword, next) {
+  bcrypt.compare(candidatePassword, this.password, function (err, res) {
+    if (err) { return next(err); }
+    next(null, res);
   });
 };
 
