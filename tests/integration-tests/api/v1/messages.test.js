@@ -64,48 +64,47 @@ describe("Message API v1", function () {
       });
   });
 
-   // it("should create a message from an authenticated user to another user", function (done) {
-   // messageClient.auth(users[0].emailAddress, user[0].password, function (error, jwt) {
-   //   if (error) {
-   //     return done(error);
-   //   }
-   //   assert(jwt === messageClient.jwt);
+  it("should create a message from an authenticated user to another user, using receivers", function (done) {
+    messageClient.auth(users[0].emailAddress, users[0].password, function (error, jwt) {
+      if (error) { return done(error); }
 
-   //   messageClient.create(messages[0]).expect(201).end(function (error, response) {
-   //     if (error) {
-   //       return done(error);
-   //     }
+      assert(jwt === messageClient.jwt);
+      messages[0].receivers = [users[1]._id];
+      messages[0].sender = users[0]._id;
 
-   //     _.each(messages[0], function (prop) {
-   //       assert(messages[0][prop] === response.body.messages[prop]);
-   //     });
-   //     messages[0]._id = response.body.messages._id;
-   //     done();
-   //   });
-   // });
-   // });
+      messageClient.create(messages[0]).expect(201).end(function (error, response) {
+        if (error) { return done(error); }
 
-  // it("should update a created org by an org admin", function (done) {
-  //  var emailAddress = "admin@test1.org";
-  //  orgClient.update(orgs[0], { "emailAddress": emailAddress }, function (error, response) {
-  //    if (error) {
-  //      return done(error);
-  //    }
-  //    response.body.org.emailAddress.should.equal(emailAddress);
-  //    orgs[0].emailAddress = emailAddress;
-  //    done();
-  //  });
-  // });
+        _.each(messages[0], function (prop) {
+          assert(messages[0][prop] === response.body.message[prop]);
+        });
+        messages[0]._id = response.body.message._id;
+        messages[0].channel = response.body.message.channel;
+        messageClient.deauth();
+        done();
+      });
+    });
+  });
 
-  // it("should not update a created org without an authenticated user", function (done) {
-  //  var emailAddress = "admin2@test1.org";
-  //  orgClient.deauth();
-  //  orgClient.update(orgs[0]._id, {
-  //    org: {
-  //      "emailAddress": emailAddress
-  //    }
-  //  }).expect(401, done);
-  // });
+  it("should create a message from an authenticated user to another user, using channel", function (done) {
+    messageClient.auth(users[1].emailAddress, users[1].password, function (error, jwt) {
+      if (error) { return done(error); }
+
+      assert(jwt === messageClient.jwt);
+      messages[1].channel = messages[0].channel;
+      messages[1].sender = users[1]._id;
+
+      messageClient.create(messages[1]).expect(201).end(function (error, response) {
+        if (error) { return done(error); }
+
+        _.each(messages[1], function (prop) {
+          assert(messages[1][prop] === response.body.message[prop]);
+        });
+        messages[1]._id = response.body.message._id;
+        done();
+      });
+    });
+  });
 
   after(function (done) {
     async.waterfall([
@@ -118,6 +117,19 @@ describe("Message API v1", function () {
             }
             if (++count >= users.length) { return callback(null); }
           });
+        }
+      },
+      function (callback) {
+        var count = 0;
+        for (let message of messages) {
+          if (!message._id) { ++count; } else {
+            messageClient.delete(message._id).expect(204).end(function (error) {
+              if (error) {
+                return callback(error);
+              }
+              if (++count >= messages.length) { return callback(null); }
+            });
+          }
         }
       }
     ], done);
