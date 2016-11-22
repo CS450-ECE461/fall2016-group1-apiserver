@@ -61,17 +61,23 @@ schema.virtual("channels", {
   foreignField: "members"
 });
 
-schema.pre("save", function (next) {
-    // If the password has been updated then it needs to be hashed
-  if (this.isModified("password")) {
-    this.password = bcrypt.hashSync(this.password);
-  }
+schema.pre("validate", function (next) {
+  // only hash the password if it has been modified (or is new)
+  if (!this.password) return next();
 
-  return next();
+  var self = this;
+  bcrypt.hash(self.password, null, null, function (err, hash) {
+    if (err) { return next(err); }
+    self.password = hash;
+    next();
+  });
 });
 
-schema.methods.verifyPassword = function (password) {
-  return bcrypt.compareSync(password, this.password);
+schema.methods.verifyPassword = function (candidatePassword, next) {
+  bcrypt.compare(candidatePassword, this.password, function (err, res) {
+    if (err) { return next(err); }
+    next(null, res);
+  });
 };
 
 schema.methods.createToken = function () {
