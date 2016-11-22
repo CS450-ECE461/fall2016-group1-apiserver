@@ -13,7 +13,6 @@ function MessageController () {
       ],
       create: [
         function (req, res, next) {
-          console.log(req.user._id);
           req.body.message.sender = req.user._id;
           next();
         }
