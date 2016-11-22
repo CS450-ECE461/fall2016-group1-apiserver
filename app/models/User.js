@@ -61,13 +61,13 @@ schema.virtual("channels", {
   foreignField: "members"
 });
 
-schema.pre("validate", function (next) {
+schema.pre("save", function (next) {
   // only hash the password if it has been modified (or is new)
-  if (!this.password) return next();
+  if (!this.isModified("password")) return next();
 
   var self = this;
   bcrypt.hash(self.password, null, null, function (err, hash) {
-    if (err) { return next(err); }
+    if (err) return next(err);
     self.password = hash;
     next();
   });
@@ -75,7 +75,7 @@ schema.pre("validate", function (next) {
 
 schema.methods.verifyPassword = function (candidatePassword, next) {
   bcrypt.compare(candidatePassword, this.password, function (err, res) {
-    if (err) { return next(err); }
+    if (err) return next(err);
     next(null, res);
   });
 };
