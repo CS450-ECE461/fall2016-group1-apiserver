@@ -61,13 +61,6 @@ schema.virtual("channels", {
   foreignField: "members"
 });
 
-// schema.pre("save", function (next) {
-//  console.log("Presave");
-//  // only hash the password if it has been modified (or is new)
-//  if (!this.isModified("password")) return next();
-//  this.hashPassword(next);
-// });
-
 schema.pre("validate", function (next) {
   // only hash the password if it has been modified (or is new)
   if (!this.password) return next();
