@@ -226,6 +226,18 @@ describe("User API v1", function () {
     updateOne(0, "emailAddress", "bdfoster@iupui.edu", done);
   });
 
+  it("should get the updated user's new 'emailAddress'", function (done) {
+    client
+      .get(users[0]._id)
+      .expect(200)
+      .end(function (error, response) {
+        if (error) { return done(error); }
+        // noinspection JSUnresolvedVariable
+        response.body.user.emailAddress.should.equal("bdfoster@iupui.edu");
+        done();
+      });
+  });
+
   it("should delete first created user by `_id`", function (done) {
     deleteOne(0, "_id", done);
   });
