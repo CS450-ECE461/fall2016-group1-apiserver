@@ -19,13 +19,12 @@ describe("Auth API v1 - JWT", function () {
       .create(users[index])
       .expect(201)
       .end(function (error, response) {
-        if (error) {
-          return done(error);
-        }
+        if (error) { return done(error); }
 
         assert(response.body.user._id);
         assert(!response.body.user.password);
         assert(!response.body.user.__v);
+        users[index]._id = response.body.user._id;
         done();
       });
   }
@@ -35,9 +34,7 @@ describe("Auth API v1 - JWT", function () {
       .delete(users[index][field])
       .expect(204)
       .end(function (error) {
-        if (error) {
-          return done(error);
-        }
+        if (error) { return done(error); }
 
         done();
       });
@@ -137,6 +134,48 @@ describe("Auth API v1 - JWT", function () {
 
   it("should get second user data from valid token", function (done) {
     getUserFromToken(1, done);
+  });
+
+  it("should allow the first user to change their password", function (done) {
+    userClient
+      .update(users[0]._id, { password: "23hjg5423jkh" })
+      .type("json")
+      .set("Accept", "application/json")
+      .expect(200)
+      .end(function (error, response) {
+        if (error) { return done(error); }
+        done();
+      });
+  });
+
+  it("should not allow the first user to login with old password", function (done) {
+    request
+      .post("/api/v1/auth/jwt")
+      .type("json")
+      .set("Accept", "application/json")
+      .send({ username: users[0].handle, password: users[0].password })
+      .expect(422)
+      .end(function (error, response) {
+        if (error) { return done(error); }
+        assert(response.body.errors[0].name === "InvalidCredentialsError");
+        done();
+      });
+  });
+
+  it("should allow the first user to login with new password", function (done) {
+    request
+      .post("/api/v1/auth/jwt")
+      .type("json")
+      .set("Accept", "application/json")
+      .send({ username: users[0].handle, password: "23hjg5423jkh" })
+      .expect(200)
+      .end(function (error, response) {
+        if (error) { return done(error); }
+
+        assert(response.body.jwt);
+        tokens.push(response.body.jwt);
+        done();
+      });
   });
 
   it("should delete first created user", function (done) {
