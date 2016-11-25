@@ -69,7 +69,7 @@ describe("Message API v1", function () {
       if (error) { return done(error); }
 
       assert(jwt === messageClient.jwt);
-      messages[0].receivers = [users[1]._id];
+      messages[0].channel = { receivers: [users[1]._id] };
       messages[0].sender = users[0]._id;
 
       messageClient.create(messages[0]).expect(201).end(function (error, response) {
@@ -79,6 +79,7 @@ describe("Message API v1", function () {
           assert(messages[0][prop] === response.body.message[prop]);
         });
         messages[0]._id = response.body.message._id;
+        assert(response.body.message.channel !== undefined);
         messages[0].channel = response.body.message.channel;
         messageClient.deauth();
         done();
@@ -115,7 +116,7 @@ describe("Message API v1", function () {
       if (error) { return done(error); }
 
       assert(jwt === messageClient.jwt);
-      messages[2].receiver = users[1]._id;
+      messages[2].channel = { receiver: users[1]._id };
       messages[2].sender = users[0]._id;
 
       messageClient.create(messages[2]).expect(201).end(function (error, response) {
@@ -127,7 +128,7 @@ describe("Message API v1", function () {
         messages[2]._id = response.body.message._id;
         messages[2].channel = response.body.message.channel;
 
-        // assert(messages[2].channel === messages[1].channel);
+        assert(messages[2].channel === messages[1].channel);
 
         messageClient.deauth();
         done();
@@ -140,7 +141,7 @@ describe("Message API v1", function () {
       if (error) { return done(error); }
 
       assert(jwt === messageClient.jwt);
-      messages[3].receiver = users[3]._id;
+      messages[3].channel = { receiver: users[3]._id };
       messages[3].sender = users[2]._id;
 
       messageClient.create(messages[3]).expect(201).end(function (error, response) {
@@ -153,7 +154,7 @@ describe("Message API v1", function () {
         messages[3].channel = response.body.message.channel;
 
         // Should not use existing channel (i.e. the one for messages between users[0] and users[1])
-        // assert(messages[3].channel !== messages[2].channel);
+        assert(messages[3].channel !== messages[2].channel);
 
         messageClient.deauth();
         done();
