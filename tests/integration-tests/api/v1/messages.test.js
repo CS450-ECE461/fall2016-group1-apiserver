@@ -9,6 +9,9 @@ var before = require("mocha").before;
 var describe = require("mocha").describe;
 var ResourceClient = require("../../../../lib/ResourceClient");
 var _ = require("lodash");
+var Channel = require("../../../../app/models/Channel");
+var Message = require("../../../../app/models/Message");
+var User = require("../../../../app/models/User");
 
 describe("Message API v1", function () {
   var server;
@@ -163,36 +166,22 @@ describe("Message API v1", function () {
   });
 
   after(function (done) {
-    async.waterfall([
-      function (callback) {
-        messageClient.auth(users[0].emailAddress, users[0].password, function (error) {
-          if (error) {
-            return callback(error);
-          }
-          var count = 0;
-          for (let message of messages) {
-            if (!message._id) { ++count; } else {
-              messageClient.delete(message._id).expect(204).end(function (error) {
-                if (error) {
-                  return callback(error);
-                }
-                if (++count >= messages.length) { return callback(null); }
-              });
-            }
-          }
-        });
-      },
-      function (callback) {
-        var count = 0;
-        for (let user of users) {
-          userClient.delete(user._id).expect(204).end(function (error) {
-            if (error) {
-              return callback(error);
-            }
-            if (++count >= users.length) { return callback(null); }
-          });
-        }
+    this.timeout(5000);
+    Channel.remove({}, function (error) {
+      if (error) {
+        return done(error);
       }
-    ], done);
+      Message.remove({}, function (error) {
+        if (error) {
+          return done(error);
+        }
+        User.remove({}, function (error) {
+          if (error) {
+            return done(error);
+          }
+          return done();
+        });
+      });
+    });
   });
 });
