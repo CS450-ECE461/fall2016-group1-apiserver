@@ -55,16 +55,16 @@ describe("Message API v1", function () {
     ], done);
   });
 
-  it("should not send a message without authentication", function (done) {
+  it("should not send a message without an authenticated user", function (done) {
     messageClient.create(messages[0])
       .end(function (error, response) {
-        if (error) { return done(error); };
+        if (error) { return done(error); }
         assert(response.status === 401);
         done();
       });
   });
 
-  it("should create a message from an authenticated user to another user, using receivers", function (done) {
+  it("should create a message with an authenticated user, using `receivers` field", function (done) {
     messageClient.auth(users[0].emailAddress, users[0].password, function (error, jwt) {
       if (error) { return done(error); }
 
@@ -86,7 +86,7 @@ describe("Message API v1", function () {
     });
   });
 
-  it("should create a message from an authenticated user to another user, using channel", function (done) {
+  it("should create a message with an authenticated user, using existing channel", function (done) {
     messageClient.auth(users[1].emailAddress, users[1].password, function (error, jwt) {
       if (error) { return done(error); }
 
@@ -100,13 +100,16 @@ describe("Message API v1", function () {
           assert(messages[1][prop] === response.body.message[prop]);
         });
         messages[1]._id = response.body.message._id;
+        messages[1].channel = response.body.message.channel;
+        assert(messages[1].channel === messages[0].channel);
+
         messageClient.deauth();
         done();
       });
     });
   });
 
-  it("should create another message using receiver", function (done) {
+  it("should create a message with an authenticated user, using `receiver` field and existing channel", function (done) {
     messageClient.auth(users[0].emailAddress, users[0].password, function (error, jwt) {
       if (error) { return done(error); }
 
@@ -120,13 +123,17 @@ describe("Message API v1", function () {
           assert(messages[2][prop] === response.body.message[prop]);
         });
         messages[2]._id = response.body.message._id;
+        messages[2].channel = response.body.message.channel;
+
+        assert(messages[2].channel === messages[1].channel);
+
         messageClient.deauth();
         done();
       });
     });
   });
 
-  it("should create another message using receiver", function (done) {
+  it("should create another message with an authenticated user, using `receiver` and new channel", function (done) {
     messageClient.auth(users[2].emailAddress, users[2].password, function (error, jwt) {
       if (error) { return done(error); }
 
@@ -140,6 +147,11 @@ describe("Message API v1", function () {
           assert(messages[3][prop] === response.body.message[prop]);
         });
         messages[3]._id = response.body.message._id;
+        messages[3].channel = response.body.message.channel;
+
+        // Should not use existing channel (i.e. the one for messages between users[0] and users[1])
+        //assert(messages[3].channel !== messages[2].channel);
+
         messageClient.deauth();
         done();
       });
@@ -149,7 +161,7 @@ describe("Message API v1", function () {
   after(function (done) {
     async.waterfall([
       function (callback) {
-        messageClient.auth(users[0].emailAddress, users[0].password, function (error, jwt) {
+        messageClient.auth(users[0].emailAddress, users[0].password, function (error) {
           if (error) {
             return callback(error);
           }
