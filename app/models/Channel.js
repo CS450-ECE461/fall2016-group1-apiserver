@@ -1,15 +1,13 @@
 var mongodb = require("@onehilltech/blueprint-mongodb");
 
 var schema = new mongodb.Schema({
-  members: {
-    type: [{ type: mongodb.Schema.Types.ObjectId, ref: "users" }],
-    index: true
-  },
-  meta: {
-    type: mongodb.Schema.Types.Mixed,
-    default: {}
-  }
-}, { toJSON: { virtuals: true } });
+  members: [{
+    type: mongodb.Schema.Types.ObjectId,
+    ref: "users",
+    index: true,
+    required: true
+  }]
+});
 
 schema.virtual("messages", {
   ref: "messages",
