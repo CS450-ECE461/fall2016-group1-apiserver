@@ -1,7 +1,7 @@
-var blueprint = require("@onehilltech/blueprint");
-var ResourceController = require("./../../lib/ResourceController");
-var Message = require("../models/Message");
-var passport = require("passport");
+const blueprint = require("@onehilltech/blueprint");
+const ResourceController = require("./../../lib/ResourceController");
+const Message = require("../models/Message");
+const passport = require("passport");
 
 function MessageController () {
   // noinspection JSUnresolvedFunction

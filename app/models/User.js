@@ -1,11 +1,11 @@
-var mongodb = require("@onehilltech/blueprint-mongodb");
-var Schema = mongodb.Schema;
-var validator = require("validator");
-var jwt = require("jwt-simple");
-var bcrypt = require("bcrypt-nodejs");
+const mongodb = require("@onehilltech/blueprint-mongodb");
+const Schema = mongodb.Schema;
+const validator = require("validator");
+const jwt = require("jwt-simple");
+const bcrypt = require("bcrypt-nodejs");
 
 // noinspection JSUnresolvedVariable
-var schema = new Schema({
+const schema = new Schema({
   handle: {
     type: String,
     required: false,
@@ -65,7 +65,7 @@ schema.pre("save", function (next) {
   // only hash the password if it has been modified (or is new)
   if (!this.isModified("password")) return next();
 
-  var self = this;
+  const self = this;
   bcrypt.hash(self.password, null, null, function (err, hash) {
     if (err) return next(err);
     self.password = hash;
@@ -85,7 +85,7 @@ schema.methods.createToken = function () {
 };
 
 schema.methods.toJSON = function () {
-  var obj = this.toObject();
+  const obj = this.toObject();
   delete obj.password;
   return obj;
 };

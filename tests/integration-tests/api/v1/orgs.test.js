@@ -1,23 +1,23 @@
-var async = require("async");
-var assert = require("chai").assert;
-var blueprint = require("@onehilltech/blueprint");
-var should = require("chai").should();
-var appPath = require("../../../fixtures/appPath");
-var after = require("mocha").after;
-var it = require("mocha").it;
-var before = require("mocha").before;
-var describe = require("mocha").describe;
-var ResourceClient = require("../../../../lib/ResourceClient");
-var _ = require("lodash");
+const async = require("async");
+const assert = require("chai").assert;
+const blueprint = require("@onehilltech/blueprint");
+let should = require("chai").should();
+const appPath = require("../../../fixtures/appPath");
+const after = require("mocha").after;
+const it = require("mocha").it;
+const before = require("mocha").before;
+const describe = require("mocha").describe;
+const ResourceClient = require("../../../../lib/ResourceClient");
+const _ = require("lodash");
 
 describe("Org API v1", function () {
-  var server;
-  var agent;
-  var userClient;
-  var orgClient;
-  var admin = require("../../../fixtures/users")[0];
-  var user = require("../../../fixtures/users")[1];
-  var orgs = require("../../../fixtures/orgs");
+  let server;
+  let agent;
+  let userClient;
+  let orgClient;
+  const admin = require("../../../fixtures/users")[0];
+  const user = require("../../../fixtures/users")[1];
+  const orgs = require("../../../fixtures/orgs");
 
   before(function (done) {
     this.timeout(5000);
@@ -91,7 +91,7 @@ describe("Org API v1", function () {
   });
 
   it("should update a created org by an org admin", function (done) {
-    var emailAddress = "admin@test1.org";
+    const emailAddress = "admin@test1.org";
     orgClient.update(orgs[0], { "emailAddress": emailAddress }, function (error, response) {
       if (error) {
         return done(error);
@@ -103,7 +103,7 @@ describe("Org API v1", function () {
   });
 
   it("should not update a created org without an authenticated user", function (done) {
-    var emailAddress = "admin2@test1.org";
+    const emailAddress = "admin2@test1.org";
     orgClient.deauth();
     orgClient.update(orgs[0]._id, {
       org: {

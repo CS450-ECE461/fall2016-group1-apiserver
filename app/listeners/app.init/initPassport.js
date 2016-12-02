@@ -1,22 +1,22 @@
-var passport = require("passport");
-var LocalStrategy = require("passport-local").Strategy;
-var JwtStrategy = require("passport-jwt").Strategy;
-var ExtractJwt = require("passport-jwt").ExtractJwt;
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
+const JwtStrategy = require("passport-jwt").Strategy;
+const ExtractJwt = require("passport-jwt").ExtractJwt;
 
 module.exports = initPassport;
 
 function initPassport (app) {
-  var User = app.models.User;
-  var localOptions = {session: false};
+  const User = app.models.User;
+  const localOptions = {session: false};
 
-  var jwtOptions = {
+  const jwtOptions = {
     // jwtFromRequest: ExtractJwt.fromBodyField("jwt"),
     jwtFromRequest: ExtractJwt.fromAuthHeader(),
     secretOrKey: "mysecret"
   };
 
   function localAuthorize (username, password, done) {
-    var criteria = {$or: [{handle: username}, {emailAddress: username}]};
+    const criteria = {$or: [{handle: username}, {emailAddress: username}]};
     User.findOne(criteria, function (err, user) {
       /* istanbul ignore if  */
       if (err) { return done(err); }

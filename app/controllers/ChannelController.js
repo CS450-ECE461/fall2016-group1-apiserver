@@ -1,23 +1,20 @@
 const blueprint = require("@onehilltech/blueprint");
 const ResourceController = require("./../../lib/ResourceController");
-const Org = require("../models/Org");
+const Channel = require("../models/Channel");
 const passport = require("passport");
 
-function OrgController () {
+function ChannelController () {
   // noinspection JSUnresolvedFunction
   ResourceController.call(this, {
-    model: Org,
+    model: Channel,
     authorize: {
-      create: [
-        passport.authenticate("jwt", {session: false})
-      ],
-      update: [
+      any: [
         passport.authenticate("jwt", {session: false})
       ]
     }
   });
 }
 
-blueprint.controller(OrgController, ResourceController);
+blueprint.controller(ChannelController, ResourceController);
 
-module.exports = OrgController;
+module.exports = ChannelController;

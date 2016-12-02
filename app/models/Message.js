@@ -1,15 +1,16 @@
-var mongodb = require("@onehilltech/blueprint-mongodb");
-var Channel = require("../models/Channel");
-var User = require("../models/User");
+const mongodb = require("@onehilltech/blueprint-mongodb");
+const Channel = require("../models/Channel");
+const User = require("../models/User");
 
-var schema = new mongodb.Schema({
+const schema = new mongodb.Schema({
   sender: {
     type: mongodb.Schema.Types.ObjectId,
     required: true,
     ref: "users"
   },
   channel: {
-    type: mongodb.Schema.Types.ObjectId,
+    type: mongodb.Schema.Types.Mixed,
+    required: true,
     index: true,
     ref: "channels"
   },
@@ -29,17 +30,29 @@ var schema = new mongodb.Schema({
     default: false
   }
 }, {
-    // Adds 'createdAt' and 'updatedAt' fields
+  // Adds 'createdAt' and 'updatedAt' fields
   timestamps: true
 });
 
-schema.virtual("receiver").set(function (receiver) {
-  this.receivers = receiver;
+schema.pre("validate", function (next) {
+  const checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$");
+
+  const self = this;
+  if (self.channel === undefined) { return next(new Error("Message Validation Error")); }
+  if (!(checkForHexRegExp.test(self.channel))) {
+    if (self.channel.hasOwnProperty("receiver")) {
+      self.setReceivers([self.channel.receiver], next);
+    } else if (self.channel.hasOwnProperty("receivers")) {
+      self.setReceivers(self.channel.receivers, next);
+    }
+  } else {
+    return next();
+  }
 });
 
-schema.virtual("receivers").set(function (array) {
-  var receivers = [];
-  var invalid = false;
+schema.methods.setReceivers = function (array, next) {
+  const receivers = [];
+  let invalid = false;
 
   if (!(array.length > 0)) { return; }
   if (!(array instanceof Array)) {
@@ -47,12 +60,12 @@ schema.virtual("receivers").set(function (array) {
   }
 
   // Check each receiver, exit if any are not found
-  var count = 0;
-  var self = this;
+  let count = 0;
+  const self = this;
   for (let id of array) {
-    if (invalid) { return; }
+    if (invalid) { return next(new Error("Invalid Receiver Reference")); }
     User.findById(id, function (error, result) {
-      if (error) { throw error; }
+      if (error) { return next(error); }
       if (!result) {
         invalid = true;
         return;
@@ -62,26 +75,31 @@ schema.virtual("receivers").set(function (array) {
         receivers.push(result._id);
       }
       if ((count === array.length) && !invalid) {
-        self.setChannel(receivers);
+        self.setChannel(receivers, next);
       }
     });
-  };
-});
+  }
+};
 
-schema.methods.setChannel = function (receivers) {
+schema.methods.setChannel = function (receivers, next) {
   // See if channel for receivers exists, create one if needed
-  var self = this;
-  Channel.findOne({ members: { $all: receivers } }, function (error, result) {
+  const members = receivers;
+  members.push(this.sender);
+
+  const self = this;
+  Channel.findOne({ members: { $all: members, $size: members.length } }, function (error, result) {
     if (error) { throw error; }
     if (!result) {
-      Channel.create({ members: receivers }, function (error, channel) {
+      Channel.create({ members: members }, function (error, channel) {
         if (error) { throw error; }
         self.channel = channel._id;
         self.save();
+        return next();
       });
     } else {
       self.channel = result._id;
       self.save();
+      return next();
     }
   });
 };

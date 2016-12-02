@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-var winston = require("winston");
-var blueprint = require("@onehilltech/blueprint");
+const winston = require("winston");
+const blueprint = require("@onehilltech/blueprint");
 
 blueprint.Application(__dirname, function (err, app) {
   if (err) throw err;

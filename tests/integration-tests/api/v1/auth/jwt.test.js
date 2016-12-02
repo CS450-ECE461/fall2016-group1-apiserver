@@ -1,18 +1,18 @@
-var async = require("async");
-var assert = require("chai").assert;
-var blueprint = require("@onehilltech/blueprint");
-var appPath = require("../../../../fixtures/appPath");
-var it = require("mocha").it;
-var before = require("mocha").before;
-var describe = require("mocha").describe;
-var users = require("../../../../fixtures/users");
-var ResourceClient = require("../../../../../lib/ResourceClient");
-var tokens = [];
+const async = require("async");
+const assert = require("chai").assert;
+const blueprint = require("@onehilltech/blueprint");
+const appPath = require("../../../../fixtures/appPath");
+const it = require("mocha").it;
+const before = require("mocha").before;
+const describe = require("mocha").describe;
+const users = require("../../../../fixtures/users");
+const ResourceClient = require("../../../../../lib/ResourceClient");
+const tokens = [];
 
 describe("Auth API v1 - JWT", function () {
-  var server;
-  var request;
-  var userClient;
+  let server;
+  let request;
+  let userClient;
 
   function createUser (index, done) {
     userClient

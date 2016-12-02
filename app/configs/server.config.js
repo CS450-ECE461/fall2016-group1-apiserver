@@ -1,8 +1,8 @@
-var handlebars = require("express-handlebars");
-var helpers = require("handlebars-helpers");
-var layouts = require("handlebars-layouts");
+const handlebars = require("express-handlebars");
+const helpers = require("handlebars-helpers");
+const layouts = require("handlebars-layouts");
 
-var hbs = handlebars.create({
+const hbs = handlebars.create({
   extname: ".hbs",
   defaultLayout: "default",
   layoutsDir: "app/views/layouts",

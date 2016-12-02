@@ -1,6 +1,6 @@
 // Error handling via Express
-var _ = require("lodash");
-var winston = require("winston");
+const _ = require("lodash");
+const winston = require("winston");
 
 function handleError (error, request, response, next) {
   // noinspection JSUnresolvedVariable
@@ -9,7 +9,7 @@ function handleError (error, request, response, next) {
     return next(error);
   }
 
-  var errors = [];
+  let errors = [];
   if (error instanceof Array) {
     errors = error;
   } else {
@@ -45,7 +45,7 @@ function handleError (error, request, response, next) {
 }
 
 module.exports = function (blueprint) {
-  var express = blueprint.server.app;
+  const express = blueprint.server.app;
   express.set("json spaces", 2);
   express.use(handleError);
 };
