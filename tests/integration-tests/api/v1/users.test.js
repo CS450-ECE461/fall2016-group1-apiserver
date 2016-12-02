@@ -1,19 +1,19 @@
-var async = require("async");
-var assert = require("chai").assert;
-var should = require("chai").should();
-var blueprint = require("@onehilltech/blueprint");
-var appPath = require("../../../fixtures/appPath");
-var it = require("mocha").it;
-var before = require("mocha").before;
-var describe = require("mocha").describe;
-var users = require("../../../fixtures/users");
-var ResourceClient = require("../../../../lib/ResourceClient");
-var _ = require("lodash");
+const async = require("async");
+const assert = require("chai").assert;
+let should = require("chai").should();
+const blueprint = require("@onehilltech/blueprint");
+const appPath = require("../../../fixtures/appPath");
+const it = require("mocha").it;
+const before = require("mocha").before;
+const describe = require("mocha").describe;
+const users = require("../../../fixtures/users");
+const ResourceClient = require("../../../../lib/ResourceClient");
+const _ = require("lodash");
 
 describe("User API v1", function () {
-  var server;
-  var agent;
-  var client;
+  let server;
+  let agent;
+  let client;
 
   function createOne (index, done) {
     client
@@ -24,11 +24,11 @@ describe("User API v1", function () {
           return done(error);
         }
 
-        var body = response.body;
+        const body = response.body;
         assert(response.body.user._id);
         assert(!response.body.user.password);
         assert(!response.body.user.__v);
-        var passwd = users[index].password;
+        const passwd = users[index].password;
         users[index] = body.user;
         users[index].password = passwd;
         done();
@@ -51,7 +51,7 @@ describe("User API v1", function () {
   }
 
   function updateOne (index, key, value, done) {
-    var doc = {};
+    const doc = {};
     doc[key] = value;
 
     client
@@ -67,7 +67,7 @@ describe("User API v1", function () {
         response.body.user[key].should.equal(value);
         response.body.user.updatedAt.should.not.equal(users[index].updatedAt);
         response.body.user.createdAt.should.equal(users[index].createdAt);
-        var passwd = users[index].password;
+        const passwd = users[index].password;
         users[index] = response.body.user;
         users[index].password = passwd;
         done();
@@ -208,9 +208,9 @@ describe("User API v1", function () {
 
         assert(response.body.users.length >= 4);
 
-        var numFound = 0;
-        for (var i = 0; i < response.body.users.length; i++) {
-          for (var j = 0; j < users.length; j++) {
+        let numFound = 0;
+        for (let i = 0; i < response.body.users.length; i++) {
+          for (let j = 0; j < users.length; j++) {
             if (users[j]._id === response.body.users[i]._id) {
               numFound++;
             }

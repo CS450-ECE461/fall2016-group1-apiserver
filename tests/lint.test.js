@@ -1,11 +1,11 @@
-var lint = require("mocha-eslint");
+const lint = require("mocha-eslint");
 
 // Array of paths to lint
 // Note: a seperate Mocha test will be run for each path and each file which
 // matches a glob pattern
-var paths = "*";
+const paths = "*";
 
-var options = {
+const options = {
   // Increase the timeout of the test if linting takes to long
   timeout: 5000,  // Defaults to the global mocha `timeout` option
 

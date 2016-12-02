@@ -1,7 +1,7 @@
-var blueprint = require("@onehilltech/blueprint");
-var ResourceController = require("./../../lib/ResourceController");
-var Org = require("../models/Org");
-var passport = require("passport");
+const blueprint = require("@onehilltech/blueprint");
+const ResourceController = require("./../../lib/ResourceController");
+const Org = require("../models/Org");
+const passport = require("passport");
 
 function OrgController () {
   // noinspection JSUnresolvedFunction

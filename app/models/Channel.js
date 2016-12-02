@@ -1,6 +1,6 @@
-var mongodb = require("@onehilltech/blueprint-mongodb");
+const mongodb = require("@onehilltech/blueprint-mongodb");
 
-var schema = new mongodb.Schema({
+const schema = new mongodb.Schema({
   members: [{
     type: mongodb.Schema.Types.ObjectId,
     ref: "users",

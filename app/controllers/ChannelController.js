@@ -1,7 +1,7 @@
-var blueprint = require("@onehilltech/blueprint");
-var ResourceController = require("./../../lib/ResourceController");
-var Channel = require("../models/Channel");
-var passport = require("passport");
+const blueprint = require("@onehilltech/blueprint");
+const ResourceController = require("./../../lib/ResourceController");
+const Channel = require("../models/Channel");
+const passport = require("passport");
 
 function ChannelController () {
   // noinspection JSUnresolvedFunction

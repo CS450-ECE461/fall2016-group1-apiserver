@@ -1,8 +1,8 @@
-var mongodb = require("@onehilltech/blueprint-mongodb");
-var Channel = require("../models/Channel");
-var User = require("../models/User");
+const mongodb = require("@onehilltech/blueprint-mongodb");
+const Channel = require("../models/Channel");
+const User = require("../models/User");
 
-var schema = new mongodb.Schema({
+const schema = new mongodb.Schema({
   sender: {
     type: mongodb.Schema.Types.ObjectId,
     required: true,
@@ -30,14 +30,14 @@ var schema = new mongodb.Schema({
     default: false
   }
 }, {
-    // Adds 'createdAt' and 'updatedAt' fields
+  // Adds 'createdAt' and 'updatedAt' fields
   timestamps: true
 });
 
 schema.pre("validate", function (next) {
-  var checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$");
+  const checkForHexRegExp = new RegExp("^[0-9a-fA-F]{24}$");
 
-  var self = this;
+  const self = this;
   if (self.channel === undefined) { return next(new Error("Message Validation Error")); }
   if (!(checkForHexRegExp.test(self.channel))) {
     if (self.channel.hasOwnProperty("receiver")) {
@@ -51,8 +51,8 @@ schema.pre("validate", function (next) {
 });
 
 schema.methods.setReceivers = function (array, next) {
-  var receivers = [];
-  var invalid = false;
+  const receivers = [];
+  let invalid = false;
 
   if (!(array.length > 0)) { return; }
   if (!(array instanceof Array)) {
@@ -60,8 +60,8 @@ schema.methods.setReceivers = function (array, next) {
   }
 
   // Check each receiver, exit if any are not found
-  var count = 0;
-  var self = this;
+  let count = 0;
+  const self = this;
   for (let id of array) {
     if (invalid) { return next(new Error("Invalid Receiver Reference")); }
     User.findById(id, function (error, result) {
@@ -78,15 +78,15 @@ schema.methods.setReceivers = function (array, next) {
         self.setChannel(receivers, next);
       }
     });
-  };
+  }
 };
 
 schema.methods.setChannel = function (receivers, next) {
   // See if channel for receivers exists, create one if needed
-  var members = receivers;
+  const members = receivers;
   members.push(this.sender);
 
-  var self = this;
+  const self = this;
   Channel.findOne({ members: { $all: members, $size: members.length } }, function (error, result) {
     if (error) { throw error; }
     if (!result) {

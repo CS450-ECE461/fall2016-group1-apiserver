@@ -1,8 +1,8 @@
-var mongodb = require("@onehilltech/blueprint-mongodb");
-var Schema = mongodb.Schema;
-var validator = require("validator");
+const mongodb = require("@onehilltech/blueprint-mongodb");
+const Schema = mongodb.Schema;
+const validator = require("validator");
 
-var schema = new Schema({
+const schema = new Schema({
   handle: {
     type: String,
     required: false,

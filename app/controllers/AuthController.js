@@ -1,6 +1,6 @@
-var blueprint = require("@onehilltech/blueprint");
-var passport = require("passport");
-var errors = require("../../lib/errors");
+const blueprint = require("@onehilltech/blueprint");
+const passport = require("passport");
+const errors = require("../../lib/errors");
 
 function AuthController () {
   blueprint.BaseController.call(this);

@@ -1,8 +1,8 @@
-var mongodb = require("@onehilltech/blueprint-mongodb");
-var validator = require("validator");
-var uuid = require("uuid");
+const mongodb = require("@onehilltech/blueprint-mongodb");
+const validator = require("validator");
+const uuid = require("uuid");
 
-var schema = new mongodb.Schema({
+const schema = new mongodb.Schema({
   name: {
     type: String,
     required: true,

@@ -1,28 +1,28 @@
-var async = require("async");
-var assert = require("chai").assert;
-var blueprint = require("@onehilltech/blueprint");
-var should = require("chai").should();
-var expect = require("chai").expect;
-var appPath = require("../../../fixtures/appPath");
-var after = require("mocha").after;
-var it = require("mocha").it;
-var before = require("mocha").before;
-var describe = require("mocha").describe;
-var ResourceClient = require("../../../../lib/ResourceClient");
-var _ = require("lodash");
-var Channel = require("../../../../app/models/Channel");
-var Message = require("../../../../app/models/Message");
-var User = require("../../../../app/models/User");
+const async = require("async");
+const assert = require("chai").assert;
+const blueprint = require("@onehilltech/blueprint");
+let should = require("chai").should();
+const expect = require("chai").expect;
+const appPath = require("../../../fixtures/appPath");
+const after = require("mocha").after;
+const it = require("mocha").it;
+const before = require("mocha").before;
+const describe = require("mocha").describe;
+const ResourceClient = require("../../../../lib/ResourceClient");
+let _ = require("lodash");
+const Channel = require("../../../../app/models/Channel");
+const Message = require("../../../../app/models/Message");
+const User = require("../../../../app/models/User");
 
 describe("Channel API v1", function () {
-  var server;
-  var agent;
-  var userClient;
-  var messageClient;
-  var channelClient;
-  var users = require("../../../fixtures/users");
-  var messages = require("../../../fixtures/messages");
-  var channels;
+  let server;
+  let agent;
+  let userClient;
+  let messageClient;
+  let channelClient;
+  const users = require("../../../fixtures/users");
+  const messages = require("../../../fixtures/messages");
+  let channels;
 
   before(function (done) {
     this.timeout(5000);
@@ -49,7 +49,7 @@ describe("Channel API v1", function () {
     // Create users via User API
     async.waterfall([
       function (callback) {
-        var count = 0;
+        let count = 0;
         for (let user of users) {
           userClient.create(user).expect(201).end(function (error, response) {
             if (error) { return callback(error); }
