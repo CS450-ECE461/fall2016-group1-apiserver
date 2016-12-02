@@ -108,6 +108,24 @@ describe("Channel API v1", function () {
     });
   });
 
+  it.skip("should return channels where `members` lists the authenticated user", function (done) {
+    channelClient.auth(users[0].handle, users[0].password, function (error) {
+      if (error) {
+        return done(error);
+      }
+
+      channelClient.get().expect(200).end(function (error, response) {
+        if (error) {
+          return done(error);
+        }
+
+        expect(response.body.channels.length).to.equal(1);
+        expect(response.body.channels[0]._id).to.equal(channels[0]._id);
+        return done();
+      });
+    });
+  });
+
   after(function (done) {
     this.timeout(5000);
     Channel.remove({}, function (error) {
