@@ -26,11 +26,11 @@ notifications:
     rooms:
       - csci-450-odd:bRieDpCz5eHZvruypGO182AX#build-travisci
 
-deploy:
-  - provider: codedeploy
-    access_key_id: AKIAJHIALQXACCVWVMVA
-    secret_access_key: 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
-    bucket: github://CS450-ECE461/fall2016-group1-apiserver/
-    revision_type: github
-    application: Prattle-API
-    deployment_group: Prattle-API-DepGroup
+#deploy:
+#  - provider: codedeploy
+#    access_key_id: AKIAJHIALQXACCVWVMVA
+#    secret_access_key: 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
+#    bucket: github://CS450-ECE461/fall2016-group1-apiserver/
+#    revision_type: github
+#    application: Prattle-API
+#    deployment_group: Prattle-API-DepGroup
