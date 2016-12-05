@@ -26,12 +26,14 @@ notifications:
     rooms:
     - csci-450-odd:bRieDpCz5eHZvruypGO182AX#build-travisci
 deploy:
-- provider: codedeploy
-  region: us-west-2
-  access_key_id: AKIAJHIALQXACCVWVMVA
-  secret_access_key: 
-    secure: UjwRus77PgunLQXg4y2Il51IBzFdFGaom6jADdggfJJR/52x3Ne75aZND93CwWalf1uP7qtHI538o2/xfON7tOdVu/mw531gCQ9d33d5Wl4m8hdNv0YwjR21uDUrZS1JULDalr29dS0e+QSeCVN8DEBjBguGfHJt0iSlkFNvWlqORwPRBwcvzsRJRvJqFqbo4FWDmLpTWYxF4rDBoiiVnBSAynHN86UCkv4btKgN+kWkF7KnBTu0+JuZ13KTOaYfEwBYuizxnVR4ZzLepBovlQZUUSbBxbCrSXYPAyPbHY3iKgQVG7of6UQKbXgqEnTjunEJwuQ6bBPTO9F65DuJqgINtI1ZjMQW6oD2QDIvZx8ayiIFZRCZeqBaI5r0uP9EHFenECVk5oUFeClAQN2d1BY0uP2GPfGeP/bBcwrFj2ZiFnvcRv2E1nRMEaFsVTqZ1n42/Po5GCDbpJ+njeuz+9xvWhQKQF1kI9yyBN1khrp0I9xeaO+Xzj2qKp+HF+Ec8QxgmALNZ8e1lgDpHqgkIZI2/PA4dzN1/DXJnHJvfFn9Ia46vLuugL8JufU24JdCX7RfYbZaSu3+Vkl6Au0sNVcB9OAm6DhXkFQ8VP5sZU2BanSRRe75ZfL8fgqBHzmhuDoDb3b8uMxBZIRPWE1B1UrNBgfKoB+omGIV9uyQPew=
-  revision_type: github
+  provider: codedeploy
+  access_key_id: AKIAICBGH2W75KO4V7RA
+  secret_access_key:
+    secure: N5ujxZmtL6rFm86AKp3cFSdiS85SV+7VSCXDLgbOAx/Tt7dBWu316/DwBOO8EQW/aAba4Ad40x4zM+36Ap+TwBQX9XPAbxJcs9tVOxQr5ziplgtiLLQUecJHxfHwHpYieibUpbAklaYRE7tJze/+YfSzomnyrhnrt/FlWTuz+So1rTUfilsxHtVwhusOdG4xlS4rCB22F6PJKpqPjbh+79gDvVyIkz0hcN1NhNFXOLBAGFLxkpyiVFCj+298RDIskjfr6Dg34vz9A4Xwm2DtIH0q5TBc66tw1JPMb6vqu1l/lvyUCtix1XBAAJVDqbC8GU/aJMBgZhDhkmI+E8fDg6B2unjM7vGIf3GDXNLxLEqEGJP5x1B/1nAzbaaM01g+Q39pB8YeqyPLBjgTxA6x4M6NaRM1h8eMCkl3obowWmgv/3jCXTFMqOPpHhe5RxvKAUtRdTPU0rbJh/nHvFx4Cb5SZzW3l7oYhgTr0LOiUvTQHdiApFA1tDkvoW9YNcOK4+IVuY/qYCC3DJ3p0nZtFK8rTf2ZFE+9TDZDV2g/ku0q8xgOPlNSo0zR1u/OoNJKXnOpXgS17LiF9JTDfCxb8VGFGDrfjySohGujdy6Xp7+YsYd97jyxLWjqJPiMz4UJ//joNiJaezwWPyLZsnUdDxkwpojxw/3d9JDRPf6uHHg=
+  bucket: ''
+  key: ''
+  bundle_type: ''
   application: Prattle-API
   deployment_group: Prattle-API-DepGrp
-
+  on:
+    repo: CS450-ECE461/fall2016-group1-apiserver
