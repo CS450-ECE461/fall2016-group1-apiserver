@@ -2,7 +2,7 @@ const blueprint = require("@onehilltech/blueprint");
 const ResourceController = require("./../../lib/ResourceController");
 const Channel = require("../models/Channel");
 const passport = require("passport");
-var mongoose = require("mongoose");
+const mongoose = require("mongoose");
 
 function ChannelController () {
   // noinspection JSUnresolvedFunction
