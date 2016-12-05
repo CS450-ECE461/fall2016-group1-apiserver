@@ -13,7 +13,9 @@ function MessageController () {
       ],
       create: [
         function (req, res, next) {
-          req.body.message.sender = req.user._id;
+          if (req.body.message) {
+            req.body.message.sender = req.user._id;
+          } else { return res.sendStatus(400); }
           next();
         }
       ]
