@@ -36,3 +36,4 @@ deploy:
     revision_type: github
     application: Prattle-API
     deployment_group: Prattle-API-DepGrp
+    region: us-west-2a
