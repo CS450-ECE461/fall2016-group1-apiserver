@@ -40,4 +40,4 @@ npm install --dev
 
 
 ### Travis CI ###
-We use Travis CI as our c
+We use Travis CI as our automatic build and deployment agent.
