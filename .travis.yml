@@ -2,38 +2,37 @@ sudo: required
 dist: trusty
 language: node_js
 node_js:
-  - '6'
-  - '7'
+- '6'
+- '7'
 env:
-  - CXX=g++-4.8
+- CXX=g++-4.8
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+    - ubuntu-toolchain-r-test
     packages:
-      - g++-4.8
+    - g++-4.8
   code_climate:
     repo_token: 5630876f46c9ea33079e0569ac74e4cb1a05703d0ac36614f7edb14561f36df2
 services:
-  - mongodb
+- mongodb
 script:
-  - npm run coveralls
+- npm run coveralls
 after_success:
-  - codeclimate-test-reporter < coverage/lcov.info
+- codeclimate-test-reporter < coverage/lcov.info
 notifications:
   email: false
   slack:
     rooms:
-      - csci-450-odd:bRieDpCz5eHZvruypGO182AX#build-travisci
-
+    - csci-450-odd:bRieDpCz5eHZvruypGO182AX#build-travisci
 deploy:
-  - provider: codedeploy
-    region: us-west-2a
-    access_key_id:
-      secure: "iGi/FCMr4G6WYDfvLue43kcF1M5ig57z2LeSJ1WLslW8ll1t4QQiIoxm90dwzWvTQ7y/a82Y5LUdfjEaFVOmdGV4j8roac1XLmDzJ7AGKyK13D94Qx++biEMM9klPlp928U+SLHNdIwc9PzuKGzfsjwunhUcxhHwIJiapzv/r6ntrPfjgjjncFfZB9CivhiVJyvEtdjzQIG9aJQ+Xp+XzDVN3i8a44/4hSnO7fjtNetwDi686XLdszViiU2qRLfSzc1nzwnBkv2wd4zSriSIYXxnDfcFEKP1r3qK1FRoQQraD95Eer8w5sBXPNSL7lg7C27JcLt7XfNKeQQLoa3mSl/Wk33LQHNP5Q6kw1MAm7XA2QVRDTrhfgwiUO+V8jdp4i5oYL7i+3zQ5dodxGsA54KEpcAwGPbvYbZLC6t10TeF5eSPuxJgt3U5jgk32SfTui2xLDDcHlaqVKJmM8d5bNBAZkouqoedW6wlfi4sGXKAJKVhFl15E2erfjgXY5PJ1bnVURp8haZuSni61irYKXDpKI4IpFixUp66DaVEQy8T0jNfenUht0no8anhO8uOzBaofIF2VqlbbYlCMp7UgHDn31GRhlrIrlPXFWS6gWRw/dtpKzHwXu6zWyiffTSa7p2o3R9zF+OAHWDmx4Mgo9SgEsBZO5TKRDMvl6qgALU="
-    secret_access_key:
-      secure: "D1LfKtzQd3jntZgqQowqMkLfspjG8JFfq0nuvELgCDP+UVdo+BFMHo+/IAP4kW786xwwOGKcg5Agyfq37zhRlAa+vNitZNqFsI4751fWpnTfTGVOL7wC1hwiPGXSfFzoavjYQtTdrHRSw8iTUO8YFlTd7e66fSZiMYjRcHuaIFJQbNBYp6jwqpLv3N8hgik2gyBNk9zPUXOUoFFd8n1X7SzUjxW3QfUhR/0TBZ8Ij7ribXtn7GWcIMH4zuI1RyVCDGZrbjJmFXflcE2LoXZRpJXQRgwPCs1jxhhIRvkk54FudUXyXac52+3WxUI9ofFFpFMIJwsemU/YAqsHrbsVdSInj9fnhCfw3AHvvJtqe1qSu3vuShP9ame9BgdqyOR0LzMDxCDEwf/sQ+Kieh09PIqvac4c60icuWPKoepLYehJBX+y5k2hYLnUwbTSFtstN+kXXgK5Wa8cz5fiX5gXHza0WSit55A8q0sEJiJI5ippmgKUiL1ap+1UWWctbV0Rdgh0Ljqaam1/AOZPJDeQvSdIfDaqrnk3/rDRA8/h9irs7ba+DFmLDHiaB6x3XMKuSqbm9mNihKST2ZFSBv32+iI2y63yMTHmQsRm1K7Y37p27IF8tSwoTOvZg78u0rC5JvOUwQLCtISt2dbHq5vRm0xjx5DZ+cdU2KXinABE1+c="
-#    repository: CS450-ECE461/fall2016-group1-apiserver
-#    revision_type: github
-    application: Prattle-API
-    deployment_group: Prattle-API-DepGrp
+- provider: codedeploy
+  region: us-west-2a
+  access_key_id: AKIAJHIALQXACCVWVMVA
+  secret_access_key: 
+    secure: UjwRus77PgunLQXg4y2Il51IBzFdFGaom6jADdggfJJR/52x3Ne75aZND93CwWalf1uP7qtHI538o2/xfON7tOdVu/mw531gCQ9d33d5Wl4m8hdNv0YwjR21uDUrZS1JULDalr29dS0e+QSeCVN8DEBjBguGfHJt0iSlkFNvWlqORwPRBwcvzsRJRvJqFqbo4FWDmLpTWYxF4rDBoiiVnBSAynHN86UCkv4btKgN+kWkF7KnBTu0+JuZ13KTOaYfEwBYuizxnVR4ZzLepBovlQZUUSbBxbCrSXYPAyPbHY3iKgQVG7of6UQKbXgqEnTjunEJwuQ6bBPTO9F65DuJqgINtI1ZjMQW6oD2QDIvZx8ayiIFZRCZeqBaI5r0uP9EHFenECVk5oUFeClAQN2d1BY0uP2GPfGeP/bBcwrFj2ZiFnvcRv2E1nRMEaFsVTqZ1n42/Po5GCDbpJ+njeuz+9xvWhQKQF1kI9yyBN1khrp0I9xeaO+Xzj2qKp+HF+Ec8QxgmALNZ8e1lgDpHqgkIZI2/PA4dzN1/DXJnHJvfFn9Ia46vLuugL8JufU24JdCX7RfYbZaSu3+Vkl6Au0sNVcB9OAm6DhXkFQ8VP5sZU2BanSRRe75ZfL8fgqBHzmhuDoDb3b8uMxBZIRPWE1B1UrNBgfKoB+omGIV9uyQPew=
+  repository: CS450-ECE461/fall2016-group1-apiserver
+  revision_type: github
+  application: Prattle-API
+  deployment_group: Prattle-API-DepGrp
+
