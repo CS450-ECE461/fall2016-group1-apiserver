@@ -2,6 +2,7 @@ const blueprint = require("@onehilltech/blueprint");
 const ResourceController = require("./../../lib/ResourceController");
 const Message = require("../models/Message");
 const passport = require("passport");
+const mongoose = require("mongoose");
 
 function MessageController () {
   // noinspection JSUnresolvedFunction
@@ -19,6 +20,20 @@ function MessageController () {
           next();
         }
       ]
+    },
+    normalize: {
+      getAll: [function (req, res, next) {
+        if (req.query.channel) {
+          req.query.channel = mongoose.Types.ObjectId(req.query.channel);
+        }
+        next();
+      }],
+      get: [function (req, res, next) {
+        if (req.query.channel) {
+          req.query.channel = mongoose.Types.ObjectId(req.query.channel);
+        }
+        next();
+      }]
     }
   });
 }
