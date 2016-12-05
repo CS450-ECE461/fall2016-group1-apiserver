@@ -3,7 +3,7 @@ const lint = require("mocha-eslint");
 // Array of paths to lint
 // Note: a seperate Mocha test will be run for each path and each file which
 // matches a glob pattern
-const paths = "*";
+const paths = "{app,lib}/**/*.{js,json}";
 
 const options = {
   // Increase the timeout of the test if linting takes to long
