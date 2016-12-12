@@ -1,4 +1,4 @@
-# fall2016-group1-apiserver - Prattle
+# fall2016-group1-apiserver - Prattle Backend API
 
 [![GitHub release](https://img.shields.io/github/release/CS450-ECE461/fall2016-group1-apiserver.svg)](https://github.com/CS450-ECE461/fall2016-group1-apiserver/releases)
 [![Build Status](https://img.shields.io/travis/CS450-ECE461/fall2016-group1-apiserver/master.svg)](https://travis-ci.org/CS450-ECE461/fall2016-group1-apiserver)
