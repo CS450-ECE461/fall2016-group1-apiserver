@@ -30,14 +30,20 @@ describe("Auth API v1 - JWT", function () {
   }
 
   function deleteUser (index, field, done) {
-    userClient
-      .delete(users[index][field])
-      .expect(204)
-      .end(function (error) {
-        if (error) { return done(error); }
+     userClient.auth(user.emailAddress, user.password, function(error) {
+      if (error) {
+        return done(error);
+      }
+       
+      userClient
+        .delete(users[index][field])
+        .expect(204)
+        .end(function (error) {
+          if (error) { return done(error); }
 
-        done();
-      });
+          done();
+        });
+    });
   }
 
   function getToken (key, param, done) {
@@ -137,15 +143,23 @@ describe("Auth API v1 - JWT", function () {
   });
 
   it("should allow the first user to change their password", function (done) {
-    userClient
-      .update(users[0]._id, { password: "23hjg5423jkh" })
-      .type("json")
-      .set("Accept", "application/json")
-      .expect(200)
-      .end(function (error, response) {
-        if (error) { return done(error); }
-        done();
-      });
+     userClient.auth(users[0].emailAddress, users[0].password, function(error) {
+      if (error) {
+        return done(error);
+      }
+        
+         
+      userClient
+        .update(users[0]._id, { password: "23hjg5423jkh" })
+        .type("json")
+        .set("Accept", "application/json")
+        .expect(200)
+        .end(function (error, response) {
+          if (error) { return done(error); }
+          userClient.deauth();
+          done();
+        });
+     });
   });
 
   it("should not allow the first user to login with old password", function (done) {

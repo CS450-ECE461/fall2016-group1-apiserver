@@ -115,19 +115,33 @@ describe("Org API v1", function () {
   after(function (done) {
     async.waterfall([
       function (callback) {
-        userClient.delete(admin._id).expect(204).end(function (error) {
+        userClient.auth(admin.emailAddress, admin.password, function(error) {
           if (error) {
-            return callback(error);
+            return done(error);
           }
-          return callback(null);
+        
+          userClient.delete(admin._id).expect(204).end(function (error) {
+            if (error) {
+              return callback(error);
+            }
+            userClient.deauth()
+            return callback(null);
+          });
         });
       },
       function (callback) {
-        userClient.delete(user._id).expect(204).end(function (error) {
+         userClient.auth(user.emailAddress, user.password, function(error) {
           if (error) {
-            return callback(error);
+            return done(error);
           }
-          return callback(null);
+        
+          userClient.delete(user._id).expect(204).end(function (error) {
+            if (error) {
+              return callback(error);
+            }
+            userClient.deauth()
+            return callback(null);
+          });
         });
       }
     ], done);

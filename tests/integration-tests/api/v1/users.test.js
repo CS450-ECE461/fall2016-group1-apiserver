@@ -54,37 +54,51 @@ describe("User API v1", function () {
     const doc = {};
     doc[key] = value;
 
-    client
-      .update(users[index]._id, doc)
-      .expect(200)
-      .end(function (error, response) {
-        if (error) {
-          return done(error);
-        }
+    client.auth(users[index].emailAddress, users[index].password, function(error) {
+      if (error) {
+        return done(error);
+      }
+          
+      client
+        .update(users[index]._id, doc)
+        .expect(200)
+        .end(function (error, response) {
+          if (error) {
+            return done(error);
+          }
 
-        // noinspection JSUnresolvedVariable
-        response.body.user._id.should.equal(users[index]._id);
-        response.body.user[key].should.equal(value);
-        response.body.user.updatedAt.should.not.equal(users[index].updatedAt);
-        response.body.user.createdAt.should.equal(users[index].createdAt);
-        const passwd = users[index].password;
-        users[index] = response.body.user;
-        users[index].password = passwd;
-        done();
-      });
+          // noinspection JSUnresolvedVariable
+          response.body.user._id.should.equal(users[index]._id);
+          response.body.user[key].should.equal(value);
+          response.body.user.updatedAt.should.not.equal(users[index].updatedAt);
+          response.body.user.createdAt.should.equal(users[index].createdAt);
+          const passwd = users[index].password;
+          users[index] = response.body.user;
+          users[index].password = passwd;
+          client.deauth();
+          done();
+        });
+    });
   }
 
   function deleteOne (index, field, done) {
-    client
-      .delete(users[index][field])
-      .expect(204)
-      .end(function (error) {
-        if (error) {
-          return done(error);
-        }
-
-        done();
-      });
+    client.auth(users[index].emailAddress, users[index].password, function(error) {
+      if (error) {
+        return done(error);
+      }
+      
+      client
+        .delete(users[index][field])
+        .expect(204)
+        .end(function (error) {
+          if (error) {
+            return done(error);
+          }
+        
+          client.deauth();
+          done();
+        });
+    });
   }
 
   before(function (done) {
